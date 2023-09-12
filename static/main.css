@@ -1,0 +1,174 @@
+:root {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smooting: grayscale;
+
+    --primary-darken-3:    #04182a;
+    --primary-darken-2:    #0d2843;
+    --primary-darken-1:    #3f72a5;
+    --primary:             #40a0fa;
+    --primary-lighten-1:   #96ceff;
+    --primary-lighten-2:   #cae1ff;
+
+    --secondary-darken-2:  rgb(75, 45, 45);
+    --secondary-darken-1:  rgb(137, 76, 75);
+    --secondary:           rgb(255, 140, 127);
+    --secondary-lighten-1: rgb(252, 176, 161);
+    --secondary-lighten-2: rgb(255, 228, 219);
+
+    --tertiary-darken-2:   #152030;
+    --tertiary-darken-1:   #1f3047;
+    --tertiary:            #3b5571;
+    --tertiary-lighten-1:  #73829c;
+    --tertiary-lighten-2:  #f0f7ff;
+}
+
+h1, h2, h3, h4, p, label {
+  color: var(--tertiary-darken-1);
+  text-align: left;
+  padding: 0;
+  margin: .5rem;
+  /*margin-top: .5rem;
+  margin-bottom: .5rem;*/
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 { font-size: 2.5rem; font-weight: bolder; color: var(--primary-lighten-1) }
+h2 { font-size: 1.5rem; font-weight: bold;}
+h3 { font-size: 1.1rem; font-weight: bold;}
+h4 { font-size: 1rem; font-weight: 500;}
+p { font-size: 1rem; font-weight: 400; color: var(--tertiary-lighten-1) }
+label { font-size: 1.1rem; font-weight: bold; color:var(--tertiary)}
+
+
+body, html {
+    height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    position: relative;
+    padding:0;
+    margin:0;
+
+    display: flex;
+    flex-direction: column;
+    background-color: #193555;
+    z-index: -2;
+}
+
+.bg {
+    position: absolute;
+    align-self: center;
+    left: 0;
+    bottom: 0;
+    overflow: clip;
+    width: 100%;
+    height: auto;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: auto;
+    align-content: center;
+    align-items: center;
+    height: min-content;
+    background-color: var(--tertiary-darken-1);
+    padding: 0.5rem;
+    color: var(--primary-lighten-2);
+}
+
+.top-bar-item {
+    color: white;
+    height: 100%;
+    font-size: 1.5rem;
+    padding: 1rem;
+    align-self: flex-end;
+}
+
+.page-content {
+    flex: 10;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+    margin: 0;
+    padding: 1rem;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    background-color: white;
+    padding: 1.8rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 0 3rem #0a111c50;
+    width:fit-content;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+input {
+    font-size: 1.2rem;
+    outline: none;
+    border: 0.13rem solid transparent;
+    background-color: var(--primary-lighten-2);
+    background-color: var(--tertiary-lighten-2);
+    border-radius: 0.3rem;
+    padding: 0.7rem;
+    color : var(--tertiary);
+}
+
+input:focus {
+    transition-duration: 0.05s;
+    border-color: var(--primary-lighten-2);
+    color: var(--tertiary-lighten-1);
+}
+
+::placeholder {
+    color: var(--tertiary-lighten-1);
+}
+
+.button-1, .button-2 {
+    padding: 0.7rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    color: white;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1.2rem;
+    display:flex;
+    width:min-content;
+    margin: 0;
+    transition-duration: 0.04s;
+    cursor: grab;
+}
+
+.button-1 {
+    background-color: var(--primary);
+}
+.button-2 {
+    background-color: var(--tertiary-darken-1);
+}
+.button-1:hover {
+    background-color: var(--primary-lighten-1);
+}
+.button-2:hover {
+    background-color: var(--tertiary-lighten-1);
+}
+
+.error-msg {
+    color: var(--secondary);
+}
