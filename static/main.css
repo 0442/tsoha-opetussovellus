@@ -76,17 +76,25 @@ body, html {
     align-content: center;
     align-items: center;
     height: min-content;
-    background-color: var(--tertiary-darken-1);
-    padding: 0.5rem;
+    background-color: white;
     color: var(--primary-lighten-2);
+    padding:0;
 }
 
 .top-bar-item {
-    color: white;
+    color: var(--primary-darken-1);
+    font-weight: normal;
     height: 100%;
-    font-size: 1.5rem;
-    padding: 1rem;
+    font-size: 1.1rem;
+    margin:0;
+    padding: 1.1rem;
     align-self: flex-end;
+    transition-duration: 0.04s;
+}
+.top-bar-item:hover {
+    color: var(--primary-darken-1);
+    text-decoration: underline;
+    text-decoration-thickness: 0.01rem;
 }
 
 .page-content {
@@ -167,6 +175,20 @@ input:focus {
 }
 .button-2:hover {
     background-color: var(--tertiary-lighten-1);
+}
+
+.course-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    background-color: white;
+    width: 100%;
+    height: fit-content;
 }
 
 .error-msg {
