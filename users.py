@@ -12,12 +12,18 @@ def valid_credentials(username:str, password:str) -> bool:
     else:
         return True
 
-def register_user(username:str, password:str) -> str | None:
+def register_user(username: str, password: str, is_teacher: bool) -> str | None:
     """Returns None if registration was successfull, otherwise an error message."""
 
-    sql = text("INSERT INTO users (name, password) VALUES (:username, :password)")
+    if len(username) < 3:
+        return "Username must be at least 3 characters long."
+    if len(password) < 3:
+        return "Password must be at least 3 characters long."
+
+    role = 1 if is_teacher == True else 0
+    sql = text("INSERT INTO users (name, password, role) VALUES (:username, :password, :role)")
     try:
-        db.session.execute(sql, {"username":username, "password":password})
+        db.session.execute(sql, {"username":username, "password":password, "role":role})
         db.session.commit()
     except IntegrityError:
         return f"Username '{username}' is already taken."
