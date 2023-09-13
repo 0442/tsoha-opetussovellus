@@ -29,3 +29,8 @@ def register_user(username: str, password: str, is_teacher: bool) -> str | None:
         return f"Username '{username}' is already taken."
 
     return None
+
+def delete_user(username: str):
+    sql = text("DELETE FROM users WHERE name = :name")
+    db.session.execute(sql, {"name": username})
+    db.session.commit()

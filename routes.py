@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, session
 
 from app import app
-from users import valid_credentials, register_user
+from users import valid_credentials, register_user, delete_user
 
 @app.route("/")
 def root():
@@ -45,6 +45,13 @@ def profile():
 
 @app.route("/logout")
 def logout():
+    session["username"] = None
+    return redirect("/")
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    username = session["username"]
+    delete_user(username)
     session["username"] = None
     return redirect("/")
 
