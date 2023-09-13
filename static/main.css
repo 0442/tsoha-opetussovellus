@@ -8,7 +8,7 @@
     --primary-darken-1:    #3f72a5;
     --primary:             #40a0fa;
     --primary-lighten-1:   #96ceff;
-    --primary-lighten-2:   #cae1ff;
+    --primary-lighten-2:   #dcebff;
 
     --secondary-darken-2:  rgb(75, 45, 45);
     --secondary-darken-1:  rgb(137, 76, 75);
@@ -33,12 +33,15 @@ h1, h2, h3, h4, p, label {
 }
 
 a {
+    color: var(--primary);
+}
+.link-button {
   text-decoration: none;
 }
 
 h1 { font-size: 2.5rem; font-weight: bolder; color: var(--primary-lighten-1) }
-h2 { font-size: 1.5rem; font-weight: bold;}
-h3 { font-size: 1.1rem; font-weight: bold;}
+h2 { font-size: 1.5rem; font-weight: bold; color: var(--tertiary)}
+h3 { font-size: 1.1rem; font-weight: bold; color: var(--tertiary)}
 h4 { font-size: 1rem; font-weight: 500;}
 p { font-size: 1rem; font-weight: 400; color: var(--tertiary-lighten-1) }
 label { font-size: 1.1rem; font-weight: bold; color:var(--tertiary)}
@@ -142,14 +145,13 @@ input {
 input:focus {
     transition-duration: 0.05s;
     border-color: var(--primary-lighten-2);
-    color: var(--tertiary-lighten-1);
 }
 
 ::placeholder {
     color: var(--tertiary-lighten-1);
 }
 
-.button-1, .button-2 {
+.button-1, .button-2, .button-3 {
     padding: 0.7rem;
     padding-left: 1.2rem;
     padding-right: 1.2rem;
@@ -175,6 +177,13 @@ input:focus {
 }
 .button-2:hover {
     background-color: var(--tertiary-lighten-1);
+}
+
+.button-3 {
+    background-color: transparent;
+    color: var(--secondary);
+    border: solid 0.1rem;
+    font-weight: bold;
 }
 
 .course-list-container {
