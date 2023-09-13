@@ -20,16 +20,20 @@ def login():
     else:
         return render_template("login.html", error_msg="Wrong username or password")
 
-@app.route("/register", methods=["POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "GET":
+        return render_template("register.html")
+
     password = request.form["password"]
     username = request.form["username"]
-    err = register_user(username, password)
+    role = request.form["role"]
+    err = register_user(username, password, True if role == "teacher" else False)
     if not err:
         session["username"] = username
         return redirect("/profile")
     else:
-        return render_template("login.html", error_msg=err)
+        return render_template("register.html", error_msg=err)
 
 @app.route("/profile")
 def profile():
