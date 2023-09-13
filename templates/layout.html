@@ -4,8 +4,8 @@
 <title>Opetussovellus</title>
 
 <div class="top-bar">
-    <a href="/"><h1>Courses</h1></a>
     {% if session.username %}
+    <a href="/"><p class="top-bar-item">Courses</p></a>
     <a href="/profile"><div class="top-bar-item" style="align-self: flex-end;">{{session.username}}</div></a>
     {% else %}
     <a href="/login"><div class="top-bar-item" style="align-self: flex-end;">Login</div></a>
