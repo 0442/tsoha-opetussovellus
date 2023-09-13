@@ -4,7 +4,7 @@
     {% if error_msg %}
     <p class="error-msg">{{ error_msg }}</p>
     {% endif %}
-    <h2>Login</h2>
+    <h2>Create a New Account</h2>
     <br>
     <form class="login-form" method="POST">
         <div style="display:flex; flex-direction: column;">
@@ -15,12 +15,19 @@
             <label for="password-input">Password</label>
             <input id="password-input" type="password" name="password" placeholder="password">
         </div>
+        <div>
+            <h3>Account type</h3>
+            <input id="student" type="radio" value="student" name="role" checked>
+            <label for="student">Student</label>
+            <input id="teacher" type="radio" value="teacher" name="role">
+            <label for="teacher">Teacher</label>
+        </div>
         <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <button class="button-1" formaction="/login" type="submit">login</button>
+            <button class="button-2" formaction="/register" type="submit">register</button>
         </div>
         <div>
         <p>
-        To create a new account instead, go to the <br><a href="/register" style="text-decoration: underline;">registration page</a>
+        To login into an existing account instead, go to the <br><a href="/login" style="text-decoration: underline;">login page</a>
         </p>
         </div>
     </form>
