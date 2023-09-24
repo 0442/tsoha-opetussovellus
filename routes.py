@@ -60,8 +60,7 @@ def logout():
 def delete():
     username = session["username"]
     delete_user(username)
-    session["username"] = None
-    return redirect("/")
+    return redirect("/logout")
 
 @app.route("/courses")
 def courses():
