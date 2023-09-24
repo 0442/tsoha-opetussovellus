@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="course-page-container">
+    <a href="/courses/{{course.id}}" class="link-button back-button">&laquo Course page</a>
+
+    <!-- -->
+    <form style="width:100%;" id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+            <textarea form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="h1 textarea" id="name" name="name">{{course.name}}</textarea>
+            <textarea form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="p textarea" id="desc" name="desc">{{course.description}}</textarea>
+            <button type="submit" class="button-5">Update name and description</button>
+        </div>
+    </form>
+    <!-- -->
+
+
+    <!-- -->
+    <h2>Course Materials</h2>
+    {% if text_material.__len__() == 0 %}
+    <p>No course materials</p>
+    {% endif %}
+
+    {% for m in text_material %}
+        <div style="display: flex; flex-direction: row">
+            <h3>{{m.title}}</h3>
+        </div>
+    {% endfor %}
+    <!-- -->
+    <a href="/courses/{{course.id}}/edit/add_material" class="button-5 link-button">+ New Text Material</a>
+    <!-- -->
+
+    <!-- -->
+    <h2>Course Exercises</h2>
+    <div style="width:100%; display:flex; flex-direction: row; gap: 5rem;">
+        {% if exercises.__len__() == 0 %}
+        <p>No exercises</p>
+        {% endif %}
+
+        {% for e in exercises %}
+        <div class="exercise-block">
+            <a href="/">
+                <h3>{{e.title}}</h3>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- -->
+    <a href="/courses/{{course.id}}/edit/add_exercise" class="button-5 link-button">+ New Exercise</a>
+    <!-- -->
+</div>
+{% endblock %}

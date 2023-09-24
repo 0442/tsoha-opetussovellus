@@ -86,3 +86,12 @@ def new_course():
     description = request.form["description"]
     course_id = create_course(name, description, session["user_id"])
     return redirect("/courses/" + str(course_id))
+
+@app.route("/courses/<int:course_id>/edit")
+def edit_course(course_id: int):
+    if session["is_teacher"] == False or not is_course_teacher(session["user_id"], course_id):
+        return redirect("/")
+    else:
+        return render_template("edit-course.html", course=get_course_info(course_id),
+                                                   text_materials=get_course_materials(course_id),
+                                                   exercises=get_course_exercises(course_id))
