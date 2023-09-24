@@ -1,7 +1,9 @@
 from flask import render_template, redirect, request, session
 
 from app import app
-from users import valid_credentials, register_user, delete_user
+from users import *
+from courses import *
+
 
 @app.route("/")
 def root():
