@@ -20,10 +20,10 @@ def get_user_id(username: str) -> str:
 def register_user(username: str, password: str, is_teacher: bool) -> str | None:
     """Returns None if registration was successfull, otherwise an error message."""
 
-    if len(username) < 3:
-        return "Username must be at least 3 characters long."
-    if len(password) < 3:
-        return "Password must be at least 3 characters long."
+    if not 3 <= len(username) <= 20:
+        return "Username must be 3 to 20 characters long."
+    if not 3 <= len(password) <= 20:
+        return "Password must be 3 to 20 characters long."
 
     role = 1 if is_teacher == True else 0
     sql = text("INSERT INTO users (name, password, role) VALUES (:username, :password, :role)")
