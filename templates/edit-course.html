@@ -16,14 +16,16 @@
 
     <!-- -->
     <h2>Course Materials</h2>
-    {% if text_material.__len__() == 0 %}
+    {% if text_materials.__len__() == 0 %}
     <p>No course materials</p>
     {% endif %}
 
-    {% for m in text_material %}
-        <div style="display: flex; flex-direction: row">
-            <h3>{{m.title}}</h3>
-        </div>
+    {% for m in text_materials %}
+    <div class="course-content-block">
+        <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
+            <h3 style="color:var(--primary); font-weight: normal;">{{m.title}}</h3>
+        </a>
+    </div>
     {% endfor %}
     <!-- -->
     <a href="/courses/{{course.id}}/edit/add_material" class="button-5 link-button">+ New Text Material</a>
@@ -31,15 +33,15 @@
 
     <!-- -->
     <h2>Course Exercises</h2>
-    <div style="width:100%; display:flex; flex-direction: row; gap: 5rem;">
+    <div style="display:flex; flex-direction: column; gap: 0.5rem;">
         {% if exercises.__len__() == 0 %}
         <p>No exercises</p>
         {% endif %}
 
         {% for e in exercises %}
-        <div class="exercise-block">
-            <a href="/">
-                <h3>{{e.title}}</h3>
+        <div class="course-content-block">
+            <a class="link-button" href="/courses/{{course.id}}/exercises/{{e.id}}">
+                <h3 style="color:var(--primary); font-weight: normal;">{{e.title}}</h3>
             </a>
         </div>
         {% endfor %}
