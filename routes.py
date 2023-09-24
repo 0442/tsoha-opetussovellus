@@ -95,3 +95,19 @@ def edit_course(course_id: int):
         return render_template("edit-course.html", course=get_course_info(course_id),
                                                    text_materials=get_course_materials(course_id),
                                                    exercises=get_course_exercises(course_id))
+
+@app.route("/courses/<int:course_id>/join", methods=["POST"])
+def join_course(course_id: int):
+    if not session["username"]:
+        return redirect("/")
+    else:
+        add_user_to_course(session["user_id"], course_id)
+        return redirect("/courses/" + str(course_id))
+
+@app.route("/courses/<int:course_id>/leave", methods=["POST"])
+def leave_course(course_id: int):
+    if not session["username"]:
+        return redirect("/")
+    else:
+        remove_user_from_course(session["user_id"], course_id)
+        return redirect("/courses/" + str(course_id))
