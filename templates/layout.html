@@ -4,15 +4,26 @@
 <title>Opetussovellus</title>
 
 <div class="top-bar">
-    {% if session.username %}
-    <a href="/"><p class="top-bar-item">Courses</p></a>
-    <a href="/profile"><div class="top-bar-item" style="align-self: flex-end;">{{session.username}}</div></a>
-    {% else %}
-    <a href="/login"><div class="top-bar-item" style="align-self: flex-end;">Login</div></a>
-    {% endif %}
+        <a class="link-button" href="/"><p class="top-bar-item">Courses</p></a>
+        {% if session.username %}
+        <a class="link-button" href="/profile">
+                <div class="top-bar-item" style="align-self: flex-end;">
+                        {{session.username}}
+                        <span style="font-size:0.8rem;">
+                                {% if session.is_teacher == True %}
+                                (teacher)
+                                {% else %}
+                                (student)
+                                {% endif %}
+                        </span>
+                </div>
+        </a>
+        {% else %}
+        <a class="link-button" href="/login"><div class="top-bar-item" style="align-self: flex-end;">Login</div></a>
+        {% endif %}
 </div>
 
 <div class="page-content">
-    <img class="bg" src="/static/bitmap.svg">
-    {% block content %}{% endblock %}
+        <img class="bg" src="/static/bitmap.svg">
+        {% block content %}{% endblock %}
 </div>
