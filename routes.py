@@ -111,3 +111,10 @@ def leave_course(course_id: int):
     else:
         remove_user_from_course(session["user_id"], course_id)
         return redirect("/courses/" + str(course_id))
+
+@app.route("/courses/<int:course_id>/edit/title_and_desc", methods=["POST"])
+def course_edit_title_and_desc(course_id: int):
+    print(request.form["name"])
+    update_course_name(course_id, request.form["name"])
+    update_course_desc(course_id, request.form["desc"])
+    return redirect(f"/courses/{course_id}/edit")
