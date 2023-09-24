@@ -73,3 +73,16 @@ def course(course_id: int):
     return render_template("course-page.html", course=get_course_info(course_id),
                                                text_materials=get_course_materials(course_id),
                                                exercises=get_course_exercises(course_id))
+
+@app.route("/new_course", methods=["GET", "POST"])
+def new_course():
+    if session["is_teacher"] != True:
+        return redirect("/")
+
+    if request.method == "GET":
+        return render_template("create-course.html")
+
+    name = request.form["name"]
+    description = request.form["description"]
+    course_id = create_course(name, description, session["user_id"])
+    return redirect("/courses/" + str(course_id))
