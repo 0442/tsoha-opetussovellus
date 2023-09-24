@@ -139,3 +139,23 @@ def course_add_material(course_id: int):
     text = request.form["text"]
     add_course_material(course_id, title, text)
     return redirect(f"/courses/{course_id}/edit")
+
+@app.route("/courses/<int:course_id>/exercises/<int:exercise_id>", methods=["GET"])
+def course_exercise_page(course_id:int, exercise_id:int):
+    exercise = None
+    for e in get_course_exercises(course_id):
+        if e.id == exercise_id:
+            exercise = e
+            break
+    return render_template("exercise.html", exercise=exercise,
+                                            course=get_course_info(course_id))
+
+@app.route("/courses/<int:course_id>/materials/<int:material_id>", methods=["GET"])
+def course_material_page(course_id:int, material_id:int):
+    material= None
+    for m in get_course_materials(course_id):
+        if m.id == material_id:
+            material = m
+            break
+    print(material)
+    return render_template("material.html", material=material)

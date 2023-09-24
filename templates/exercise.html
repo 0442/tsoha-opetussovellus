@@ -1,0 +1,12 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+<form id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit" method="POST">
+    <div class="" style="background-color: white; display: flex; flex-direction: column; gap:1rem; padding:2rem; border-radius: 0.5rem;">
+        <h2>{{exercise.question}}</h2>
+        <textarea class="p textarea" form="answer-form" type="text" placeholder="Answer here"></textarea>
+        <button class="button-1" type="submit">Submit answer</button>
+    </div>
+</form>
+{% endblock %}
