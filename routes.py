@@ -64,7 +64,9 @@ def delete():
 
 @app.route("/courses")
 def courses():
-    return render_template("courses.html")
+    courses = get_all_courses()
+    return render_template("courses.html", courses = courses,
+                                           course_count = len(courses))
 
 @app.route("/course/<int:id>")
 def course(id):
