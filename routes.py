@@ -68,6 +68,8 @@ def courses():
     return render_template("courses.html", courses = courses,
                                            course_count = len(courses))
 
-@app.route("/course/<int:id>")
-def course(id):
-    return "course " + str(id)
+@app.route("/courses/<int:course_id>")
+def course(course_id: int):
+    return render_template("course-page.html", course=get_course_info(course_id),
+                                               text_materials=get_course_materials(course_id),
+                                               exercises=get_course_exercises(course_id))

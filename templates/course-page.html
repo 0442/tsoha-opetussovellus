@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="course-page-container">
+    <a href="/courses" class="link-button back-button">&laquo Courses</a>
+    <h1>{{course.name}}</h1>
+    <p>{{course.description}}</p>
+    {% if not session.username %}
+    <div class="notice-container">
+        <p>You must <a style="color:var(--primary)" href="/login">login</a> first before you can complete any courses.</p>
+    </div>
+    {% endif %}
+
+    {% if session.username %}
+
+    {% if session.user_id in course.teacher_ids %}
+    <a href="/courses/{{course.id}}/edit" class="link-button button-5">Edit course</a>
+    {% endif %}
+    {% if session.user_id not in course.participant_ids %}
+    <form action="/courses/{{course.id}}/join" method="POST">
+    <button type="submit" class="button-4">Enroll in course</button>
+    </form>
+    {% else %}
+    <form action="/courses/{{course.id}}/leave" method="POST">
+    <button class="button-3">Leave course</button>
+    </form>
+    {% endif %}
+    {% endif %}
+
+    {% if session.user_id in course.participant_ids or session.user_id in course.teacher_ids %}
+
+    <!-- -->
+    <h2>Course Materials</h2>
+    {% if text_materials.__len__() == 0 %}
+    <p>No course materials</p>
+    {% endif %}
+
+    {% for m in text_materials %}
+    <div class="course-content-block">
+        <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
+            <h3 style="color:var(--primary); font-weight: normal;">{{m.title}}</h3>
+        </a>
+    </div>
+    {% endfor %}
+    <!-- -->
+
+    <!-- -->
+    <h2>Course Exercises</h2>
+    <div style="display:flex; flex-direction: column; gap: 0.5rem;">
+        {% if exercises.__len__() == 0 %}
+        <p>No exercises</p>
+        {% endif %}
+
+        {% for e in exercises %}
+        <div class="course-content-block">
+            <a class="link-button" href="/courses/{{course.id}}/exercises/{{e.id}}">
+                <h3 style="color:var(--primary); font-weight: normal;">{{e.title}}</h3>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- -->
+
+    {% endif %}
+</div>
+{% endblock %}
