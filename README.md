@@ -12,7 +12,7 @@ Sovelluksen ominaisuuksia:
 * Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä voi olla ainakin monivalinta tai tekstikenttä, johon tulee kirjoittaa oikea vastaus.
 * Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
 
-# Sovelluksen testaaminen
+## Sovelluksen testaaminen
 1. Kloonaa sovellus: <code>$ git clone https://github.com/82746/tsoha-opetussovellus</code>
 2. Luo tiedosto <code>.env</code> ja määrittele tiedostoon ympäristömuuttujat DATABASE_URL ja SECRET_KEY.
 3. Luo tarvittavat tietokantataulut: <code>$ psql < schema.sql</code>
@@ -23,15 +23,15 @@ Sovelluksen ominaisuuksia:
 8. Käynnistä sovelluksen backend: <code>$ flask run</code>
 9. Mene osoitteeseen <a>localhost:5000</a>
 
-# Sovelluksen nykytilanne
-## Mitä sovelluksessa voi tehdä:
+## Sovelluksen nykytilanne
+### Mitä sovelluksessa voi tehdä:
 - Käyttäjä voi kirjautu sisään, ulos, luoda uuden tunnuksen (opiskelija tai opettaja), sekä poistaa omat tunnuksensa.
 - Opiskelija näkee listan luoduista kursseista ja voi liittyä kursseille.
 - Opiskelija voi lukea kurssin tekstimateriaalia.
 - Opettaja pystyy luomaan uuden kurssin ja muuttamaan omaa olemassa olevaa kurssia.
 - Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä on tekstikenttä, johon tulee kirjoittaa oikea vastaus.
 
-## Mitä sovelluksessa ei voi vielä tehdä:
+### Mitä sovelluksessa ei voi vielä tehdä:
 - Opiskelijan lähettämiä vastauksia ei tallenneta eikä tarkasteta. Opiskelija ei siis voi vielä ratkoa kurssin tehtäviä.
 - Opiskelija ei pysty näkemään mitään kurssitilastoja.
 - Opettaja ei voi poistaa kurssia.
