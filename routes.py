@@ -118,3 +118,24 @@ def course_edit_title_and_desc(course_id: int):
     update_course_name(course_id, request.form["name"])
     update_course_desc(course_id, request.form["desc"])
     return redirect(f"/courses/{course_id}/edit")
+
+@app.route("/courses/<int:course_id>/edit/add_exercise", methods=["GET", "POST"])
+def course_add_exercise(course_id: int):
+    if request.method == "GET":
+        return render_template("add-exercise.html", course=get_course_info(course_id))
+
+    title = request.form["title"]
+    question = request.form["question"]
+    answer = request.form["answer"]
+    add_course_exercise(course_id, title, question, answer)
+    return redirect(f"/courses/{course_id}/edit")
+
+@app.route("/courses/<int:course_id>/edit/add_material", methods=["GET", "POST"])
+def course_add_material(course_id: int):
+    if request.method == "GET":
+        return render_template("add-course-material.html", course=get_course_info(course_id))
+
+    title = request.form["title"]
+    text = request.form["text"]
+    add_course_material(course_id, title, text)
+    return redirect(f"/courses/{course_id}/edit")

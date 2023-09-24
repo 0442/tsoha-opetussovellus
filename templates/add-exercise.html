@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+<form id="exercise-form" action="/courses/{{course.id}}/edit/add_exercise" method="POST">
+    <div class="add-course-content-form">
+        <h2>Add New Exercise</h2>
+        <div style="display:flex; flex-direction:column;">
+            <label for="title">Title</label>
+            <textarea class="p textarea" form="exercise-form" name="title" id="title"></textarea>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+            <label for="question">Question</label>
+            <textarea rows="5" class="p textarea" form="exercise-form" name="question" id="question"></textarea>
+        </div>
+        <div style="display:flex; flex-direction:column;">
+            <label for="answer">Answer</label>
+            <textarea rows="5" class="p textarea" form="exercise-form" name="answer" id="answer"></textarea>
+        </div>
+        <button type="submit" class="button-1">Submit</button>
+    </div>
+</form>
+{% endblock %}
