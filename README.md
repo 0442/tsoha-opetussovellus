@@ -24,14 +24,15 @@ Sovelluksen ominaisuuksia:
 9. Mene osoitteeseen <a>localhost:5000</a>
 
 ## Sovelluksen nykytilanne
-### Mitä sovelluksessa voi tehdä:
+### Mitä on jo toteutettu:
 - Käyttäjä voi kirjautu sisään, ulos, luoda uuden tunnuksen (opiskelija tai opettaja), sekä poistaa omat tunnuksensa.
 - Opiskelija näkee listan luoduista kursseista ja voi liittyä kursseille.
 - Opiskelija voi lukea kurssin tekstimateriaalia.
 - Opettaja pystyy luomaan uuden kurssin ja muuttamaan omaa olemassa olevaa kurssia.
 - Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä on tekstikenttä, johon tulee kirjoittaa oikea vastaus.
 
-### Mitä sovelluksessa ei voi vielä tehdä:
+### Mitä ei ole vielä toteutettu:
+- Salasanojen tallentaminen hajautusarvoina.
 - Opiskelijan lähettämiä vastauksia ei tallenneta eikä tarkasteta. Opiskelija ei siis voi vielä ratkoa kurssin tehtäviä.
 - Opiskelija ei pysty näkemään mitään kurssitilastoja.
 - Opettaja ei voi poistaa kurssia.
