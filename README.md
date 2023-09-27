@@ -13,7 +13,7 @@ Sovelluksen ominaisuuksia:
 * Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
 
 ## Sovelluksen testaaminen
-1. Kloonaa sovellus: <code>$ git clone https://github.com/82746/tsoha-opetussovellus</code>
+1. Kloonaa sovellus: <code>$ git clone https://github.com/0442/tsoha-opetussovellus</code>
 2. Luo tiedosto <code>.env</code> ja määrittele tiedostoon ympäristömuuttujat DATABASE_URL ja SECRET_KEY.
 3. Luo tarvittavat tietokantataulut: <code>$ psql < schema.sql</code>
 4. Luo sovelluksen kansioon virtuaaliympäristö: <code>$ python3 -m venv venv</code>
