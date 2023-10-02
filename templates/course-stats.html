@@ -2,14 +2,23 @@
 {% block content %}
 <div class="course-page-container">
     <a href="/courses/{{course.id}}" class="link-button back-button">&laquo Course page</a>
-    <h1>{{course.name}}</h1>
+    <h1>Statistics</h1>
 
     {% if session.user_id in course.teacher_ids %}
 
-    <h2>Exercises submitted</h2>
-    {% for s in stats%}
-    <p>{{s.username}} {{s.submission_count}} </p>
-    {% endfor %}
+    <table>
+        <th colspan="2">{{course.name}}</th>
+        <tbody>
+            <th>Username</th>
+            <th>Exercises <br>completed</th>
+        {% for s in stats%}
+            <tr>
+                <td>{{s.username}}</td>
+                <td>{{s.submission_count}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     {% endif %}
 </div>
