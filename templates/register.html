@@ -9,12 +9,17 @@
     <form class="login-form" method="POST">
         <div style="display:flex; flex-direction: column;">
             <label for="username-input">Username</label>
-            <input id="username-input" type="text" name="username" placeholder="username">
+            <input required id="username-input" type="text" name="username" placeholder="username">
         </div>
         <div style="display:flex; flex-direction: column;">
             <label for="password-input">Password</label>
-            <input id="password-input" type="password" name="password" placeholder="password">
+            <input required id="password-input" type="password" name="password" placeholder="password">
         </div>
+        <div style="display:flex; flex-direction: column;">
+            <label for="confirm-password-input">Confirm Password</label>
+            <input required oninput="confirmPassword()" id="confirm-password-input" type="password" name="confirm-password" placeholder="password">
+        </div>
+        <p id="password-error" style="display:none; color:red">Passwords do not match</p>
         <div>
             <h3>Account type</h3>
             <input id="student" type="radio" value="student" name="role" checked>
@@ -23,7 +28,7 @@
             <label for="teacher">Teacher</label>
         </div>
         <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <button class="button-2" formaction="/register" type="submit">Register</button>
+            <button id="register-submit" class="button-2" formaction="/register" type="submit">Register</button>
         </div>
         <div>
         <p>
@@ -34,6 +39,28 @@
 </div>
 
 <script>
+    function confirmPassword() {
+        errorTextStyle = "color: var(--secondary); margin: 0; padding: 0;";
+        errorInputStyle = "color: var(--secondary); border-color: var(--secondary-lighten-1); background-color: var(--secondary-lighten-2);";
+        errorButtonStyle = "opacity: 0.7; background-color: var(--tertiary-lighten-1);"
+
+        let psw = document.getElementById("password-input");
+        let pswConfirm = document.getElementById("confirm-password-input");
+        let pswError = document.getElementById("password-error");
+        let submitButton = document.getElementById("register-submit");
+
+        if (psw.value !== pswConfirm.value) {
+            pswError.setAttribute("style", errorTextStyle + "display:block;");
+            pswConfirm.setAttribute("style", errorInputStyle);
+            submitButton.setAttribute("disabled", true);
+            submitButton.setAttribute("style", errorButtonStyle);
+        } else {
+            pswError.setAttribute("style", "display:none;");
+            pswConfirm.removeAttribute("style");
+            submitButton.removeAttribute("disabled");
+            submitButton.removeAttribute("style");
+        }
+    }
 </script>
 
 {% endblock %}
