@@ -85,6 +85,21 @@ body {
     z-index: -2;
 }
 
+table {
+    font-size: 0.8rem;
+    font-size: 1.2rem;
+    color: var(--tertiary);
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 0.7rem 1.4rem;
+    border: 0.1rem solid;
+    border-color: var(--primary-lighten-2);
+    background-color: var(--tertiary-lighten-2);
+    text-align: center;
+}
+
 .bg {
     position: absolute;
     align-self: center;
