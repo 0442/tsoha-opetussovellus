@@ -32,7 +32,6 @@ Sovelluksen ominaisuuksia:
 - Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä on tekstikenttä, johon tulee kirjoittaa oikea vastaus.
 
 ### Mitä ei ole vielä toteutettu:
-- Salasanojen tallentaminen hajautusarvoina.
 - Opiskelijan lähettämiä vastauksia ei tallenneta eikä tarkasteta. Opiskelija ei siis voi vielä ratkoa kurssin tehtäviä.
 - Opiskelija ei pysty näkemään mitään kurssitilastoja.
 - Opettaja ei voi poistaa kurssia.
