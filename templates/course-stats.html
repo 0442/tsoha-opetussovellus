@@ -6,15 +6,16 @@
 
     {% if session.user_id in course.teacher_ids %}
 
-    <table>
+    <label for="submissions">Exercises completed by users</label>
+    <table id="submissions">
         <th colspan="2">{{course.name}}</th>
         <tbody>
             <th>Username</th>
-            <th>Exercises <br>completed</th>
+            <th>Exercise name</th>
         {% for s in stats%}
             <tr>
                 <td>{{s.username}}</td>
-                <td>{{s.submission_count}}</td>
+                <td>{{s.exercise_title}}</td>
             </tr>
         {% endfor %}
         </tbody>

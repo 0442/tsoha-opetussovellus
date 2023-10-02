@@ -38,12 +38,15 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str) 
 
 def get_course_stats(course_id: int):
     sql = text("\
-        SELECT u.id AS id, u.name AS username, count(es.answer) AS submission_count \
-        FROM users u \
-        LEFT JOIN exercise_submissions AS es ON u.id = es.user_id \
-        WHERE u.id IN (\
+        SELECT ce.title AS exercise_title, a.name AS username, a.answer \
+        FROM (\
+            SELECT u.id AS id, u.name AS name, exercise_id, answer FROM exercise_submissions AS es \
+            LEFT JOIN users AS u ON u.id = es.user_id\
+        ) a \
+        LEFT JOIN course_exercises AS ce ON a.exercise_id = ce.id \
+        WHERE a.id IN (\
             SELECT user_id FROM course_participants WHERE course_id = :course_id \
-        ) GROUP BY u.id \
+        ) \
     ")
 
     results = db.session.execute(sql, {"course_id": course_id}).fetchall()
