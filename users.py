@@ -1,19 +1,22 @@
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
+from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
 
 
 def validate_credentials(username: str, password: str) -> bool:
     """Returns True if credentials are valid, otherwise False."""
 
-    sql = text(
-        "SELECT password FROM users WHERE name = :username AND password = :password")
-    result = db.session.execute(
-        sql, {"username": username, "password": password})
-    if len(result.all()) == 0:
+    sql = text("SELECT password FROM users WHERE name = :username")
+    result = db.session.execute(sql, {"username": username}).fetchone()
+
+    if not result:
         return False
-    else:
+
+    if check_password_hash(result.password, password):
         return True
+    else:
+        return False
 
 
 def get_user_id(username: str) -> str:
@@ -30,12 +33,14 @@ def register_user(username: str, password: str, is_teacher: bool) -> str | None:
     if not 3 <= len(password) <= 20:
         return "Password must be 3 to 20 characters long."
 
+    password_hash = generate_password_hash(password)
+
     role = 1 if is_teacher == True else 0
     sql = text(
-        "INSERT INTO users (name, password, role) VALUES (:username, :password, :role)")
+        "INSERT INTO users (name, password, role) VALUES (:username, :password_hash, :role)")
     try:
         db.session.execute(
-            sql, {"username": username, "password": password, "role": role})
+            sql, {"username": username, "password_hash": password_hash, "role": role})
         db.session.commit()
     except IntegrityError:
         return f"Username '{username}' is already taken."
