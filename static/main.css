@@ -22,6 +22,7 @@
     --tertiary:            #3b5571;
     --tertiary-lighten-1:  #547395;
     --tertiary-lighten-2:  #f0f7ff;
+    --tertiary-lighten-2:  #f5faff;
 
 
     --quaternary-darken-2: #0f3b3e;
@@ -355,7 +356,7 @@ textarea:focus, .textarea:focus {
    display: flex;
    flex-direction: row;
    padding: 0rem .5rem 0rem .5rem;
-   border: 0.1rem solid var(--primary-lighten-2);
+   border: 0.1rem solid var(--primary-lighten-1);
    color: var(--primary-lighten-1);
    border-radius: 0.5rem;
    height: fit-content;
