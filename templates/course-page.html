@@ -14,7 +14,9 @@
 
     {% if session.user_id in course.teacher_ids %}
     <a href="/courses/{{course.id}}/edit" class="link-button button-5">Edit course</a>
+    <a href="/courses/{{course.id}}/stats" class="link-button button-2">View course statistics</a>
     {% endif %}
+
     {% if session.user_id not in course.participant_ids %}
     <form action="/courses/{{course.id}}/join" method="POST">
     <button type="submit" class="button-4">Enroll in course</button>

@@ -117,3 +117,13 @@ def course_material_page(course_id: int, material_id: int):
 def submit_exercise(course_id: int, exercise_id: int):
     submit_answer(exercise_id, session["user_id"], request.form["answer"])
     return redirect("/courses/" + str(course_id))
+
+
+@app.route("/courses/<int:course_id>/stats", methods=["GET"])
+def course_stats(course_id: int):
+    stats = get_course_stats(course_id)
+    course = get_course_info(course_id)
+    return render_template("course-stats.html",
+                           course = course,
+                           stats = stats)
+

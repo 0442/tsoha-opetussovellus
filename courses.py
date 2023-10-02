@@ -36,6 +36,19 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str) 
     db.session.execute(sql, {"course_id":course_id, "title":title, "question":question, "correct_answer":answer})
     db.session.commit()
 
+def get_course_stats(course_id: int):
+    sql = text("\
+        SELECT u.id AS id, u.name AS username, count(*) AS submission_count \
+        FROM users u \
+        LEFT JOIN exercise_submissions AS es ON u.id = es.user_id \
+        WHERE u.id IN (\
+            SELECT user_id FROM course_participants WHERE course_id = :course_id \
+        ) GROUP BY u.id \
+    ")
+
+    results = db.session.execute(sql, {"course_id": course_id}).fetchall()
+    return results
+
 def _get_course_participants(course_id: int):
     sql = text("SELECT user_id FROM course_participants WHERE course_id = :course_id")
     return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
