@@ -112,3 +112,8 @@ def course_material_page(course_id: int, material_id: int):
             break
     print(material)
     return render_template("material.html", material=material)
+
+@app.route("/courses/<int:course_id>/exercises/<int:exercise_id>/submit", methods=["POST"])
+def submit_exercise(course_id: int, exercise_id: int):
+    submit_answer(exercise_id, session["user_id"], request.form["answer"])
+    return redirect("/courses/" + str(course_id))
