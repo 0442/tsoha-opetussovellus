@@ -38,7 +38,7 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str) 
 
 def get_course_stats(course_id: int):
     sql = text("\
-        SELECT u.id AS id, u.name AS username, count(*) AS submission_count \
+        SELECT u.id AS id, u.name AS username, count(es.answer) AS submission_count \
         FROM users u \
         LEFT JOIN exercise_submissions AS es ON u.id = es.user_id \
         WHERE u.id IN (\
