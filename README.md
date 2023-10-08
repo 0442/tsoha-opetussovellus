@@ -13,15 +13,16 @@ Sovelluksen ominaisuuksia:
 * Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
 
 ## Sovelluksen testaaminen
+1. Luo sovellusta varten uusi tietokanta psql-tulkissa: <code>CREATE DATABASE tsoha-opetussovellus</code>
 1. Kloonaa sovellus: <code>$ git clone https://github.com/0442/tsoha-opetussovellus</code>
-2. Luo tiedosto <code>.env</code> ja määrittele tiedostoon ympäristömuuttujat DATABASE_URL ja SECRET_KEY.
-3. Luo tarvittavat tietokantataulut: <code>$ psql < schema.sql</code>
-4. Luo sovelluksen kansioon virtuaaliympäristö: <code>$ python3 -m venv venv</code>
-5. Ota virtuaaliympäristö käyttöön: <code>$ source venv/bin/activate</code>
-6. Asenna riippuvuudet: <code>$ pip install -r requirements.txt</code>
-7. Restarttaa virtuaaliympäristö <code>$ deactivate && source venv/bin/activate</code>
-8. Käynnistä sovelluksen backend: <code>$ flask run</code>
-9. Mene osoitteeseen localhost:5000
+1. Luo tiedosto <code>.env</code> ja määrittele tiedostoon ympäristömuuttujat <code>DATABASE_URL=</code>  ja <code>SECRET_KEY</code>. <code>DATABASE_URL</code> on muotoa <code>postgresql:///tsoha-opetussovellus</code>
+1. Luo tarvittavat tietokantataulut: <code>$ psql -d tsoha-opetussovellus < schema.sql</code>
+1. Luo sovelluksen kansioon virtuaaliympäristö: <code>$ python3 -m venv venv</code>
+1. Ota virtuaaliympäristö käyttöön: <code>$ source venv/bin/activate</code>
+1. Asenna riippuvuudet: <code>$ pip install -r requirements.txt</code>
+1. Restarttaa virtuaaliympäristö <code>$ deactivate && source venv/bin/activate</code>
+1. Käynnistä sovelluksen backend: <code>$ flask run</code>
+1. Mene osoitteeseen localhost:5000
 
 ## Sovelluksen nykytilanne
 ### Mitä on jo toteutettu:
