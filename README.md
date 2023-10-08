@@ -21,7 +21,7 @@ Sovelluksen ominaisuuksia:
 6. Asenna riippuvuudet: <code>$ pip install -r requirements.txt</code>
 7. Restarttaa virtuaaliympäristö <code>$ deactivate && source venv/bin/activate</code>
 8. Käynnistä sovelluksen backend: <code>$ flask run</code>
-9. Mene osoitteeseen <a>localhost:5000</a>
+9. Mene osoitteeseen localhost:5000
 
 ## Sovelluksen nykytilanne
 ### Mitä on jo toteutettu:
@@ -30,10 +30,11 @@ Sovelluksen ominaisuuksia:
 - Opiskelija voi lukea kurssin tekstimateriaalia.
 - Opettaja pystyy luomaan uuden kurssin ja muuttamaan omaa olemassa olevaa kurssia.
 - Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä on tekstikenttä, johon tulee kirjoittaa oikea vastaus.
+- Opetaaja pystyy lisäämään kurssille monivalintatehtäviä
+- Opettaja näkee listan tehdyistä tehtävistä
 
 ### Mitä ei ole vielä toteutettu:
-- Opiskelijan lähettämiä vastauksia ei tallenneta eikä tarkasteta. Opiskelija ei siis voi vielä ratkoa kurssin tehtäviä.
+- Opiskelijan lähettämiä vastauksia ei tarkasteta.
 - Opiskelija ei pysty näkemään mitään kurssitilastoja.
 - Opettaja ei voi poistaa kurssia.
-- Opetaaja ei pysty lisäämään kurssille monivalintatehtäviä
-- Opettaja ei voi nähdä kurssistaan mitään tilastoja.
+- Opettaja ei pysty näkemään listaa kurssin osallistujista
