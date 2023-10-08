@@ -77,7 +77,8 @@ def course_add_exercise(course_id: int):
     title = request.form["title"]
     question = request.form["question"]
     answer = request.form["answer"]
-    add_course_exercise(course_id, title, question, answer)
+    choices = request.form["choices"] if "choices" in request.form else None
+    add_course_exercise(course_id, title, question, answer, choices)
     return redirect(f"/courses/{course_id}/edit")
 
 
@@ -99,8 +100,10 @@ def course_exercise_page(course_id: int, exercise_id: int):
         if e.id == exercise_id:
             exercise = e
             break
-    return render_template("exercise.html", exercise=exercise,
-                           course=get_course_info(course_id))
+    if not e.choices:
+        return render_template("exercise.html", exercise=exercise, course=get_course_info(course_id))
+    else:
+        return render_template("exercise-multichoice.html", exercise=exercise, course=get_course_info(course_id))
 
 
 @app.route("/courses/<int:course_id>/materials/<int:material_id>", methods=["GET"])

@@ -31,9 +31,27 @@ def add_course_material(course_id: int, title: str, text_content: str) -> None:
     db.session.execute(sql, {"course_id":course_id, "title":title, "content":text_content})
     db.session.commit()
 
-def add_course_exercise(course_id: int, title: str, question: str, answer: str) -> None:
-    sql = text("INSERT INTO course_exercises (course_id, title, question, correct_answer) VALUES (:course_id, :title, :question, :correct_answer)")
-    db.session.execute(sql, {"course_id":course_id, "title":title, "question":question, "correct_answer":answer})
+def add_course_exercise(course_id: int, title: str, question: str, answer: str, choices: None|str) -> None:
+    sql = text("\
+        INSERT INTO course_exercises (\
+            course_id, title, question, correct_answer, choices \
+        ) VALUES (\
+            :course_id, :title, :question, :correct_answer, :choices\
+        )"
+    )
+
+    if choices:
+        print("Creating a multichoice exercise")
+        choices = choices.strip("; ")
+
+    else:
+        print("Creating a text exercise")
+
+    db.session.execute(sql, {"course_id": course_id,
+                             "title": title,
+                             "question": question,
+                             "correct_answer": answer,
+                             "choices": choices})
     db.session.commit()
 
 def get_course_stats(course_id: int):
@@ -114,14 +132,19 @@ class Exercise(NamedTuple):
     title: str
     question: str
     correct_answer: str
+    choices: None|list[str]
 
 def get_course_exercises(course_id: int) -> list[Exercise]:
-    sql = text("SELECT id, title, question, correct_answer FROM course_exercises WHERE course_id = :course_id")
+    sql = text("SELECT id, title, question, correct_answer, choices FROM course_exercises WHERE course_id = :course_id")
     results = db.session.execute(sql, {"course_id":course_id}).fetchall()
     exercises = []
     for r in results:
-        id, title, question, correct_answer = r
-        exercises.append(Exercise(id, course_id, title, question, correct_answer))
+        id, title, question, correct_answer, choices = r
+        if choices:
+            exc = Exercise(id, course_id, title, question, correct_answer, choices.split(";"))
+        else:
+            exc = Exercise(id, course_id, title, question, correct_answer, None)
+        exercises.append(exc)
     return exercises
 
 class CourseMaterial(NamedTuple):

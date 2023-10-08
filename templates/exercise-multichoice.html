@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="page-container">
+    <div class="course-page-container">
+
+    <form style="width:100%"id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit" method="POST">
+        <div style="display: flex; flex-direction: column; gap:1rem;">
+            <h2>{{exercise.title}}</h2>
+            <div style="display: flex; flex-direction: column; gap: 0rem;">
+                <p>{{exercise.question}}</p>
+                {% for c in exercise.choices %}
+                <div class="multichoice-radio" style="display: flex; flex-direction: row;">
+                    <input required id="{{c}}" value="{{c}}" type="radio" name="answer">
+                    <label class="multichoice-radio-label" for="{{c}}">{{c}}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="button-1" type="submit">Submit answer</button>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock %}
