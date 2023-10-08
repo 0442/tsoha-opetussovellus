@@ -293,7 +293,7 @@ textarea:focus, .textarea:focus {
 
     background-color: var(--surface);
     background-color: var(--surface);
-    width: 60rem;
+    width: 65rem;
     min-width: 30rem;
     height: 100%;
 }
@@ -359,6 +359,20 @@ textarea:focus, .textarea:focus {
     font-family: inherit;
 
     padding: 2rem;
+}
+
+.multichoice-radio-label {
+    padding: 0.5rem;
+    margin: 0;
+    width: 100%;
+}
+.multichoice-radio {
+    background-color: var(--primary-lighten-3);
+    width: 100%;
+    border-bottom: 0.1rem solid var(--tertiary-lighten-2);
+}
+.multichoice-radio:hover {
+    background-color: var(--primary-lighten-2);
 }
 
 .course-content-block {
