@@ -13,7 +13,7 @@
         </div>
         <div style="display:flex; flex-direction: column;">
             <label for="password-input">Password</label>
-            <input required id="password-input" type="password" name="password" placeholder="password">
+            <input required oninput="confirmPassword()" id="password-input" type="password" name="password" placeholder="password">
         </div>
         <div style="display:flex; flex-direction: column;">
             <label for="confirm-password-input">Confirm Password</label>
@@ -49,7 +49,7 @@
         let pswError = document.getElementById("password-error");
         let submitButton = document.getElementById("register-submit");
 
-        if (psw.value !== pswConfirm.value) {
+        if (psw.value !== pswConfirm.value && (psw.value.length !== 0 && pswConfirm.value.length !== 0)) {
             pswError.setAttribute("style", errorTextStyle + "display:block;");
             pswConfirm.setAttribute("style", errorInputStyle);
             submitButton.setAttribute("disabled", true);
