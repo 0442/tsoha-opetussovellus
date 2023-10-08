@@ -1,76 +1,82 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="course-page-container">
-    <a href="/courses" class="link-button back-button">&laquo Courses</a>
+<div class="page-container">
 
+    <div class="course-page-container">
+        <a href="/courses" class="link-button back-button">&laquo Courses</a>
 
-    {% if session.user_id in course.teacher_ids %}
-    <div style="width: 100%; padding: 0.5rem; display: flex; flex-direction: row; gap: 2rem; border-bottom: 0.2rem solid var(--primary-lighten-2);">
-        <a href="/courses/{{course.id}}/edit" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Edit course</a>
-        <a href="/courses/{{course.id}}/stats" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">View course statistics</a>
-    </div>
-    {% endif %}
-
-
-    <h1>{{course.name}}</h1>
-    <p>{{course.description}}</p>
-    {% if not session.username %}
-    <div class="notice-container">
-        <p>You must <a style="color:var(--primary)" href="/login">login</a> first before you can complete any courses.</p>
-    </div>
-    {% endif %}
-
-    {% if session.user_id and session.user_id not in course.participant_ids %}
-    <form action="/courses/{{course.id}}/join" method="POST">
-    <button type="submit" class="button-4">Enroll in course</button>
-    </form>
-    {% endif %}
-
-
-    {% if session.user_id in course.participant_ids or session.user_id in course.teacher_ids %}
-
-    <!-- -->
-    <div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.2rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
-    <h2>Course Materials</h2>
-    {% if text_materials.__len__() == 0 %}
-    <p>No course materials</p>
-    {% endif %}
-
-    {% for m in text_materials %}
-    <div class="course-content-block">
-        <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
-            <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{m.title}}</h3>
-        </a>
-    </div>
-    {% endfor %}
-    </div>
-    <!-- -->
-
-    <!-- -->
-    <div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.2rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
-        <h2>Course Exercises</h2>
-        <div style="display:flex; flex-direction: column; gap: 0.5rem;">
-            {% if exercises.__len__() == 0 %}
-            <p>No exercises</p>
-            {% endif %}
-
-            {% for e in exercises %}
-            <div class="course-content-block">
-                <a class="link-button" href="/courses/{{course.id}}/exercises/{{e.id}}">
-                    <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{e.title}}</h3>
-                </a>
-            </div>
-            {% endfor %}
+        <!-- -->
+        {% if session.user_id in course.teacher_ids %}
+        <div style="width: 100%; padding: 0.5rem; display: flex; flex-direction: row; gap: 2rem; border-bottom: 0.2rem solid var(--primary-lighten-2);">
+            <a href="/courses/{{course.id}}" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Course page</a>
+            <a href="/courses/{{course.id}}/edit" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Edit course</a>
+            <a href="/courses/{{course.id}}/stats" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">View course statistics</a>
         </div>
+        {% endif %}
+        <!-- -->
+
+
+        <h1>{{course.name}}</h1>
+        <p>{{course.description}}</p>
+        {% if not session.username %}
+        <div class="notice-container">
+            <p>You must <a style="color:var(--primary)" href="/login">login</a> first before you can complete any courses.</p>
+        </div>
+        {% endif %}
+
+        {% if session.user_id and session.user_id not in course.participant_ids %}
+        <form action="/courses/{{course.id}}/join" method="POST">
+        <button type="submit" class="button-4">Enroll in course</button>
+        </form>
+        {% endif %}
+
+
+        {% if session.user_id in course.participant_ids or session.user_id in course.teacher_ids %}
+
+        <!-- -->
+        <div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.2rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
+        <h2>Course Materials</h2>
+        {% if text_materials.__len__() == 0 %}
+        <p>No course materials</p>
+        {% endif %}
+
+        {% for m in text_materials %}
+        <div class="course-content-block">
+            <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
+                <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{m.title}}</h3>
+            </a>
+        </div>
+        {% endfor %}
+        </div>
+        <!-- -->
+
+        <!-- -->
+        <div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.2rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
+            <h2>Course Exercises</h2>
+            <div style="display:flex; flex-direction: column; gap: 0.5rem;">
+                {% if exercises.__len__() == 0 %}
+                <p>No exercises</p>
+                {% endif %}
+
+                {% for e in exercises %}
+                <div class="course-content-block">
+                    <a class="link-button" href="/courses/{{course.id}}/exercises/{{e.id}}">
+                        <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{e.title}}</h3>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- -->
+
+        {% if session.user_id in course.participant_ids %}
+        <form action="/courses/{{course.id}}/leave" method="POST">
+        <button class="button-3">Leave course</button>
+        </form>
+        {% endif %}
+
+        {% endif %}
     </div>
-    <!-- -->
 
-    {% if session.user_id in course.participant_ids %}
-    <form action="/courses/{{course.id}}/leave" method="POST">
-    <button class="button-3">Leave course</button>
-    </form>
-    {% endif %}
-
-    {% endif %}
 </div>
 {% endblock %}

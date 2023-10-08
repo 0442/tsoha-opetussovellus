@@ -1,50 +1,54 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="course-page-container">
-    <hgroup>
-        <h2>Available Courses</h2>
-        {% if course_count == 0 %}
-        <p>There are currently no ongoing courses available. <br>You must wait until a teacher creates one.</p>
-        {% else %}
-        <p>Showing {{course_count}} ongoing courses</p>
+<div class="page-container">
+
+    <div class="course-page-container">
+        <hgroup>
+            <h2>Available Courses</h2>
+            {% if course_count == 0 %}
+            <p>There are currently no ongoing courses available. <br>You must wait until a teacher creates one.</p>
+            {% else %}
+            <p>Showing {{course_count}} ongoing courses</p>
+            {% endif %}
+        </hgroup>
+
+        {% if session.is_teacher == True %}
+        <a href="/new_course" class="button-1 link-button">+ New Course</a>
         {% endif %}
-    </hgroup>
 
-    {% if session.is_teacher == True %}
-    <a href="/new_course" class="button-1 link-button">+ New Course</a>
-    {% endif %}
-
-    <div class="course-list-container">
-        {% for course in courses %}
-        <div  class="course-list-item" >
-            <a href="/courses/{{course.id}}" class="link-button">
-                <div style="display: flex; flex-direction: column; justify-content: flex-start; flex-grow: 0; gap: 0.5rem;">
-                    {% if session.user_id and session.user_id in course.teacher_ids %}
-                    <p style="margin:0; color: var(--primary); text-overflow: ellipsis;">Own course</p>
-                    {% endif %}
-                    <h3 style="margin:0; font-size: 1.3rem; ">
-                        {% if course.name.__len__() > 80 %}
-                        {{course.name[:77]}}...
-                        {% else %}
-                        {{course.name}}
+        <div class="course-list-container">
+            {% for course in courses %}
+            <div  class="course-list-item" >
+                <a href="/courses/{{course.id}}" class="link-button">
+                    <div style="display: flex; flex-direction: column; justify-content: flex-start; flex-grow: 0; gap: 0.5rem;">
+                        {% if session.user_id and session.user_id in course.teacher_ids %}
+                        <p style="margin:0; color: var(--primary); text-overflow: ellipsis;">Own course</p>
                         {% endif %}
-                    </h3>
-                    <p style="margin:0; text-overflow: ellipsis;">{{course.description}}</p>
-                </div>
+                        <h3 style="margin:0; font-size: 1.3rem; ">
+                            {% if course.name.__len__() > 80 %}
+                            {{course.name[:77]}}...
+                            {% else %}
+                            {{course.name}}
+                            {% endif %}
+                        </h3>
+                        <p style="margin:0; text-overflow: ellipsis;">{{course.description}}</p>
+                    </div>
 
-                <div style="margin-top: 1rem; display:flex; flex-direction: row; gap: 1rem; flex-grow: 1; align-items: flex-end; align-self: stretch;">
-                    {% if session.username and session.user_id not in course.participant_ids %}
-                    {% endif %}
-                    <button class="button-4">View course page</button>
-                    {% if session.user_id and session.user_id in course.teacher_ids %}
-                    <a href="/courses/{{course.id}}/edit" class="button-5 link-button">Edit course</a>
-                    {% endif %}
-                </div>
-            </a>
+                    <div style="margin-top: 1rem; display:flex; flex-direction: row; gap: 1rem; flex-grow: 1; align-items: flex-end; align-self: stretch;">
+                        {% if session.username and session.user_id not in course.participant_ids %}
+                        {% endif %}
+                        <button class="button-4">View course page</button>
+                        {% if session.user_id and session.user_id in course.teacher_ids %}
+                        <a href="/courses/{{course.id}}/edit" class="button-5 link-button">Edit course</a>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
         </div>
-        {% endfor %}
-
     </div>
+
 </div>
 {% endblock %}

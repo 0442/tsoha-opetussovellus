@@ -272,6 +272,14 @@ textarea:focus, .textarea:focus {
 }
 
 
+.page-container {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
 /**/
 .course-page-container {
     display: flex;
@@ -285,7 +293,8 @@ textarea:focus, .textarea:focus {
 
     background-color: var(--surface);
     background-color: var(--surface);
-    width: 100%;
+    width: 60rem;
+    min-width: 30rem;
     height: 100%;
 }
 .course-list-container {
