@@ -13,10 +13,10 @@ Sovelluksen ominaisuuksia:
 * Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
 
 ## Sovelluksen testaaminen
-1. Luo sovellusta varten uusi tietokanta psql-tulkissa: <code>CREATE DATABASE tsoha-opetussovellus</code>
+1. Luo sovellusta varten uusi tietokanta psql-tulkissa: <code>CREATE DATABASE tsoha_opetussovellus</code>
 1. Kloonaa sovellus: <code>$ git clone https://github.com/0442/tsoha-opetussovellus</code>
-1. Luo tiedosto <code>.env</code> ja määrittele tiedostoon ympäristömuuttujat <code>DATABASE_URL=</code>  ja <code>SECRET_KEY</code>. <code>DATABASE_URL</code> on muotoa <code>postgresql:///tsoha-opetussovellus</code>
-1. Luo tarvittavat tietokantataulut: <code>$ psql -d tsoha-opetussovellus < schema.sql</code>
+1. Luo tiedosto <code>.env</code> ja määrittele tiedostoon ympäristömuuttujat <code>DATABASE_URL</code>  ja <code>SECRET_KEY</code>. <code>DATABASE_URL</code> on muotoa <code>postgresql:///tsoha_opetussovellus</code>
+1. Luo tarvittavat tietokantataulut: <code>$ psql -d tsoha_opetussovellus < schema.sql</code>
 1. Luo sovelluksen kansioon virtuaaliympäristö: <code>$ python3 -m venv venv</code>
 1. Ota virtuaaliympäristö käyttöön: <code>$ source venv/bin/activate</code>
 1. Asenna riippuvuudet: <code>$ pip install -r requirements.txt</code>
