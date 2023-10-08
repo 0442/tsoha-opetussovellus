@@ -1,51 +1,55 @@
-DROP TABLE course_exercises, course_text_materials, course_teachers, course_participants, courses, users CASCADE;
+DROP TABLE exercise_submissions, course_exercises, course_text_materials, course_teachers, course_participants, courses, users CASCADE;
 
-CREATE TABLE users (
+create table users (
     id serial primary key,
-    name text unique,
-    password text,
-    role integer
+    name text unique not null,
+    password text not null,
+    role integer not null
 );
 
-CREATE TABLE courses (
+create table courses (
     id serial primary key,
-    name text,
-    description text
+    name text not null,
+    description text not null
 );
 
-CREATE TABLE course_participants (
+create table course_participants (
     id serial primary key,
-    user_id int references users(id) ON DELETE CASCADE,
-    course_id int references courses(id) ON DELETE CASCADE,
-    CONSTRAINT UC_participant UNIQUE (user_id, course_id)
+    user_id int references users(id) on delete cascade,
+    course_id int references courses(id) on delete cascade,
+    constraint UC_participant unique (user_id, course_id)
 );
 
-CREATE TABLE course_teachers (
+create table course_teachers (
     id serial primary key,
-    user_id int references users(id) ON DELETE CASCADE,
-    course_id int references courses(id) ON DELETE CASCADE,
-    CONSTRAINT UC_teacher UNIQUE (user_id, course_id)
+    user_id int references users(id) on delete cascade,
+    course_id int references courses(id) on delete cascade,
+    constraint UC_teacher unique (user_id, course_id)
 );
 
-CREATE TABLE course_text_materials (
+create table course_text_materials (
     id serial primary key,
-    course_id int references courses(id) ON DELETE CASCADE,
-    title text,
-    content text
+    course_id int references courses(id) on delete cascade,
+    title text not null,
+    content text not null
 );
 
-CREATE TABLE course_exercises (
+create table course_exercises (
     id serial primary key,
-    course_id int references courses(id) ON DELETE CASCADE,
-    title text,
-    question text,
-    correct_answer text
+    course_id int references courses(id) on delete cascade,
+    title text not null,
+    question text not null,
+    choices text default null,
+        -- Null if exercise is answered in plain text.
+        -- If not null, exercise is a multiple choice exercise
+        -- and should contain a ';' separated list of choices
+    correct_answer text not null,
 );
 
-CREATE TABLE exercise_submissions (
+create table exercise_submissions (
     id serial primary key,
     exercise_id int references course_exercises(id),
-    user_id int references users(id) ON DELETE CASCADE,
+    user_id int references users(id) on delete cascade,
     answer text,
-    CONSTRAINT UC_submission UNIQUE (user_id, exercise_id)
+    constraint UC_submission unique (user_id, exercise_id)
 );
