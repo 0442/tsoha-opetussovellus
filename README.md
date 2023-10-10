@@ -37,3 +37,4 @@ Sovelluksen ominaisuuksia:
 
 ### Toteuteuttamatta:
 - Opettaja voi katsoa opiskelijoiden vastauksia.
+- CSRF-tarkistukset kaikkiin endpointteihin.
