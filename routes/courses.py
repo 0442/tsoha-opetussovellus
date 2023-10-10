@@ -32,6 +32,13 @@ def new_course():
     return redirect("/courses/" + str(course_id))
 
 
+@app.route("/courses/<int:course_id>/delete", methods=["POST"])
+def remove_course(course_id: int):
+    if session["is_teacher"] and is_course_teacher(session["user_id"], course_id):
+        delete_course(course_id)
+    return redirect("/courses")
+
+
 @app.route("/courses/<int:course_id>/edit")
 def edit_course(course_id: int):
     if session["is_teacher"] == False or not is_course_teacher(session["user_id"], course_id):

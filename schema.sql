@@ -48,7 +48,7 @@ create table course_exercises (
 
 create table exercise_submissions (
     id serial primary key,
-    exercise_id int references course_exercises(id),
+    exercise_id int references course_exercises(id) on delete cascade,
     user_id int references users(id) on delete cascade,
     answer text,
     constraint UC_submission unique (user_id, exercise_id)

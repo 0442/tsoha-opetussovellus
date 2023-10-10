@@ -26,6 +26,15 @@ def create_course(name: str, description: str, creator_id: str) -> str:
     db.session.commit()
     return course_id
 
+def delete_course(course_id: int):
+    sql = text("DELETE FROM courses WHERE id = :course_id")
+    try:
+        db.session.execute(sql, {"course_id":course_id})
+    # In case of trying to delete a nonexistent course
+    except Exception as e:
+        print(e)
+    db.session.commit()
+
 def add_course_material(course_id: int, title: str, text_content: str) -> None:
     sql = text("INSERT INTO course_text_materials (course_id, title, content) VALUES (:course_id, :title, :content)")
     db.session.execute(sql, {"course_id":course_id, "title":title, "content":text_content})
