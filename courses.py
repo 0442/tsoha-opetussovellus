@@ -126,7 +126,7 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
     if enrolled or my or name:
         base_sql += "WHERE "
     if name:
-        base_sql += "c.name LIKE :name "
+        base_sql += "lower(c.name) LIKE lower(:name) "
     if name and (enrolled or my):
         base_sql += "AND "
     if enrolled:
