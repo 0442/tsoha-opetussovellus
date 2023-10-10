@@ -25,7 +25,6 @@ Sovelluksen ominaisuuksia:
 1. Mene osoitteeseen localhost:5000
 
 ## Sovelluksen nykytilanne
-### Mitä on jo toteutettu:
 - Käyttäjä voi kirjautu sisään, ulos, luoda uuden tunnuksen (opiskelija tai opettaja), sekä poistaa omat tunnuksensa.
 - Opiskelija näkee listan luoduista kursseista ja voi liittyä kursseille.
 - Opiskelija voi lukea kurssin tekstimateriaalia.
@@ -34,7 +33,7 @@ Sovelluksen ominaisuuksia:
 - Opetaaja pystyy lisäämään kurssille monivalintatehtäviä.
 - Opettaja näkee listan opiskelijoiden ratkaisemista tehtävistä.
 - Opiskelijan lähettämät monivalintatehtävien vastaukset tarkastetaan.
-- Opiskelija voi katsoa mitä tehtäviä hän on suorittanut, sekä suoritettujen tehtävien omat ja oikeat vastaukset.
+- Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
 
-### Mitä ei ole vielä toteutettu:
-- Opettaja ei pysty näkemään listaa kurssin osallistujista
+### Toteuteuttamatta:
+- Opettaja voi katsoa opiskelijoiden vastauksia.
