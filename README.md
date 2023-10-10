@@ -29,13 +29,12 @@ Sovelluksen ominaisuuksia:
 - Käyttäjä voi kirjautu sisään, ulos, luoda uuden tunnuksen (opiskelija tai opettaja), sekä poistaa omat tunnuksensa.
 - Opiskelija näkee listan luoduista kursseista ja voi liittyä kursseille.
 - Opiskelija voi lukea kurssin tekstimateriaalia.
-- Opettaja pystyy luomaan uuden kurssin ja muuttamaan omaa olemassa olevaa kurssia.
+- Opettaja pystyy luomaan uuden kurssin, muuttamaan olemassa olevaa kurssia ja poistamaan kurssin.
 - Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä on tekstikenttä, johon tulee kirjoittaa oikea vastaus.
-- Opetaaja pystyy lisäämään kurssille monivalintatehtäviä
-- Opettaja näkee listan tehdyistä tehtävistä
+- Opetaaja pystyy lisäämään kurssille monivalintatehtäviä.
+- Opettaja näkee listan opiskelijoiden ratkaisemista tehtävistä.
+- Opiskelijan lähettämät monivalintatehtävien vastaukset tarkastetaan.
+- Opiskelija voi katsoa mitä tehtäviä hän on suorittanut, sekä suoritettujen tehtävien omat ja oikeat vastaukset.
 
 ### Mitä ei ole vielä toteutettu:
-- Opiskelijan lähettämiä vastauksia ei tarkasteta.
-- Opiskelija ei pysty näkemään mitään kurssitilastoja.
-- Opettaja ei voi poistaa kurssia.
 - Opettaja ei pysty näkemään listaa kurssin osallistujista
