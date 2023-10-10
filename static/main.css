@@ -33,7 +33,8 @@
     --quaternary-lighten-1:hsl(203, 100%, 70%);
 
     --surface:  hsl(0, 100%, 100%);
-    --shadow: hsl(220, 100%, 20%, 0.10)
+    --shadow: hsl(220, 100%, 20%, 0.10);
+    --success: hsl(132, 30%, 60%);
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, p, .p, label, .label {
