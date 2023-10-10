@@ -143,17 +143,30 @@ class Exercise(NamedTuple):
     correct_answer: str
     choices: None|list[str]
 
-def get_course_exercises(course_id: int) -> list[Exercise]:
-    sql = text("SELECT id, title, question, correct_answer, choices FROM course_exercises WHERE course_id = :course_id")
-    results = db.session.execute(sql, {"course_id":course_id}).fetchall()
+    user_id: int
+    submitted_answer: None|str
+
+def get_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
+    sql = text("\
+        SELECT ce.id, ce.title, ce.question, ce.correct_answer, ce.choices, es.answer \
+        FROM course_exercises ce \
+        LEFT JOIN (\
+            SELECT id, exercise_id, user_id, answer \
+            FROM exercise_submissions \
+            WHERE user_id = :user_id \
+        ) es ON ce.id = es.exercise_id \
+        WHERE course_id = :course_id \
+    ")
+    results = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
     exercises = []
     for r in results:
-        id, title, question, correct_answer, choices = r
+        id, title, question, correct_answer, choices, submitted_answer = r
         if choices:
-            exc = Exercise(id, course_id, title, question, correct_answer, choices.split(";"))
+            exc = Exercise(id, course_id, title, question, correct_answer, choices.split(";"), user_id, submitted_answer)
         else:
-            exc = Exercise(id, course_id, title, question, correct_answer, None)
+            exc = Exercise(id, course_id, title, question, correct_answer, None, user_id, submitted_answer)
         exercises.append(exc)
+    print(exercises)
     return exercises
 
 class CourseMaterial(NamedTuple):

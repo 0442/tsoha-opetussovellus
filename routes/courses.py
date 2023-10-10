@@ -15,7 +15,7 @@ def course(course_id: int):
     return render_template("course-page.html",
                            course=get_course_info(course_id),
                            text_materials=get_course_materials(course_id),
-                           exercises=get_course_exercises(course_id))
+                           exercises=get_course_exercises(course_id, session["user_id"]))
 
 
 @app.route("/new_course", methods=["GET", "POST"])
@@ -47,7 +47,7 @@ def edit_course(course_id: int):
         return render_template("edit-course.html",
                                course=get_course_info(course_id),
                                text_materials=get_course_materials(course_id),
-                               exercises=get_course_exercises(course_id))
+                               exercises=get_course_exercises(course_id, session["user_id"]))
 
 
 @app.route("/courses/<int:course_id>/join", methods=["POST"])
@@ -103,7 +103,7 @@ def course_add_material(course_id: int):
 @app.route("/courses/<int:course_id>/exercises/<int:exercise_id>", methods=["GET"])
 def course_exercise_page(course_id: int, exercise_id: int):
     exercise = None
-    for e in get_course_exercises(course_id):
+    for e in get_course_exercises(course_id, session["user_id"]):
         if e.id == exercise_id:
             exercise = e
             break
@@ -121,12 +121,12 @@ def course_material_page(course_id: int, material_id: int):
             material = m
             break
     print(material)
-    return render_template("material.html", material=material)
+    return render_template("material.html", material=material, course=get_course_info(course_id))
 
 @app.route("/courses/<int:course_id>/exercises/<int:exercise_id>/submit", methods=["POST"])
 def submit_exercise(course_id: int, exercise_id: int):
     submit_answer(exercise_id, session["user_id"], request.form["answer"])
-    return redirect("/courses/" + str(course_id))
+    return redirect("/courses/"+ str(course_id) + "/exercises/" + str(exercise_id))
 
 
 @app.route("/courses/<int:course_id>/stats", methods=["GET"])

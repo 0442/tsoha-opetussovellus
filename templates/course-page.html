@@ -15,18 +15,18 @@
 
 <!-- -->
 <div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.1rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
-<h2>Course Materials</h2>
-{% if text_materials.__len__() == 0 %}
-<p>No course materials</p>
-{% endif %}
+    <h2>Course Materials</h2>
+    {% if text_materials.__len__() == 0 %}
+    <p>No course materials</p>
+    {% endif %}
 
-{% for m in text_materials %}
-<div class="course-content-block">
-    <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
-        <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{m.title}}</h3>
-    </a>
-</div>
-{% endfor %}
+    {% for m in text_materials %}
+    <div class="course-content-block">
+        <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
+            <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{m.title}}</h3>
+        </a>
+    </div>
+    {% endfor %}
 </div>
 <!-- -->
 
@@ -40,8 +40,13 @@
 
         {% for e in exercises %}
         <div class="course-content-block">
-            <a class="link-button" href="/courses/{{course.id}}/exercises/{{e.id}}">
-                <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{e.title}}</h3>
+            <a class="link-button" style="width: 100%;" href="/courses/{{course.id}}/exercises/{{e.id}}">
+                <div style="width:100%; display: flex; justify-content: space-between;">
+                    <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{e.title}}</h3>
+                    {% if e.submitted_answer != None %}
+                    <p style="color:var(--primary); font-weight: bold; padding: 0.5rem;">🗸 Completed</p>
+                    {% endif %}
+                </div>
             </a>
         </div>
         {% endfor %}
