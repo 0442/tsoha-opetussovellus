@@ -13,8 +13,10 @@
             </div>
             <label>Filters</label>
             <div>
+                {% if session.is_teacher == True %}
                 <input id="my-courses" type="checkbox" name="my-courses">
                 <label for="my-courses">My courses</label>
+                {% endif %}
                 <input id="enrolled-courses" type="checkbox" name="enrolled-courses">
                 <label for="enrolled-courses">Enrolled</label>
             </div>

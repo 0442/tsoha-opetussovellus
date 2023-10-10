@@ -2,11 +2,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="">
-    <form action="/new_course" method="POST">
-        <input type="text" name="name" placeholder="name">
-        <input type="text" name="description" placeholder="description">
-        <button type="submit">Create</button>
+<div class="empty-page-container">
+    <h1>Create a new course</h1>
+    <form style="display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem;" action="/new_course" method="POST">
+        <label for="name">Course's name</label>
+        <input type="text" id="name" name="name" placeholder="name">
+        <label for="description">Course's description</label>
+        <input type="text" id="description" name="description" placeholder="description">
+        <button class="button-1" type="submit">Create</button>
     </form>
 </div>
 {% endblock %}
