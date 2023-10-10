@@ -98,6 +98,51 @@ def get_all_courses() -> list[Course]:
 
     return courses_objects
 
+def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Course]:
+    """Returns a list of matching courses"""
+    """
+    full_sql = text("\
+        SELECT c.id, c.name, c.description \
+        FROM courses c\
+        LEFT JOIN course_participants cp ON c.id = cp.course_id \
+        LEFT JOIN course_teachers ct ON c.id = ct.course_id \
+        WHERE c.name LIKE :name
+        AND cp.user_id = :enrolled_user_id \
+        AND ct.user_id = :teacher_user_id \
+    ")
+    """
+
+    base_sql = "SELECT c.id, c.name, c.description FROM courses c "
+    if enrolled:
+        base_sql += "LEFT JOIN course_participants cp ON c.id = cp.course_id "
+    if my:
+        base_sql += "LEFT JOIN course_teachers ct ON c.id = ct.course_id "
+    if enrolled or my or name:
+        base_sql += "WHERE "
+    if name:
+        base_sql += "c.name LIKE :name "
+    if name and (enrolled or my):
+        base_sql += "AND "
+    if enrolled:
+        base_sql += "cp.user_id = :user_id "
+    if enrolled and my:
+        base_sql += "OR "
+    if my:
+        base_sql += "ct.user_id = :user_id"
+
+    print(base_sql)
+    courses = db.session.execute(text(base_sql), {"user_id":user_id, "name":"%"+name+"%"}).fetchall()
+
+    course_objects = []
+    for course_id, name, desc in courses:
+        teacher_ids = _get_course_teachers(course_id)
+        participant_ids = _get_course_participants(course_id)
+        course_objects.append(Course(course_id, name, desc, teacher_ids, participant_ids))
+
+    return course_objects
+
+
+
 def is_course_teacher(user_id: int, course_id: int) -> bool:
     """Check wether given user is a teacher in given course"""
     sql = text("SELECT id FROM course_teachers WHERE course_id = :course_id AND user_id = :user_id")

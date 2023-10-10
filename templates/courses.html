@@ -4,12 +4,30 @@
 <div class="page-container">
 
     <div class="course-page-container">
+        <h1>Courses</h1>
+
+        <form action="/courses/search" method="post" style="box-shadow: 0 0 1rem var(--shadow);width:100%;display:flex; flex-direction:column; gap:0.5rem; padding: 1.5rem; background-color: var(--surface); border-radius: 0.5rem;">
+            <label>Search courses</label>
+            <div style="display:flex; flex-direction: column;">
+                <input  id="course-search" type="text" name="search" placeholder="Search...">
+            </div>
+            <label>Filters</label>
+            <div>
+                <input id="my-courses" type="checkbox" name="my-courses">
+                <label for="my-courses">My courses</label>
+                <input id="enrolled-courses" type="checkbox" name="enrolled-courses">
+                <label for="enrolled-courses">Enrolled</label>
+            </div>
+            <div>
+            </div>
+            <button type="submit" class="button-2">Search</button>
+        </form>
+
         <hgroup>
-            <h1>Available Courses</h1>
             {% if course_count == 0 %}
-            <p>There are currently no ongoing courses available. <br>You must wait until a teacher creates one.</p>
+            <p>No ongoing courses found.</p>
             {% else %}
-            <p>Showing {{course_count}} ongoing courses</p>
+            <p>Found {{course_count}} ongoing courses</p>
             {% endif %}
         </hgroup>
 

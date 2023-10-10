@@ -9,6 +9,20 @@ def courses():
                            courses=courses,
                            course_count=len(courses))
 
+@app.route("/courses/search", methods=["POST"])
+def course_search():
+    if "search" not in request.form:
+        name = None
+    else:
+        name = request.form["search"]
+    my = True if "my-courses" in request.form else False
+    enrolled = True if "enrolled-courses" in request.form else False
+    courses = search_courses(name, my, enrolled, session["user_id"])
+    print(courses)
+    return render_template("courses.html",
+                           courses=courses,
+                           course_count=len(courses))
+
 
 @app.route("/courses/<int:course_id>")
 def course(course_id: int):
