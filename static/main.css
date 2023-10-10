@@ -3,13 +3,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smooting: grayscale;
 
-    --primary-darken-3:    hsl(220, 30%, 10%);
-    --primary-darken-2:    hsl(220, 40%, 20%);
-    --primary-darken-1:    hsl(220, 60%, 40%);
-    --primary:             hsl(220, 80%, 60%);
-    --primary-lighten-1:   hsl(220, 100%, 80%);
-    --primary-lighten-2:   hsl(220, 100%, 90%);
-    --primary-lighten-3:   hsl(220, 100%, 98%);
+    --primary-darken-3:    hsl(224, 30%, 10%);
+    --primary-darken-2:    hsl(224, 40%, 20%);
+    --primary-darken-1:    hsl(224, 60%, 40%);
+    --primary:             hsl(224, 80%, 60%);
+    --primary-lighten-1:   hsl(224, 100%, 80%);
+    --primary-lighten-2:   hsl(224, 100%, 90%);
+    --primary-lighten-3:   hsl(224, 100%, 98%);
 
 
     --secondary-darken-2:  hsl(3, 25%, 20%);
@@ -18,13 +18,13 @@
     --secondary-lighten-1: hsl(10, 80%, 80%);
     --secondary-lighten-2: hsl(15, 100%, 90%);
 
-    --tertiary-darken-3:   hsl(220, 30%, 20%);
-    --tertiary-darken-2:   hsl(220, 30%, 30%);
-    --tertiary-darken-1:   hsl(220, 30%, 40%);
-    --tertiary:            hsl(220, 30%, 50%);
-    --tertiary-lighten-1:  hsl(220, 30%, 70%);
-    --tertiary-lighten-2:  hsl(220, 35%, 90%);
-    --tertiary-lighten-3:  hsl(220, 40%, 97%);
+    --tertiary-darken-3:   hsl(225, 30%, 20%);
+    --tertiary-darken-2:   hsl(225, 30%, 30%);
+    --tertiary-darken-1:   hsl(225, 30%, 40%);
+    --tertiary:            hsl(225, 30%, 50%);
+    --tertiary-lighten-1:  hsl(225, 30%, 70%);
+    --tertiary-lighten-2:  hsl(225, 35%, 90%);
+    --tertiary-lighten-3:  hsl(225, 40%, 97%);
 
 
     --quaternary-darken-2: hsl(203, 40%, 30%);
@@ -53,13 +53,15 @@ a {
 }
 .link-button {
     text-decoration: none;
+    display: flex;
+    flex-direction: column;
 }
 
 h1, .h1 { font-size: 2.0rem; font-weight: bolder; color: var(--tertiary-darken-1) }
 h2, .h2 { font-size: 1.5rem; font-weight: bold; color: var(--tertiary-darken-1)}
 h3, .h3 { font-size: 1.1rem; font-weight: bold; color: var(--tertiary-darken-1)}
 h4, .h4 { font-size: 1rem; font-weight: 500;}
-p, .p { font-size: 1rem; font-weight: 400; color: var(--tertiary) }
+p, .p { font-size: 1rem; line-height: 1rem; font-weight: 400; color: var(--tertiary) }
 label, .label { font-size: 1.1rem; font-weight: bold; color:var(--tertiary-darken-1)}
 
 
@@ -78,7 +80,6 @@ body {
 
     display: flex;
     flex-direction: column;
-    background-color: var(--tertiary);
     z-index: -2;
 }
 
@@ -101,12 +102,15 @@ td, th {
     position: absolute;
     align-self: center;
     left: 0;
-    bottom: 0;
+    top: 0;
     overflow: clip;
-    width: 100%;
-    height: auto;
+    height:100%;
+    width:100%;
+    min-height: 100%;
+    min-width: 100%;
     z-index: -1;
     opacity: 0.3;
+    background-color: var(--primary);
 }
 
 .top-bar {
@@ -118,8 +122,9 @@ td, th {
     height: min-content;
     width: 100%;
     background-color: var(--surface);
-    box-shadow: 0 0 2rem var(--shadow);
-    padding:0;
+    box-shadow: 0 0 1rem var(--shadow);
+    padding: 0;
+    margin: 0;
     z-index: 1;
 }
 
@@ -137,7 +142,7 @@ td, th {
 .top-bar-item:hover {
     color: var(--primary-darken-1);
     opacity: 0.5;
-    transform: translateY(0.2rem);
+    transform: translateY(0.15rem);
 
     transition-duration: 0.08s;
     /*text-decoration: underline;
@@ -146,22 +151,37 @@ td, th {
     text-decoration-style: dotted;*/
 }
 
-.page-content {
-    flex: 1;
+.page-container {
     display: flex;
-    position: relative;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+
+    position: relative;
+
+    min-width: fit-content;
+
+    overflow: visible;
+
+    background-color: var(--surface);
+}
+.empty-page-container {
+    flex-direction: column;
+    display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
-    align-self: center;
-    margin: 0;
-    padding: 0;
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
 }
 
-.login-container {
+
+.login-card {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -272,14 +292,6 @@ textarea:focus, .textarea:focus {
 }
 
 
-.page-container {
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
 /**/
 .course-page-container {
     display: flex;
@@ -292,10 +304,8 @@ textarea:focus, .textarea:focus {
     position: relative;
 
     background-color: var(--surface);
-    background-color: var(--surface);
     width: 65rem;
-    min-width: 30rem;
-    height: 100%;
+    min-width: 20rem;
 }
 .course-list-container {
     display: flex;
@@ -317,7 +327,7 @@ textarea:focus, .textarea:focus {
     gap: 0.5rem;
     padding:1.3rem;
     max-width: 30rem;
-    width:fit-content;
+    width: fit-content;
     flex-shrink: 1;
     flex-grow: 1;
     box-shadow: 0 0 1.5rem var(--shadow);
@@ -333,7 +343,7 @@ textarea:focus, .textarea:focus {
     color: var(--secondary);
 }
 
-.profile-page-container {
+.profile-card {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -342,6 +352,7 @@ textarea:focus, .textarea:focus {
     border-radius: 0.5rem;
     justify-content: flex-start;
     align-content: center;
+    width: fit-content;
 }
 
 .add-course-content-form {
