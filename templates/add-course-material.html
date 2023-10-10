@@ -1,31 +1,17 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="page-container">
-    <div class="course-page-container">
-        <a href="/courses/{{course.id}}/edit" class="link-button back-button">&laquo Edit course</a>
+{% extends "course-page-layout.html" %}
+{% block course_content %}
 
-        <!-- -->
-        {% if session.user_id in course.teacher_ids %}
-        <div style="width: 100%; padding: 0.5rem; display: flex; flex-direction: row; gap: 2rem; border-bottom: 0.2rem solid var(--primary-lighten-2);">
-            <a href="/courses/{{course.id}}" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Course page</a>
-            <a href="/courses/{{course.id}}/edit" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Edit course</a>
-            <a href="/courses/{{course.id}}/stats" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">View course statistics</a>
-        </div>
-        {% endif %}
-        <!-- -->
-
-        <form style="width:100%" id="material-form" action="/courses/{{course.id}}/edit/add_material" method="POST">
-            <h2>Add New Course Material</h2>
-            <div style="display:flex; flex-direction:column;">
-                <label for="title">Title</label>
-                <textarea class="p textarea" form="material-form" name="title" id="title"></textarea>
-            </div>
-            <div style="display:flex; flex-direction:column;">
-                <label for="text">Text</label>
-                <textarea rows="10" class="p textarea" form="material-form" name="text" id="text"></textarea>
-            </div>
-            <button type="submit" class="button-1">Save</button>
-        </form>
+<form style="width:100%" id="material-form" action="/courses/{{course.id}}/edit/add_material" method="POST">
+    <h2>Add New Course Material</h2>
+    <div style="display:flex; flex-direction:column;">
+        <label for="title">Title</label>
+        <textarea required class="p textarea" form="material-form" name="title" id="title"></textarea>
     </div>
-</div>
+    <div style="display:flex; flex-direction:column;">
+        <label for="text">Text</label>
+        <textarea required rows="10" class="p textarea" form="material-form" name="text" id="text"></textarea>
+    </div>
+    <button type="submit" class="button-1">Save</button>
+</form>
+
 {% endblock %}

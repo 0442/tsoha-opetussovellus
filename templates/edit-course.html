@@ -1,65 +1,32 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="page-container">
-<div class="course-page-container">
-    <a href="/courses" class="link-button back-button">&laquo Courses</a>
+{% extends "course-page-layout.html" %}
+{% block course_content %}
 
-    <!-- -->
-    {% if session.user_id in course.teacher_ids %}
-    <div style="width: 100%; padding: 0.5rem; display: flex; flex-direction: row; gap: 2rem; border-bottom: 0.2rem solid var(--primary-lighten-2);">
-        <a href="/courses/{{course.id}}" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Course page</a>
-        <a href="/courses/{{course.id}}/edit" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Edit course</a>
-        <a href="/courses/{{course.id}}/stats" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">View course statistics</a>
+
+<!-- -->
+<form style="width:100%;" id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
+    <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+        <label for="name">Course name</label>
+        <textarea placeholder="Nameless course" form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="h1 textarea" id="name" name="name">{{course.name}}</textarea>
+        <label for="desc">Course description</label>
+        <textarea placeholder="A course without a description." form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="p textarea" id="desc" name="desc">{{course.description}}</textarea>
+        <button type="submit" class="button-1">Update name and description</button>
     </div>
-    {% endif %}
-    <!-- -->
-
-    <!-- -->
-    <form style="width:100%;" id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
-            <textarea form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="h1 textarea" id="name" name="name">{{course.name}}</textarea>
-            <textarea form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="p textarea" id="desc" name="desc">{{course.description}}</textarea>
-            <button type="submit" class="button-1">Update name and description</button>
-        </div>
-    </form>
-    <!-- -->
+</form>
+<!-- -->
 
 
-    <!-- -->
-    <h2>Course Materials</h2>
-    {% if text_materials.__len__() == 0 %}
-    <p>No course materials</p>
-    {% endif %}
+<!-- -->
+<a href="/courses/{{course.id}}/edit/add_material" class="button-1 link-button">+ New Text Material</a>
+<!-- -->
 
-    {% for m in text_materials %}
-    <div class="course-content-block">
-        <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
-            <h3 style="color:var(--primary); font-weight: normal;">{{m.title}}</h3>
-        </a>
-    </div>
-    {% endfor %}
-    <!-- -->
-    <a href="/courses/{{course.id}}/edit/add_material" class="button-1 link-button">+ New Text Material</a>
-    <!-- -->
+<!-- -->
+<a href="/courses/{{course.id}}/edit/add_exercise" class="button-1 link-button">+ New Exercise</a>
+<!-- -->
 
-    <!-- -->
-    <h2>Course Exercises</h2>
-    <div style="display:flex; flex-direction: column; gap: 0.5rem;">
-        {% if exercises.__len__() == 0 %}
-        <p>No exercises</p>
-        {% endif %}
+<!-- -->
+<form method="POST" action="/courses/{{course.id}}/delete">
+<button class="button-2">Delete Course</button>
+</form>
+<!-- -->
 
-        {% for e in exercises %}
-        <div class="course-content-block">
-            <a class="link-button" href="/courses/{{course.id}}/exercises/{{e.id}}">
-                <h3 style="color:var(--primary); font-weight: normal;">{{e.title}}</h3>
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-    <!-- -->
-    <a href="/courses/{{course.id}}/edit/add_exercise" class="button-1 link-button">+ New Exercise</a>
-    <!-- -->
-</div>
-</div>
 {% endblock %}

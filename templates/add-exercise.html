@@ -1,64 +1,48 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="page-container">
-    <div class="course-page-container">
+{% extends "course-page-layout.html" %}
+{% block course_content %}
 
-    <a href="/courses/{{course.id}}/edit" class="link-button back-button">&laquo Edit course</a>
+<h1>Add New Exercise</h1>
 
-    <!-- -->
-    {% if session.user_id in course.teacher_ids %}
-    <div style="width: 100%; padding: 0.5rem; display: flex; flex-direction: row; gap: 2rem; border-bottom: 0.2rem solid var(--primary-lighten-2);">
-        <a href="/courses/{{course.id}}" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Course page</a>
-        <a href="/courses/{{course.id}}/edit" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Edit course</a>
-        <a href="/courses/{{course.id}}/stats" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">View course statistics</a>
-    </div>
-    {% endif %}
-    <!-- -->
-
-    <h1>Add New Exercise</h1>
-
-    <div>
-        <h2 for="type">Exercise type</h2>
-        <form style="display: flex; flex-direction: row;">
-            <input checked onchange="changeFormType('essay')" id="essay" value="essay" type="radio" name="exercise-type">
-            <label for="essay" style="font-weight: normal;">Essay</label>
-            <input onchange="changeFormType('multi')" id="multiple-choice" value="multiple-choice" type="radio" name="exercise-type">
-            <label for="multiple-choice" style="font-weight: normal;">Multiple choice</label>
-        </form>
-    </div>
-
-    <form style="width:100%" id="exercise-form" action="/courses/{{course.id}}/edit/add_exercise" method="POST">
-        <div style="display:flex; flex-direction:column;">
-            <label for="title">Title</label>
-            <textarea required placeholder="e.g. 'Exercise 1'" class="p textarea" form="exercise-form" name="title" id="title"></textarea>
-        </div>
-        <div style="display:flex; flex-direction:column;">
-            <label for="question">Question</label>
-            <textarea required placeholder="e.g. 'How tall is Mount Everest?'" rows="5" class="p textarea" form="exercise-form" name="question" id="question"></textarea>
-        </div>
-
-        <!-- -->
-        <div id="text-answer-cont" style="display:flex; flex-direction:column;">
-            <label for="text-answer">Correct answer</label>
-            <textarea required placeholder="e.g. '8848 meters.'" rows="5" class="p textarea" form="exercise-form" name="answer" id="text-answer"></textarea>
-        </div>
-
-        <div id="choices-cont" style="display:none;">
-            <label for="choices">Choices</label>
-            <p>A semicolon separated list of choices.</p>
-            <textarea oninput="setAnswerOptions()" placeholder="e.g. '6626 meters; 7737 meters; 8848 meters'" rows="5" class="p textarea" form="exercise-form" name="choices" id="choices"></textarea>
-        </div>
-        <div id="choice-answer-cont" style="display:none;">
-            <label for="choice-answer">Correct answer</label>
-            <select style="width:20rem" form="exercise-form" name="answer" id="choice-answer">
-            </select>
-        </div>
-        <!-- -->
-        <br>
-        <button type="submit" class="button-1">Save</button>
+<div>
+    <h2 for="type">Exercise type</h2>
+    <form style="display: flex; flex-direction: row;">
+        <input checked onchange="changeFormType('essay')" id="essay" value="essay" type="radio" name="exercise-type">
+        <label for="essay" style="font-weight: normal;">Essay</label>
+        <input onchange="changeFormType('multi')" id="multiple-choice" value="multiple-choice" type="radio" name="exercise-type">
+        <label for="multiple-choice" style="font-weight: normal;">Multiple choice</label>
     </form>
-    </div>
 </div>
+
+<form style="width:100%" id="exercise-form" action="/courses/{{course.id}}/edit/add_exercise" method="POST">
+    <div style="display:flex; flex-direction:column;">
+        <label for="title">Title</label>
+        <textarea required placeholder="e.g. 'Exercise 1'" class="p textarea" form="exercise-form" name="title" id="title"></textarea>
+    </div>
+    <div style="display:flex; flex-direction:column;">
+        <label for="question">Question</label>
+        <textarea required placeholder="e.g. 'How tall is Mount Everest?'" rows="5" class="p textarea" form="exercise-form" name="question" id="question"></textarea>
+    </div>
+
+    <!-- -->
+    <div id="text-answer-cont" style="display:flex; flex-direction:column;">
+        <label for="text-answer">Correct answer</label>
+        <textarea required placeholder="e.g. '8848 meters.'" rows="5" class="p textarea" form="exercise-form" name="answer" id="text-answer"></textarea>
+    </div>
+
+    <div id="choices-cont" style="display:none;">
+        <label for="choices">Choices</label>
+        <p>A semicolon separated list of choices.</p>
+        <textarea oninput="setAnswerOptions()" placeholder="e.g. '6626 meters; 7737 meters; 8848 meters'" rows="5" class="p textarea" form="exercise-form" name="choices" id="choices"></textarea>
+    </div>
+    <div id="choice-answer-cont" style="display:none;">
+        <label for="choice-answer">Correct answer</label>
+        <select style="width:20rem" form="exercise-form" name="answer" id="choice-answer">
+        </select>
+    </div>
+    <!-- -->
+    <br>
+    <button type="submit" class="button-1">Save</button>
+</form>
 
 <script>
     function changeFormType(type) {

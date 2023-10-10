@@ -1,41 +1,25 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="page-container">
+{% extends "course-page-layout.html" %}
+{% block course_content %}
 
-<div class="course-page-container">
-    <a href="/courses" class="link-button back-button">&laquo Courses</a>
+<h1>Statistics</h1>
 
-    <!-- -->
-    {% if session.user_id in course.teacher_ids %}
-    <div style="width: 100%; padding: 0.5rem; display: flex; flex-direction: row; gap: 2rem; border-bottom: 0.2rem solid var(--primary-lighten-2);">
-        <a href="/courses/{{course.id}}" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Course page</a>
-        <a href="/courses/{{course.id}}/edit" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">Edit course</a>
-        <a href="/courses/{{course.id}}/stats" class="link-button" style="color:var(--primary-lighten-1); font-size:1.2rem; font-weight: normal;">View course statistics</a>
-    </div>
-    {% endif %}
-    <!-- -->
+{% if session.user_id in course.teacher_ids %}
 
-    <h1>Statistics</h1>
+<label for="submissions">Exercises completed by users</label>
+<table id="submissions">
+    <th colspan="2">{{course.name}}</th>
+    <tbody>
+        <th>Username</th>
+        <th>Exercise name</th>
+    {% for s in stats%}
+        <tr>
+            <td>{{s.username}}</td>
+            <td>{{s.exercise_title}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-    {% if session.user_id in course.teacher_ids %}
+{% endif %}
 
-    <label for="submissions">Exercises completed by users</label>
-    <table id="submissions">
-        <th colspan="2">{{course.name}}</th>
-        <tbody>
-            <th>Username</th>
-            <th>Exercise name</th>
-        {% for s in stats%}
-            <tr>
-                <td>{{s.username}}</td>
-                <td>{{s.exercise_title}}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    {% endif %}
-</div>
-
-</div>
 {% endblock %}
