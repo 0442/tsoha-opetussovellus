@@ -78,8 +78,18 @@ def get_course_stats(course_id: int):
 def _get_course_participants(course_id: int):
     sql = text("SELECT user_id FROM course_participants WHERE course_id = :course_id")
     return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
+
 def _get_course_teachers(course_id: int):
     sql = text("SELECT user_id FROM course_teachers WHERE course_id = :course_id")
+    return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
+
+def get_course_participant_names(course_id: int) -> list[str]:
+    sql = text("\
+        SELECT u.name \
+        FROM course_participants cp \
+        LEFT JOIN users u ON u.id = cp.user_id \
+        WHERE course_id = :course_id \
+    ")
     return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
 
 def get_all_courses() -> list[Course]:

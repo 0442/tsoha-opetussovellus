@@ -149,7 +149,9 @@ def submit_exercise(course_id: int, exercise_id: int):
 def course_stats(course_id: int):
     stats = get_course_stats(course_id)
     course = get_course_info(course_id)
+    participants = get_course_participant_names(course_id)
     return render_template("course-stats.html",
                            course = course,
-                           stats = stats)
+                           stats = stats,
+                           participants = participants)
 

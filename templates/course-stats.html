@@ -1,13 +1,12 @@
 {% extends "course-page-layout.html" %}
 {% block course_content %}
 
-<h1>Statistics</h1>
+<h1>Completed exercises</h1>
 
 {% if session.user_id in course.teacher_ids %}
 
-<label for="submissions">Exercises completed by users</label>
+<label for="submissions">Exercise submissions sent by users</label>
 <table id="submissions">
-    <th colspan="2">{{course.name}}</th>
     <tbody>
         <th>Username</th>
         <th>Exercise name</th>
@@ -19,6 +18,20 @@
     {% endfor %}
     </tbody>
 </table>
+
+<h1>Participants</h1>
+<label for="participants">Users currently enrolled in the course</label>
+<table id="participants">
+    <tbody>
+        <th>Username</th>
+    {% for p in participants%}
+        <tr>
+            <td>{{p}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
 
 {% endif %}
 
