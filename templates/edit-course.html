@@ -19,7 +19,7 @@
         <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
             <textarea form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="h1 textarea" id="name" name="name">{{course.name}}</textarea>
             <textarea form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="p textarea" id="desc" name="desc">{{course.description}}</textarea>
-            <button type="submit" class="button-5">Update name and description</button>
+            <button type="submit" class="button-1">Update name and description</button>
         </div>
     </form>
     <!-- -->
@@ -39,7 +39,7 @@
     </div>
     {% endfor %}
     <!-- -->
-    <a href="/courses/{{course.id}}/edit/add_material" class="button-5 link-button">+ New Text Material</a>
+    <a href="/courses/{{course.id}}/edit/add_material" class="button-1 link-button">+ New Text Material</a>
     <!-- -->
 
     <!-- -->
@@ -58,7 +58,7 @@
         {% endfor %}
     </div>
     <!-- -->
-    <a href="/courses/{{course.id}}/edit/add_exercise" class="button-5 link-button">+ New Exercise</a>
+    <a href="/courses/{{course.id}}/edit/add_exercise" class="button-1 link-button">+ New Exercise</a>
     <!-- -->
 </div>
 </div>

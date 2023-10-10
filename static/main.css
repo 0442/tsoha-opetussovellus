@@ -3,41 +3,37 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smooting: grayscale;
 
-    --primary-darken-3:    #04182a;
-    --primary-darken-2:    #0d2843;
-    --primary-darken-1:    #3f72a5;
-    --primary:             #40a0fa;
-    --primary-lighten-1:   #96ceff;
-    --primary-lighten-2:   #dcebff;
-    --primary-lighten-3:   #fafcff;
-
-    --secondary-darken-2:  rgb(75, 45, 45);
-    --secondary-darken-1:  rgb(137, 76, 75);
-    --secondary:           rgb(255, 140, 127);
-    --secondary-lighten-1: rgb(252, 176, 161);
-    --secondary-lighten-2: rgb(255, 228, 219);
-
-    --tertiary-darken-2:   #152030;
-    --tertiary-darken-1:   #1f3047;
-    --tertiary:            #3b5571;
-    --tertiary-lighten-1:  #547395;
-    --tertiary-lighten-2:  #f0f7ff;
-    --tertiary-lighten-2:  #f5faff;
+    --primary-darken-3:    hsl(220, 30%, 10%);
+    --primary-darken-2:    hsl(220, 40%, 20%);
+    --primary-darken-1:    hsl(220, 60%, 40%);
+    --primary:             hsl(220, 80%, 60%);
+    --primary-lighten-1:   hsl(220, 100%, 80%);
+    --primary-lighten-2:   hsl(220, 100%, 90%);
+    --primary-lighten-3:   hsl(220, 100%, 98%);
 
 
-    --quaternary-darken-2: #0f3b3e;
-    --quaternary-darken-1: #30a5b0;
-    --quaternary:          rgb(64, 225, 250);
-    --quaternary-lighten-1:#8cf3ff;
+    --secondary-darken-2:  hsl(3, 25%, 20%);
+    --secondary-darken-1:  hsl(3, 30%, 40%);
+    --secondary:           hsl(6, 50%, 60%);
+    --secondary-lighten-1: hsl(10, 80%, 80%);
+    --secondary-lighten-2: hsl(15, 100%, 90%);
 
-    --quaternary-darken-2: #184c5b;
-    --quaternary-darken-1: #3092b0;
-    --quaternary:          rgb(72, 197, 255);
-    --quaternary-lighten-1:rgb(140, 222, 255);
+    --tertiary-darken-3:   hsl(220, 30%, 20%);
+    --tertiary-darken-2:   hsl(220, 30%, 30%);
+    --tertiary-darken-1:   hsl(220, 30%, 40%);
+    --tertiary:            hsl(220, 30%, 50%);
+    --tertiary-lighten-1:  hsl(220, 30%, 70%);
+    --tertiary-lighten-2:  hsl(220, 35%, 90%);
+    --tertiary-lighten-3:  hsl(220, 40%, 97%);
 
 
+    --quaternary-darken-2: hsl(203, 40%, 30%);
+    --quaternary-darken-1: hsl(203, 60%, 40%);
+    --quaternary:          hsl(203, 80%, 60%);
+    --quaternary-lighten-1:hsl(203, 100%, 70%);
 
-    --surface:  white;
+    --surface:  hsl(0, 100%, 100%);
+    --shadow: hsl(220, 100%, 20%, 0.10)
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, p, .p, label, .label {
@@ -51,18 +47,19 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, p, .p, label, .label {
 }
 
 a {
-    color: var(--primary);
+    color: rgba(0,100,255);
+    font-weight: bold;
 }
 .link-button {
     text-decoration: none;
 }
 
-h1, .h1 { font-size: 2.0rem; font-weight: bolder; color: var(--tertiary) }
-h2, .h2 { font-size: 1.5rem; font-weight: bold; color: var(--tertiary)}
-h3, .h3 { font-size: 1.1rem; font-weight: bold; color: var(--tertiary)}
+h1, .h1 { font-size: 2.0rem; font-weight: bolder; color: var(--tertiary-darken-1) }
+h2, .h2 { font-size: 1.5rem; font-weight: bold; color: var(--tertiary-darken-1)}
+h3, .h3 { font-size: 1.1rem; font-weight: bold; color: var(--tertiary-darken-1)}
 h4, .h4 { font-size: 1rem; font-weight: 500;}
-p, .p { font-size: 1rem; font-weight: 400; color: var(--tertiary-lighten-1) }
-label, .label { font-size: 1.1rem; font-weight: bold; color:var(--tertiary)}
+p, .p { font-size: 1rem; font-weight: 400; color: var(--tertiary) }
+label, .label { font-size: 1.1rem; font-weight: bold; color:var(--tertiary-darken-1)}
 
 
 html {
@@ -80,9 +77,7 @@ body {
 
     display: flex;
     flex-direction: column;
-    background-color: #27507e;
-    background-color: rgb(232, 238, 255);
-    background-color: rgb(184, 217, 255);
+    background-color: var(--tertiary);
     z-index: -2;
 }
 
@@ -96,8 +91,8 @@ table {
 td, th {
     padding: 0.7rem 1.4rem;
     border: 0.1rem solid;
-    border-color: var(--primary-lighten-2);
-    background-color: var(--tertiary-lighten-2);
+    border-color: var(--tertiary-lighten-2);
+    background-color: var(--tertiary-lighten-3);
     text-align: center;
 }
 
@@ -122,7 +117,7 @@ td, th {
     height: min-content;
     width: 100%;
     background-color: var(--surface);
-    box-shadow: 0 0 2rem #04182a10;
+    box-shadow: 0 0 2rem var(--shadow);
     padding:0;
     z-index: 1;
 }
@@ -134,12 +129,16 @@ td, th {
     font-size: 1.1rem;
     margin: 0;
     padding: 1.1rem;
-    transition-duration: 0.04s;
+
+    transition-duration: 0.08s;
 }
 
 .top-bar-item:hover {
     color: var(--primary-darken-1);
     opacity: 0.5;
+    transform: translateY(0.2rem);
+
+    transition-duration: 0.08s;
     /*text-decoration: underline;
     text-decoration-thickness: 0.2rem;
     text-underline-offset: 1.2rem;
@@ -168,7 +167,7 @@ td, th {
     background-color: var(--surface);
     padding: 1.8rem;
     border-radius: 0.7rem;
-    box-shadow: 0 0 3rem #00000020;
+    box-shadow: 0 0 3rem var(--shadow);
     width:fit-content;
 }
 
@@ -183,7 +182,7 @@ input {
     outline: none;
     border: 0.13rem solid transparent;
     background-color: var(--primary-lighten-2);
-    background-color: var(--tertiary-lighten-2);
+    background-color: var(--tertiary-lighten-3);
     border-radius: 0.3rem;
     padding: 0.7rem;
     color : var(--tertiary);
@@ -202,7 +201,7 @@ textarea, .textarea {
     margin: 0;
     padding: 0.5rem;
     transition-duration: 0.05s;
-    background-color: var(--tertiary-lighten-2);
+    background-color: var(--tertiary-lighten-3);
 }
 textarea:focus, .textarea:focus {
     border-color: var(--primary-lighten-1);
@@ -235,8 +234,8 @@ textarea:focus, .textarea:focus {
 
 .button-1 { background-color: var(--primary); }
 .button-1:hover { background-color: var(--primary-lighten-1); }
-.button-2 { background-color: var(--tertiary-darken-1); }
-.button-2:hover { background-color: var(--tertiary-lighten-1); }
+.button-2 { background-color: var(--tertiary-darken-2); }
+.button-2:hover { background-color: var(--tertiary-darken-1); }
 .button-3 {
     background-color: rgba(255,230,230, 1);
     color: rgba(185,90,90);
@@ -244,9 +243,9 @@ textarea:focus, .textarea:focus {
 }
 .button-3:hover { background-color: rgba(255,180,180); }
 .button-4 {
-    background-color: var(--tertiary-lighten-2);
-    color: var(--tertiary-lighten-1);
-    border: 0.05rem solid var(--tertiary-lighten-2);
+    background-color: var(--tertiary-lighten-3);
+    color: var(--tertiary);
+    /*border: 0.05rem solid var(--tertiary-lighten-2);*/
 }
 .button-4:hover { color: var(--primary-lighten-1); }
 .button-5 { background-color: var(--quaternary); }
@@ -320,13 +319,13 @@ textarea:focus, .textarea:focus {
     width:fit-content;
     flex-shrink: 1;
     flex-grow: 1;
-    box-shadow: 0 0 1.5rem #00000015;
+    box-shadow: 0 0 1.5rem var(--shadow);
     border-radius: 0.5rem;
     transition-duration: 0.03s;
     border: 0.2rem solid transparent;
 }
 .course-list-item:hover {
-    border-color: var(--tertiary-lighten-2);
+    border-color: var(--tertiary-lighten-3);
 }
 
 .error-msg {
@@ -353,7 +352,7 @@ textarea:focus, .textarea:focus {
     min-width: fit-content;
 
     border-radius: 0.5rem;
-    box-shadow: 0 0 1rem #04182a10;
+    box-shadow: 0 0 1rem var(--shadow);
     color: var(--tertiary);
     font-size: 2rem;
     font-family: inherit;
