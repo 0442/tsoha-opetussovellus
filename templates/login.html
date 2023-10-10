@@ -1,32 +1,33 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="login-container">
-    {% if error_msg %}
-    <p class="error-msg">{{ error_msg }}</p>
-    {% endif %}
-    <h2>Login</h2>
-    <br>
-    <form class="login-form" method="POST">
-        <div style="display:flex; flex-direction: column;">
-            <label for="username-input">Username</label>
-            <input id="username-input" type="text" name="username" placeholder="username">
-        </div>
-        <div style="display:flex; flex-direction: column;">
-            <label for="password-input">Password</label>
-            <input id="password-input" type="password" name="password" placeholder="password">
-        </div>
-        <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <button class="button-1" formaction="/login" type="submit">Login</button>
-        </div>
-        <div>
-        <p>
-        To create a new account instead, go to the <br><a href="/register" style="text-decoration: underline;">registration page</a>
-        </p>
-        </div>
-    </form>
-</div>
 
-<script>
-</script>
+<img class="bg" src="/static/bitmap.svg">
+<div class="empty-page-container">
+    <div class="login-card">
+        {% if error_msg %}
+        <p class="error-msg">{{ error_msg }}</p>
+        {% endif %}
+        <h2>Login</h2>
+        <br>
+        <form class="login-form" method="POST">
+            <div style="display:flex; flex-direction: column;">
+                <label for="username-input">Username</label>
+                <input id="username-input" type="text" name="username" placeholder="username">
+            </div>
+            <div style="display:flex; flex-direction: column;">
+                <label for="password-input">Password</label>
+                <input id="password-input" type="password" name="password" placeholder="password">
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 1rem;">
+                <button class="button-1" formaction="/login" type="submit">Login</button>
+            </div>
+            <div>
+            <p>
+            To create a new account instead, go to the <br><a href="/register" style="text-decoration: underline;">registration page</a>
+            </p>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock %}

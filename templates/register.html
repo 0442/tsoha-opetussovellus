@@ -1,41 +1,45 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="login-container">
-    {% if error_msg %}
-    <p class="error-msg">{{ error_msg }}</p>
-    {% endif %}
-    <h2>Create a New Account</h2>
-    <br>
-    <form class="login-form" method="POST">
-        <div style="display:flex; flex-direction: column;">
-            <label for="username-input">Username</label>
-            <input required id="username-input" type="text" name="username" placeholder="username">
-        </div>
-        <div style="display:flex; flex-direction: column;">
-            <label for="password-input">Password</label>
-            <input required oninput="confirmPassword()" id="password-input" type="password" name="password" placeholder="password">
-        </div>
-        <div style="display:flex; flex-direction: column;">
-            <label for="confirm-password-input">Confirm Password</label>
-            <input required oninput="confirmPassword()" id="confirm-password-input" type="password" name="confirm-password" placeholder="password">
-        </div>
-        <p id="password-error" style="display:none; color:red">Passwords do not match</p>
-        <div>
-            <h3>Account type</h3>
-            <input id="student" type="radio" value="student" name="role" checked>
-            <label for="student">Student</label>
-            <input id="teacher" type="radio" value="teacher" name="role">
-            <label for="teacher">Teacher</label>
-        </div>
-        <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <button id="register-submit" class="button-2" formaction="/register" type="submit">Register</button>
-        </div>
-        <div>
-        <p>
-        To login into an existing account instead, go to the <br><a href="/login" style="text-decoration: underline;">login page</a>
-        </p>
-        </div>
-    </form>
+
+<img class="bg" src="/static/bitmap.svg">
+<div class="empty-page-container">
+    <div class="login-card">
+        {% if error_msg %}
+        <p class="error-msg">{{ error_msg }}</p>
+        {% endif %}
+        <h2>Create a New Account</h2>
+        <br>
+        <form class="login-form" method="POST">
+            <div style="display:flex; flex-direction: column;">
+                <label for="username-input">Username</label>
+                <input required id="username-input" type="text" name="username" placeholder="username">
+            </div>
+            <div style="display:flex; flex-direction: column;">
+                <label for="password-input">Password</label>
+                <input required oninput="confirmPassword()" id="password-input" type="password" name="password" placeholder="password">
+            </div>
+            <div style="display:flex; flex-direction: column;">
+                <label for="confirm-password-input">Confirm Password</label>
+                <input required oninput="confirmPassword()" id="confirm-password-input" type="password" name="confirm-password" placeholder="password">
+            </div>
+            <p id="password-error" style="display:none; color:red">Passwords do not match</p>
+            <div>
+                <h3>Account type</h3>
+                <input id="student" type="radio" value="student" name="role" checked>
+                <label for="student">Student</label>
+                <input id="teacher" type="radio" value="teacher" name="role">
+                <label for="teacher">Teacher</label>
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 1rem;">
+                <button id="register-submit" class="button-2" formaction="/register" type="submit">Register</button>
+            </div>
+            <div>
+            <p>
+            To login into an existing account instead, go to the <br><a href="/login" style="text-decoration: underline;">login page</a>
+            </p>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>

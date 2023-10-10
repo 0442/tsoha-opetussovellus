@@ -1,23 +1,26 @@
 {% extends "layout.html" %}
-
 {% block content %}
-<div class="profile-page-container">
-    <hgroup>
-        <h1>{{session.username}}</h1>
-        {% if session.is_teacher == True %}
-        <p>teacher</p>
-        {% else %}
-        <p>student</p>
-        {% endif %}
-    </hgroup>
 
-    <div style="display: flex; flex-direction: row; gap: 1rem;">
-        <a href="/logout" class="button-2 link-button">Logout</a>
-        <form action="/delete" method="POST">
-        <button type="submit" class="button-3">Delete User</button>
-        </form>
+<img class="bg" src="/static/bitmap.svg">
+<div class="empty-page-container">
+    <div class="profile-card">
+        <hgroup>
+            <h1>{{session.username}}</h1>
+            {% if session.is_teacher == True %}
+            <p>teacher</p>
+            {% else %}
+            <p>student</p>
+            {% endif %}
+        </hgroup>
+
+        <div style="display: flex; flex-direction: row; gap: 1rem;">
+            <a href="/logout" class="button-2 link-button">Logout</a>
+            <form action="/delete" method="POST">
+            <button type="submit" class="button-3">Delete User</button>
+            </form>
+        </div>
+
     </div>
-
 </div>
 
 {% endblock %}
