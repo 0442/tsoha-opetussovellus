@@ -6,6 +6,7 @@
     <div class="course-page-container">
         <h1>Courses</h1>
 
+        {% if session.user_id %}
         <form action="/courses/search" method="post" style="box-shadow: 0 0 1rem var(--shadow);width:100%;display:flex; flex-direction:column; gap:0.5rem; padding: 1.5rem; background-color: var(--surface); border-radius: 0.5rem;">
             <label>Search courses</label>
             <div style="display:flex; flex-direction: column;">
@@ -24,6 +25,7 @@
             </div>
             <button type="submit" class="button-2">Search</button>
         </form>
+        {% endif %}
 
         <hgroup>
             {% if course_count == 0 %}
@@ -32,10 +34,6 @@
             <p>Found {{course_count}} ongoing courses</p>
             {% endif %}
         </hgroup>
-
-        {% if session.is_teacher == True %}
-        <a href="/new_course" class="button-1 link-button">+ New Course</a>
-        {% endif %}
 
         <div class="course-list-container">
             {% for course in courses %}
