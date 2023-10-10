@@ -12,10 +12,12 @@ def courses():
 
 @app.route("/courses/<int:course_id>")
 def course(course_id: int):
+    exercises = get_course_exercises(course_id, session["user_id"])
     return render_template("course-page.html",
                            course=get_course_info(course_id),
                            text_materials=get_course_materials(course_id),
-                           exercises=get_course_exercises(course_id, session["user_id"]))
+                           exercises=exercises,
+                           completion_count=count_completed(exercises))
 
 
 @app.route("/new_course", methods=["GET", "POST"])

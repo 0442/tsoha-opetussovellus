@@ -162,12 +162,24 @@ def get_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
     for r in results:
         id, title, question, correct_answer, choices, submitted_answer = r
         if choices:
-            exc = Exercise(id, course_id, title, question, correct_answer, choices.split(";"), user_id, submitted_answer)
-        else:
-            exc = Exercise(id, course_id, title, question, correct_answer, None, user_id, submitted_answer)
+            choices = choices.split(";")
+        exc = Exercise(id,
+                       course_id,
+                       title,
+                       question,
+                       correct_answer,
+                       choices,
+                       user_id,
+                       submitted_answer)
         exercises.append(exc)
-    print(exercises)
+
     return exercises
+
+def count_completed(exercises: list[Exercise]):
+    completion_count = 0
+    for e in exercises:
+        completion_count += 1 if e.submitted_answer != None else 0
+    return completion_count
 
 class CourseMaterial(NamedTuple):
     id: int
