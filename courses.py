@@ -65,15 +65,11 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str, 
 
 def get_course_stats(course_id: int):
     sql = text("\
-        SELECT ce.title AS exercise_title, a.name AS username, a.answer \
-        FROM (\
-            SELECT u.id AS id, u.name AS name, exercise_id, answer FROM exercise_submissions AS es \
-            LEFT JOIN users AS u ON u.id = es.user_id\
-        ) a \
-        LEFT JOIN course_exercises AS ce ON a.exercise_id = ce.id \
-        WHERE a.id IN (\
-            SELECT user_id FROM course_participants WHERE course_id = :course_id \
-        ) \
+        SELECT ce.title AS exercise_title, u.name AS username, es.answer \
+        FROM exercise_submissions es \
+        LEFT JOIN users u ON u.id = es.user_id \
+        LEFT JOIN course_exercises ce ON es.exercise_id = ce.id \
+        WHERE ce.course_id = :course_id \
     ")
 
     results = db.session.execute(sql, {"course_id": course_id}).fetchall()
