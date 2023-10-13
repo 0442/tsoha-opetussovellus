@@ -124,6 +124,10 @@ th {
 }
 
 .top-bar-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
     color: var(--primary-darken-1);
     font-weight: normal;
     height: 100%;

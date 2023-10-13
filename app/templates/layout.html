@@ -4,25 +4,23 @@
 <title>Opetussovellus</title>
 
 <div class="top-bar">
-    <a class="link-button" href="/"><p class="top-bar-item">📖 Courses</p></a>
+    <a class="link-button top-bar-item" href="/">📖 Courses</a>
     {% if session.is_teacher == True %}
-    <a class="link-button" href="/new_course"><div class="top-bar-item">＋ Create a course</div></a>
+    <a class="link-button top-bar-item" href="/new_course">＋ Create a course</a>
     {% endif %}
     {% if session.username %}
-    <a class="link-button" href="/profile">
-        <div class="top-bar-item" style="align-self: flex-end;">
-            {{session.username}}
-            <span style="font-size:0.8rem;">
-                {% if session.is_teacher == True %}
-                (teacher)
-                {% else %}
-                (student)
-                {% endif %}
-            </span>
-        </div>
+    <a class="link-button top-bar-item" href="/profile">
+        {{session.username}}
+        <span style="font-size:0.8rem;">
+            {% if session.is_teacher == True %}
+            (teacher)
+            {% else %}
+            (student)
+            {% endif %}
+        </span>
     </a>
     {% else %}
-    <a class="link-button" href="/login"><div class="top-bar-item">Login</div></a>
+    <a class="link-button top-bar-item" href="/login">Login</a>
     {% endif %}
 </div>
 
