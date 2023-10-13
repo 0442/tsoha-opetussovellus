@@ -7,33 +7,29 @@
         <h1>Courses</h1>
 
         {% if session.user_id %}
-        <form action="/courses/search" method="post" style="box-shadow: 0 0 1rem var(--shadow);width:100%;display:flex; flex-direction:column; gap:0.5rem; padding: 1.5rem; background-color: var(--surface); border-radius: 0.5rem;">
-            <label>Search courses</label>
-            <div style="display:flex; flex-direction: column;">
-                <input  id="course-search" type="text" name="search" placeholder="Search...">
-            </div>
-            <label>Filters</label>
-            <div>
-                {% if session.is_teacher == True %}
+        <form action="/courses/search" method="post" style="width:100%; display:flex; flex-direction: row; justify-content: stretch; align-items: center; align-content: center; gap:0.5rem; background-color: var(--surface); border-radius: 0.5rem;">
+            <input style="margin:0;" id="course-search" type="text" name="search" placeholder="Search...">
+            <button style="align-items:center; padding:0.5rem 1.0rem; font-size: 1.3rem; line-height: 1.3rem; height:100%;" class="button-4">🔍</button>
+            {% if session.is_teacher == True %}
+            <label for="my-courses" style="margin:0; border: solid 0.1rem var(--tertiary-lighten-2); border-radius: 0.5rem; padding: 0.2rem 0.7rem; height: 100%; display: flex; justify-content: center; align-items: center;">
                 <input id="my-courses" type="checkbox" name="my-courses">
-                <label for="my-courses">My courses</label>
-                {% endif %}
-                <input id="enrolled-courses" type="checkbox" name="enrolled-courses">
-                <label for="enrolled-courses">Enrolled</label>
-            </div>
-            <div>
-            </div>
-            <button type="submit" class="button-2">Search</button>
-        </form>
-        {% endif %}
-
-        <hgroup>
-            {% if course_count == 0 %}
-            <p>No ongoing courses found.</p>
-            {% else %}
-            <p>Found {{course_count}} ongoing courses</p>
+                <p>My courses</p>
+            </label>
             {% endif %}
+            <label for="enrolled-courses" style="margin:0; border: solid 0.1rem var(--tertiary-lighten-2); border-radius: 0.5rem; padding: 0.2rem 0.7rem; height: 100%; display: flex; justify-content: center; align-items: center;">
+                <input id="enrolled-courses" type="checkbox" name="enrolled-courses">
+                <p>Enrolled</p>
+            </label>
+        </form>
+        {% if course_count == 0 %}
+        <h2>0 results</h2>
+        {% else %}
+        <hgroup>
+            <h2>{{course_count}} results</h2>
+            <p>Found {{course_count}} ongoing courses</p>
         </hgroup>
+        {% endif %}
+        {% endif %}
 
         <div class="course-list-container">
             {% for course in courses %}
