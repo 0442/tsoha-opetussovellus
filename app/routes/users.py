@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, request
-from users import *
+from services.users import *
 from app import app
 
 @app.route("/login", methods=["GET", "POST"])

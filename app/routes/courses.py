@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, request
-from courses import *
+from services.courses import *
 from app import app
 
 @app.route("/courses")
