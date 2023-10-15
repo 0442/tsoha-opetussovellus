@@ -115,6 +115,7 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
         WHERE c.name LIKE :name
         AND cp.user_id = :enrolled_user_id \
         AND ct.user_id = :teacher_user_id \
+        GROUP BY c.id \
     ")
     """
 
@@ -134,7 +135,9 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
     if enrolled and my:
         base_sql += "OR "
     if my:
-        base_sql += "ct.user_id = :user_id"
+        base_sql += "ct.user_id = :user_id "
+
+    base_sql += "GROUP BY c.id"
 
     print(base_sql)
     courses = db.session.execute(text(base_sql), {"user_id":user_id, "name":"%"+name+"%"}).fetchall()
