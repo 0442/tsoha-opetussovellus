@@ -3,11 +3,12 @@
 .button-3,
 .button-4,
 .button-5 {
-    padding: 0.6rem;
-    padding-left: 1.2rem;
-    padding-right: 1.2rem;
+    padding: 0.7rem;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+
     color: white;
-    border-radius: 0.5rem;
+    border-radius: 0.7rem;
     border: none;
     font-size: 1.1rem;
     display: flex;
@@ -18,12 +19,25 @@
     font-weight: normal;
 }
 
+.tab-button {
+    padding: 0.7rem;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+    border-radius: 0.7rem;
+    color: var(--primary);
+}
+
+.tab-button:hover {
+    transition-duration: 0s;
+    background-color: var(--quaternary-lighten-3);
+}
+
 .button-1 {
-    background-color: var(--primary);
+    background-color: var(--primary-darken-1);
 }
 
 .button-1:hover {
-    background-color: var(--primary-lighten-1);
+    background-color: var(--primary-darken-2);
 }
 
 .button-2 {
@@ -45,13 +59,13 @@
 }
 
 .button-4 {
-    background-color: var(--tertiary-lighten-3);
-    color: var(--tertiary);
+    background-color: var(--quaternary-lighten-3);
+    color: var(--quaternary-darken-1);
     /*border: 0.05rem solid var(--tertiary-lighten-2);*/
 }
 
 .button-4:hover {
-    color: var(--primary-lighten-1);
+    color: var(--quaternary);
 }
 
 .button-5 {
@@ -72,6 +86,7 @@
     color: var(--primary);
     border: none;
 }
+
 
 /* Button modifiers */
 .large-button {

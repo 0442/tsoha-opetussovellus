@@ -13,7 +13,7 @@
         {% if exercise.submitted_answer == None %}
         <textarea required rows="16" class="p textarea" name="answer" form="answer-form" type="text" placeholder="Answer here"></textarea>
         {% else %}
-        <textarea required rows="16" readonly>{{exercise.submitted_answer}}</textarea>
+        <textarea required rows="16" class="p textarea" readonly>{{exercise.submitted_answer}}</textarea>
         {% endif %}
 
         {% if exercise.submitted_answer == None %}
@@ -24,7 +24,7 @@
         {% endif %}
         {% else %}
         <label for="correct-answer">Correct answer:</label>
-        <textarea rows="16" id="correct-answer" readonly>{{exercise.correct_answer}}</textarea>
+        <textarea rows="16" class="p textarea" id="correct-answer" readonly>{{exercise.correct_answer}}</textarea>
         {% endif %}
     </div>
 </form>

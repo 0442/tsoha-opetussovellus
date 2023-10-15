@@ -1,70 +1,69 @@
 {% extends "layout.html" %}
-
 {% block content %}
-<div class="page-container">
 
-    <div class="course-page-container">
-        <h1>Courses</h1>
+<div class="course-page-container">
+    <h1>Courses</h1>
 
-        {% if session.user_id %}
-        <form action="/courses/search" method="post" style="width:100%; display:flex; flex-direction: row; justify-content: stretch; align-items: center; align-content: center; gap:0.5rem; background-color: var(--surface); border-radius: 0.5rem;">
-            <input style="margin:0;" id="course-search" type="text" name="search" placeholder="Search...">
-            <button style="align-items:center; padding:0.5rem 1.0rem; font-size: 1.3rem; line-height: 1.3rem; height:100%;" class="button-4">🔍</button>
-            {% if session.is_teacher == True %}
-            <label for="my-courses" style="margin:0; border: solid 0.1rem var(--tertiary-lighten-2); border-radius: 0.5rem; padding: 0.2rem 0.7rem; height: 100%; display: flex; justify-content: center; align-items: center;">
-                <input id="my-courses" type="checkbox" name="my-courses">
-                <p>My courses</p>
-            </label>
+    {% if session.user_id %}
+    <!--
+    <form action="/courses/search" method="post" style="width:100%; display:flex; flex-direction: row; justify-content: stretch; align-items: center; align-content: center; gap:0.5rem; background-color: var(--surface); border-radius: 0.5rem;">
+    -->
+    <form action="/courses/search" method="post" style="display:flex; flex-direction: row; gap:0.5rem;">
+        <input style="margin:0;" id="course-search" type="text" name="search" placeholder="Search...">
+        <button style="align-items:center; padding:0.5rem 1.0rem; font-size: 1.3rem; line-height: 1.3rem; height:100%;" class="button-4">🔍</button>
+        {% if session.is_teacher == True %}
+        <label for="my-courses" class="checkbox">
+            <input id="my-courses" type="checkbox" name="my-courses">
+            <p>My courses</p>
+        </label>
+        {% endif %}
+        <label for="enrolled-courses" class="checkbox">
+            <input id="enrolled-courses" type="checkbox" name="enrolled-courses">
+            <p>Enrolled</p>
+        </label>
+
+    </form>
+    {% if course_count == 0 %}
+    <h2>0 results</h2>
+    {% else %}
+    <hgroup>
+        <h2>{{course_count}} results</h2>
+        <p>Found {{course_count}} ongoing courses</p>
+    </hgroup>
+    {% endif %}
+    {% endif %}
+
+    <div class="course-list-container">
+        {% for course in courses %}
+        <div class="course-list-item" onclick="location.href='/courses/{{course.id}}'" href="/courses">
+            {% if session.user_id in course.teacher_ids %}
+            <p style="margin:0; font-weight: bold; color: var(--primary)">Own course</p>
+            {% elif session.user_id in course.participant_ids %}
+            <p style="margin:0; font-weight: bold; color: var(--quaternary)">Enrolled</p>
             {% endif %}
-            <label for="enrolled-courses" style="margin:0; border: solid 0.1rem var(--tertiary-lighten-2); border-radius: 0.5rem; padding: 0.2rem 0.7rem; height: 100%; display: flex; justify-content: center; align-items: center;">
-                <input id="enrolled-courses" type="checkbox" name="enrolled-courses">
-                <p>Enrolled</p>
-            </label>
-        </form>
-        {% if course_count == 0 %}
-        <h2>0 results</h2>
-        {% else %}
-        <hgroup>
-            <h2>{{course_count}} results</h2>
-            <p>Found {{course_count}} ongoing courses</p>
-        </hgroup>
-        {% endif %}
-        {% endif %}
 
-        <div class="course-list-container">
-            {% for course in courses %}
-            <div class="course-list-item" >
-                <div onclick="location.href='/courses/{{course.id}}'" href="/courses" style="cursor:pointer; height:100%; display: flex; flex-direction: column; justify-content: flex-start; flex-grow: 0; gap: 0.5rem;">
-                    {% if session.user_id in course.teacher_ids %}
-                    <p style="margin:0; font-weight: bold; color: var(--primary)">Own course</p>
-                    {% elif session.user_id in course.participant_ids %}
-                    <p style="margin:0; font-weight: bold; color: var(--success)">Enrolled</p>
-                    {% endif %}
+            <h3 style="margin:0; font-size: 1.3rem; ">
+                {% if course.name.__len__() > 80 %}
+                {{course.name[:77]}}...
+                {% else %}
+                {{course.name}}
+                {% endif %}
+            </h3>
 
-                    <h3 style="margin:0; font-size: 1.3rem; ">
-                        {% if course.name.__len__() > 80 %}
-                        {{course.name[:77]}}...
-                        {% else %}
-                        {{course.name}}
-                        {% endif %}
-                    </h3>
+            <p style="margin:0;">{{course.description}}</p>
 
-                    <p style="margin:0; text-overflow: ellipsis;">{{course.description}}</p>
-
-                    <div style="margin-top: 1rem; display:flex; flex-direction: row; gap: 1rem; flex-grow: 1; justify-content: flex-start; align-items: flex-end; align-self: stretch;">
-                        {% if session.user_id not in course.teacher_ids and session.user_id not in course.participant_ids %}
-                        {% endif %}
-                        <button class="button-4">View course page</button>
-                        {% if session.user_id and session.user_id in course.teacher_ids %}
-                        <a href="/courses/{{course.id}}/edit" class="button-1 link-button">Edit course</a>
-                        {% endif %}
-                    </div>
-                </div>
+            <div style="padding-top: 1rem; display:flex; flex-direction: row; gap: 1rem; flex-grow: 1; justify-content: space-between; align-items: flex-end;">
+                {% if session.user_id not in course.teacher_ids and session.user_id not in course.participant_ids %}
+                {% endif %}
+                <a href="/courses/{{course.id}}" class="button-4 link-button">Course page</a>
+                {% if session.user_id and session.user_id in course.teacher_ids %}
+                <a href="/courses/{{course.id}}/edit" class="button-1 link-button">Edit course</a>
+                {% endif %}
             </div>
-            {% endfor %}
-
         </div>
-    </div>
+        {% endfor %}
 
+    </div>
 </div>
+
 {% endblock %}

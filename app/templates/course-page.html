@@ -1,6 +1,8 @@
 {% extends "course-page-layout.html" %}
 {% block course_content %}
 
+
+
 <h1>{{course.name}}</h1>
 <p>{{course.description}}</p>
 {% if not session.username %}
@@ -73,5 +75,6 @@
     </form>
     {% endif %}
 {% endif %}
+</div>
 
 {% endblock %}

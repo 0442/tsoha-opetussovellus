@@ -13,7 +13,7 @@
 
         {% if exercise.submitted_answer == None %}
         <!-- -->
-        <div style="display: flex; flex-direction: column; gap: 0rem;">
+        <div style="display: flex; flex-direction: column; gap: 0.3rem;">
             <label>{{exercise.question}}</label>
             {% for c in exercise.choices %}
             <div class="multichoice-radio" style="display: flex; flex-direction: row;">
@@ -22,8 +22,10 @@
             </div>
             {% endfor %}
         </div>
+        <!-- -->
         {% else %}
-        <div style="display: flex; flex-direction: column; gap: 0rem;">
+        <!-- -->
+        <div style="display: flex; flex-direction: column; gap: 0.3rem;">
             <label>{{exercise.question}}</label>
             {% for c in exercise.choices %}
             <div class="multichoice-radio" style="display: flex; flex-direction: row;">
@@ -37,6 +39,8 @@
             </div>
             {% endfor %}
         </div>
+        <!-- -->
+
         {% endif %}
         <!-- -->
 
@@ -51,7 +55,7 @@
         {% if exercise.submitted_answer == exercise.correct_answer %}
         <p style="font-size:1.2rem; color: var(--success); font-weight: bold;">Correct answer: {{exercise.correct_answer}}</p>
         {% else %}
-        <p style="font-size:1.2rem; color: var(--secondary); ">Correct answer: {{exercise.correct_answer}}</p>
+        <p style="font-size:1.2rem; color: var(--secondary); font-weight: bold;">Correct answer: {{exercise.correct_answer}}</p>
         {% endif %}
         {% endif %}
         <!-- -->

@@ -22,7 +22,7 @@
                 <label for="confirm-password-input">Confirm Password</label>
                 <input required oninput="confirmPassword()" id="confirm-password-input" type="password" name="confirm-password" placeholder="password">
             </div>
-            <p id="password-error" style="display:none; color:red">Passwords do not match</p>
+            <p id="password-error" hidden style="display:none; color:red">Passwords do not match</p>
             <div>
                 <h3>Account type</h3>
                 <input id="student" type="radio" value="student" name="role" checked>
@@ -31,7 +31,7 @@
                 <label for="teacher">Teacher</label>
             </div>
             <div style="display: flex; flex-direction: row; gap: 1rem;">
-                <button id="register-submit" class="button-2" formaction="/register" type="submit">Register</button>
+                <button id="register-submit" class="button-1" formaction="/register" type="submit">Register</button>
             </div>
             <div>
             <p>
@@ -55,11 +55,13 @@
 
         if (psw.value !== pswConfirm.value && (psw.value.length !== 0 && pswConfirm.value.length !== 0)) {
             pswError.setAttribute("style", errorTextStyle + "display:block;");
+            pswError.setAttribute("hidden", false);
             pswConfirm.setAttribute("style", errorInputStyle);
             submitButton.setAttribute("disabled", true);
             submitButton.setAttribute("style", errorButtonStyle);
         } else {
             pswError.setAttribute("style", "display:none;");
+            pswError.setAttribute("hidden", true);
             pswConfirm.removeAttribute("style");
             submitButton.removeAttribute("disabled");
             submitButton.removeAttribute("style");
