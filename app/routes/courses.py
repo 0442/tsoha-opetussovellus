@@ -89,7 +89,7 @@ def edit_course(course_id: int):
 
 @app.route("/courses/<int:course_id>/join", methods=["POST"])
 def join_course(course_id: int):
-    if not is_student():
+    if not (is_student() or is_teacher) or is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
     add_user_to_course(session["user_id"], course_id)
