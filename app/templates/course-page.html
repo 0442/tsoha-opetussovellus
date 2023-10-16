@@ -63,11 +63,6 @@
 {% endif %}
 
 {% if session.user_id and not session.user_id in course.teacher_ids %}
-    {% if session.user_id in course.participant_ids %}
-    <form action="/courses/{{course.id}}/leave" method="POST">
-    <button type="submit" class="button-3">Leave course</button>
-    </form>
-    {% endif %}
 
     {% if session.user_id not in course.participant_ids %}
     <form action="/courses/{{course.id}}/join" method="POST">

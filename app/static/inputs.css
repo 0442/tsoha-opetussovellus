@@ -35,8 +35,7 @@ textarea:focus,
 
 .checkbox {
     cursor: pointer;
-    flex-shrink: 1;
-    border: solid 0.1rem var(--primary-lighten-2);
+    border: solid 0.1rem var(--quaternary-lighten-2);
     border-radius: 0.5rem;
     padding: 0.2rem 0.7rem;
     height: 100%;
@@ -44,6 +43,10 @@ textarea:focus,
     justify-content: center;
     align-items: center;
     margin:0;
+}
+
+.checkbox:hover {
+    background-color: var(--quaternary-lighten-3);
 }
 
 ::placeholder {

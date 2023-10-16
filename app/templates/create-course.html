@@ -2,14 +2,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<img alt="" class="bg" src="/static/bitmap.svg">
 <div class="empty-page-container">
-    <h1>Create a new course</h1>
-    <form style="display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem;" action="/new_course" method="POST">
-        <label for="name">Course's name</label>
-        <input type="text" id="name" name="name" placeholder="name">
-        <label for="description">Course's description</label>
-        <input type="text" id="description" name="description" placeholder="description">
-        <button class="button-1" type="submit">Create</button>
-    </form>
+    <div class="login-card">
+        <form style="display: flex; flex-direction: column; gap: 0.5rem;" action="/new_course" method="POST">
+            <h1>Create a new course</h1>
+            <label for="name">Course's name</label>
+            <input type="text" id="name" name="name" placeholder="name">
+            <label for="description">Course's description</label>
+            <input type="text" id="description" name="description" placeholder="description">
+            <button class="button-1" type="submit">Create</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

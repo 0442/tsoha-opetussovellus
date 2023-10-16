@@ -3,6 +3,7 @@
 @import "inputs.css";
 @import "login.css";
 @import "text.css";
+@import "top-bar.css";
 
 :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -38,7 +39,7 @@
     --quaternary:           hsl(203, 70%, 60%);
     --quaternary-lighten-1: hsl(203, 70%, 80%);
     --quaternary-lighten-2: hsl(203, 70%, 90%);
-    --quaternary-lighten-3: hsl(203, 70%, 98%);
+    --quaternary-lighten-3: hsl(203, 70%, 97%);
 
     --surface: hsl(0, 100%, 100%);
     --shadow: hsl(220, 100%, 30%, 0.10);
@@ -47,6 +48,7 @@
 
 html {
     box-sizing: border-box;
+    display: flex;
 }
 
 .disable-transitions {
@@ -58,7 +60,6 @@ html {
 }
 * {
     transition: inherit;
-    position: relative;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
@@ -70,6 +71,7 @@ body, html {
     padding: 0;
     margin: 0;
 }
+
 body {
     height: 100vh;
     width: 100vw;
@@ -125,45 +127,6 @@ th {
     background-color: var(--primary-darken-2);
 }
 
-.top-bar {
-    position: static;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-content: center;
-    align-items: center;
-    height: min-content;
-    height: 5rem;
-    width: 100vw;
-    background-color: var(--primary-darken-2);
-    box-shadow: 0 0 1rem var(--shadow);
-    padding: 0;
-    margin: 0;
-    z-index: 1;
-}
-
-.top-bar-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    color: var(--primary-darken-1);
-    color: white;
-    font-weight: normal;
-    font-size: 1.1rem;
-    margin: 0;
-    padding: 1.1rem;
-    transition-duration: 0.08s;
-}
-
-.top-bar-item:hover {
-    color: var(--primary-darken-1);
-    color: var(--quaternary-lighten-1);
-    /*opacity: 0.5;*/
-    transform: translateY(0.15rem);
-    transition-duration: 0.08s;
-}
-
 .narrow-page-container {
     width: 100%;
     display: flex;
@@ -200,4 +163,20 @@ th {
     border: 0.1rem solid var(--primary-lighten-2);
     padding: 0.5rem;
     border-radius: 0.5rem;
+}
+
+.error-notif-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    z-index: 2;
+    background-color: var(--secondary-lighten-1);
+}
+
+.error-notif {
+    color: var(--secondary-darken-2);
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 0.5rem;
 }

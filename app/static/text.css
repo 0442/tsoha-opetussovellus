@@ -47,7 +47,6 @@ h4,
 p,
 .p {
     font-size: 1rem;
-    line-height: 1rem;
     font-weight: 400;
     color: var(--tertiary)
 }

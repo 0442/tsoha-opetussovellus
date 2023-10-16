@@ -9,6 +9,7 @@
     position: relative;
 
     width: 80%;
+    min-width: 30rem;
     /*
     background-color: blue;
     min-width: min-content;
@@ -16,7 +17,6 @@
     margin:0;
     */
 }
-
 .course-list-container {
     display: flex;
     flex-direction: row;
