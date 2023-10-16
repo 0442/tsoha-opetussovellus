@@ -112,7 +112,7 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
         FROM courses c\
         LEFT JOIN course_participants cp ON c.id = cp.course_id \
         LEFT JOIN course_teachers ct ON c.id = ct.course_id \
-        WHERE c.name LIKE :name
+        WHERE lower(c.name) LIKE lower(:name) OR lower(c.description) LIKE lower(:name)
         AND cp.user_id = :enrolled_user_id \
         AND ct.user_id = :teacher_user_id \
         GROUP BY c.id \
@@ -127,7 +127,7 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
     if enrolled or my or name:
         base_sql += "WHERE "
     if name:
-        base_sql += "lower(c.name) LIKE lower(:name) "
+        base_sql += "lower(c.name) LIKE lower(:name) OR lower(c.description) LIKE lower(:name) "
     if name and (enrolled or my):
         base_sql += "AND "
     if enrolled:
