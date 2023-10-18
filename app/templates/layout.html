@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <head>
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/main.css">
     <title>Opetussovellus</title>
 </head>
 
 <body class="disable-transitions">
     <div class="top-bar">
-        <a class="link-button top-bar-item" href="/">📖 Courses</a>
+        <a class="link-button top-bar-button item1" href="/">📖 Courses</a>
         {% if session.is_teacher == True %}
-        <a class="link-button top-bar-item" href="/new_course">＋ Create a course</a>
+        <a class="link-button top-bar-button item2" href="/new_course">＋ Create a course</a>
         {% endif %}
         {% if session.username %}
-        <a class="link-button top-bar-item" href="/profile">
+        <a class="link-button top-bar-button item4" style="flex-direction: row;" href="/profile">
             {{session.username}}
             <span style="font-size:0.8rem;">
                 {% if session.is_teacher == True %}
@@ -23,8 +23,8 @@
             </span>
         </a>
         {% else %}
-        <a class="link-button top-bar-item" href="/login">Login</a>
-        <a class="link-button top-bar-item" href="/register">Register</a>
+        <a class="link-button button-1 item3" href="/login">Log in</a>
+        <a class="link-button button-5 item4" href="/register">Register</a>
         {% endif %}
     </div>
 
@@ -34,6 +34,7 @@
 </body>
 
 <script>
+    // Fixes transitions firing on page reload
     document.addEventListener("DOMContentLoaded", () => {
         document.querySelector('.disable-transitions').classList.remove('disable-transitions');
     });

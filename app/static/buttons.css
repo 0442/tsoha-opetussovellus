@@ -17,7 +17,7 @@
     width: fit-content;
     margin: 0;
     transition-duration: 0.1s;
-    cursor: grab;
+    cursor: pointer;
     font-weight: normal;
 }
 
@@ -58,21 +58,19 @@
 }
 
 .button-3 {
-    background-color: rgba(255, 230, 230, 1);
-    color: rgba(185, 90, 90);
+    background-color: var(--secondary-lighten-2);
+    color: var(--secondary);
     border: solid 0.1rem;
 }
 
 .button-3:hover {
-    background-color: rgba(255, 180, 180);
+    background-color: var(--secondary);
+    color: var(--secondary-lighten-2);
 }
 
 .button-4 {
     background-color: var(--quaternary-lighten-3);
     color: var(--quaternary-darken-1);
-    /*border: 0.05rem solid var(--tertiary-lighten-2);*/
-    border: 0.1rem solid transparent;
-    border-color: var(--quaternary-lighten-2);
 }
 
 .button-4:hover {
