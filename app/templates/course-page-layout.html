@@ -19,7 +19,8 @@
 
             {% if session.user_id in course.participant_ids %}
             <form action="/courses/{{course.id}}/leave" method="POST">
-            <button type="submit" class="tab-button" style="color: var(--secondary);">Leave course</button>
+                <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+                <button type="submit" class="tab-button" style="color: var(--secondary);">Leave course</button>
             </form>
             {% endif %}
         </div>

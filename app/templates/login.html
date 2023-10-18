@@ -10,6 +10,8 @@
         <h2>Log in</h2>
         <br>
         <form class="login-form" method="POST">
+            <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+
             <div style="display:flex; flex-direction: column;">
                 <label for="username-input">Username</label>
                 <input id="username-input" type="text" name="username" placeholder="username">

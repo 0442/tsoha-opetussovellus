@@ -23,6 +23,9 @@ def courses():
 
 @app.route("/courses/search", methods=["POST"])
 def course_search():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     if "user_id" not in session:
         return redirect("/")
 
@@ -59,6 +62,9 @@ def new_course():
     if request.method == "GET":
         return render_template("create-course.html")
 
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     name = request.form["name"]
     description = request.form["description"]
     course_id = create_course(name, description, session["user_id"])
@@ -67,6 +73,9 @@ def new_course():
 
 @app.route("/courses/<int:course_id>/delete", methods=["POST"])
 def remove_course(course_id: int):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     if not is_teacher():
         return redirect("/")
 
@@ -89,6 +98,9 @@ def edit_course(course_id: int):
 
 @app.route("/courses/<int:course_id>/join", methods=["POST"])
 def join_course(course_id: int):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     if not (is_student() or is_teacher) or is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
@@ -98,6 +110,9 @@ def join_course(course_id: int):
 
 @app.route("/courses/<int:course_id>/leave", methods=["POST"])
 def leave_course(course_id: int):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     if not is_student():
         return redirect("/")
 
@@ -107,6 +122,9 @@ def leave_course(course_id: int):
 
 @app.route("/courses/<int:course_id>/edit/title_and_desc", methods=["POST"])
 def course_edit_title_and_desc(course_id: int):
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
@@ -122,6 +140,9 @@ def course_add_exercise(course_id: int):
 
     if request.method == "GET":
         return render_template("add-exercise.html", course=get_course_info(course_id))
+
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
 
     title = request.form["title"]
     question = request.form["question"]
@@ -139,6 +160,9 @@ def course_add_material(course_id: int):
 
     if request.method == "GET":
         return render_template("add-course-material.html", course=get_course_info(course_id))
+
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
 
     title = request.form["title"]
     text = request.form["text"]
@@ -207,6 +231,9 @@ def grading(course_id:int, submission_id: int):
         abort(404, "Submission does not exist")
 
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         grade = request.form["grade"] if "grade" in request.form else None
         if not grade:
             abort(400)

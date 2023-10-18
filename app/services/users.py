@@ -48,9 +48,9 @@ def register_user(username: str, password: str, is_teacher: bool) -> str | None:
     return None
 
 
-def delete_user(username: str):
-    sql = text("DELETE FROM users WHERE name = :name")
-    db.session.execute(sql, {"name": username})
+def delete_user(user_id: int):
+    sql = text("DELETE FROM users WHERE id = :user_id")
+    db.session.execute(sql, {"user_id": user_id})
     db.session.commit()
 
 

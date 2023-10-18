@@ -4,6 +4,8 @@
 
 <!-- -->
 <form style="width:100%;" id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+
     <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
         <label for="name">Course name</label>
         <textarea placeholder="Nameless course" form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="h1 textarea" id="name" name="name">{{course.name}}</textarea>
@@ -25,7 +27,8 @@
 
 <!-- -->
 <form method="POST" action="/courses/{{course.id}}/delete">
-<button class="button-2">Delete Course</button>
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+    <button class="button-2">Delete Course</button>
 </form>
 <!-- -->
 

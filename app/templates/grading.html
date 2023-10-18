@@ -17,6 +17,8 @@
 
 
 <form method="POST" action="/courses/{{course.id}}/submissions/{{submission.id}}">
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+
     <label>Grade</label>
     <input name="grade" required type="number" max={{submission.max_points}} min={{0}}>
     <label>/ {{submission.max_points}}</label>

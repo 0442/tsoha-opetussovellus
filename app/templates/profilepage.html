@@ -16,7 +16,8 @@
         <div style="display: flex; flex-direction: row; gap: 1rem;">
             <a href="/logout" class="button-4 link-button">Logout</a>
             <form action="/delete" method="POST">
-            <button type="submit" class="button-3">Delete User</button>
+                <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+                <button type="submit" class="button-3">Delete User</button>
             </form>
         </div>
 

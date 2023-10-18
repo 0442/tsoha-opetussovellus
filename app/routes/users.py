@@ -1,6 +1,21 @@
-from flask import render_template, redirect, session, request
+from flask import render_template, redirect, session, request, abort
 from services.users import *
+import secrets
 from app import app
+
+def logout_user():
+    del session["username"]
+    del session["is_teacher"]
+    del session["user_id"]
+    del session["csrf_token"]
+
+
+def login_user(username:str):
+    session["username"] = username
+    session["user_id"] = get_user_id(username)
+    session["is_teacher"] = is_teacher(username)
+    session["csrf_token"] = secrets.token_hex(16)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -9,10 +24,9 @@ def login():
 
     password = request.form["password"]
     username = request.form["username"]
+
     if validate_credentials(username, password):
-        session["username"] = username
-        session["is_teacher"] = is_teacher(username)
-        session["user_id"] = get_user_id(username)
+        login_user(username)
         return redirect("/profile")
     else:
         return render_template("login.html", error_msg="Wrong username or password")
@@ -26,12 +40,11 @@ def register():
     password = request.form["password"]
     username = request.form["username"]
     role = request.form["role"]
-    err = register_user(username, password, True if role ==
-                        "teacher" else False)
+    err = register_user(username,
+                        password,
+                        True if role == "teacher" else False)
     if not err:
-        session["username"] = username
-        session["is_teacher"] = is_teacher(username)
-        session["user_id"] = get_user_id(username)
+        login_user(username)
         return redirect("/profile")
     else:
         return render_template("register.html", error_msg=err)
@@ -39,8 +52,7 @@ def register():
 
 @app.route("/profile")
 def profile():
-    user = session["username"]
-    if not user:
+    if "user_id" not in session:
         return redirect("/login")
 
     return render_template("profilepage.html")
@@ -48,14 +60,18 @@ def profile():
 
 @app.route("/logout")
 def logout():
-    session["username"] = None
-    session["is_teacher"] = None
-    session["user_id"] = None
+    logout_user()
     return redirect("/")
 
 
 @app.route("/delete", methods=["POST"])
 def delete():
-    username = session["username"]
-    delete_user(username)
-    return redirect("/logout")
+    if not "user_id" in session:
+        return redirect("/")
+
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+
+    delete_user(session["user_id"])
+    logout_user()
+    return redirect("/")

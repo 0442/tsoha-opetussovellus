@@ -2,6 +2,7 @@
 {% block course_content %}
 
 <form style="width:100%" id="material-form" action="/courses/{{course.id}}/edit/add_material" method="POST">
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
     <h2>Add New Course Material</h2>
     <div style="display:flex; flex-direction:column;">
         <label for="title">Title</label>

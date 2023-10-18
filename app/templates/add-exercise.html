@@ -14,6 +14,8 @@
 </div>
 
 <form style="width:100%" id="exercise-form" action="/courses/{{course.id}}/edit/add_exercise" method="POST">
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+
     <div style="display:flex; flex-direction:column;">
         <label for="max-points">Grading (max points)</label>
         <div style="flex-direction: row;">

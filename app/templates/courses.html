@@ -5,10 +5,9 @@
     <h1>Courses</h1>
 
     {% if session.user_id %}
-    <!--
-    <form action="/courses/search" method="post" style="width:100%; display:flex; flex-direction: row; justify-content: stretch; align-items: center; align-content: center; gap:0.5rem; background-color: var(--surface); border-radius: 0.5rem;">
-    -->
     <form action="/courses/search" method="post" style="display:flex; flex-direction: row; gap:0.5rem;">
+        <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+
         <input style="margin:0;" id="course-search" type="text" name="search" placeholder="Search...">
         <button style="align-items:center; padding:0.5rem 1.0rem; font-size: 1.3rem; line-height: 1.3rem; height:100%;" class="button-4">🔍</button>
         {% if session.is_teacher == True %}
