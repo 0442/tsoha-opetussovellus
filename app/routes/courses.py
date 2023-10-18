@@ -117,7 +117,7 @@ def course_edit_title_and_desc(course_id: int):
 
 @app.route("/courses/<int:course_id>/edit/add_exercise", methods=["GET", "POST"])
 def course_add_exercise(course_id: int):
-    if not is_teacher() or is_course_teacher(session["user_id"], course_id):
+    if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
     if request.method == "GET":
@@ -134,7 +134,7 @@ def course_add_exercise(course_id: int):
 
 @app.route("/courses/<int:course_id>/edit/add_material", methods=["GET", "POST"])
 def course_add_material(course_id: int):
-    if not is_teacher() or is_course_teacher(session["user_id"], course_id):
+    if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
     if request.method == "GET":
