@@ -1,0 +1,25 @@
+{% extends "course-page-layout.html" %}
+{% block course_content %}
+<h1>Exercise submission</h1>
+<div>
+    <p style="font-size: 1.2rem; font-weight: bold;">Exercise: {{submission.exercise_title}}</p>
+    <p style="font-size: 1.2rem; font-weight: bold;">Submitter: {{submission.username}}</p>
+</div>
+
+<div style="width: 100%;">
+    <label for="answer">{{submission.username}}'s answer:</label>
+    <textarea id="answer" readonly class="textarea" style="width:100%; padding:0.5rem">{{submission.answer}}</textarea>
+</div>
+<div style="width: 100%;">
+    <label for="correct-answer">Example answer</label>
+    <textarea id="correct-answer" readonly style="width:100%; padding:0.5rem">{{submission.correct_answer}}</textarea>
+</div>
+
+
+<form method="POST" action="/courses/{{course.id}}/submissions/{{submission.id}}">
+    <label>Grade</label>
+    <input name="grade" required type="number" max={{submission.max_points}} min={{0}}>
+    <label>/ {{submission.max_points}}</label>
+    <button type="submit" class="button-1">Submit</button>
+</form>
+{% endblock %}

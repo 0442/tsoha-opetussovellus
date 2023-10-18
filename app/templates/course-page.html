@@ -49,8 +49,12 @@
             <a class="link-button" style="width: 100%;" href="/courses/{{course.id}}/exercises/{{e.id}}">
                 <div style="width:100%; display: flex; justify-content: space-between;">
                     <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{e.title}}</h3>
-                    {% if e.submitted_answer != None %}
-                    <p style="color:var(--primary); font-weight: bold; padding: 0.5rem;">🗸 Completed</p>
+                    {% if e.submitted_answer == None %}
+                    <p style="color:var(--primary); font-weight: bold; padding: 0.5rem;">/ {{e.max_points}}</p>
+                    {% elif e.grade == None %}
+                    <p style="color:var(--primary); font-weight: bold; padding: 0.5rem;"> waiting for grading / {{e.max_points}} 🗸</p>
+                    {% else %}
+                    <p style="color:var(--primary); font-weight: bold; padding: 0.5rem;">{{e.grade}} / {{e.max_points}} 🗸</p>
                     {% endif %}
                 </div>
             </a>

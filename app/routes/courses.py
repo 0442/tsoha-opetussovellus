@@ -1,4 +1,4 @@
-from flask import render_template, redirect, session, request
+from flask import render_template, redirect, session, request, abort
 from services.courses import *
 from app import app
 
@@ -126,8 +126,9 @@ def course_add_exercise(course_id: int):
     title = request.form["title"]
     question = request.form["question"]
     answer = request.form["answer"]
+    max_points = request.form["max-points"]
     choices = request.form["choices"] if "choices" in request.form else None
-    add_course_exercise(course_id, title, question, answer, choices)
+    add_course_exercise(course_id, title, question, answer, max_points, choices)
     return redirect(f"/courses/{course_id}/edit")
 
 
@@ -191,11 +192,29 @@ def course_stats(course_id: int):
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
-    stats = get_course_stats(course_id)
+    stats = get_all_submissions(course_id)
     course = get_course_info(course_id)
     participants = get_course_participant_names(course_id)
     return render_template("course-stats.html",
                            course = course,
                            stats = stats,
                            participants = participants)
+
+@app.route("/courses/<int:course_id>/submissions/<int:submission_id>", methods=["GET", "POST"])
+def grading(course_id:int, submission_id: int):
+    submission = get_submission(submission_id)
+    if not submission:
+        abort(404, "Submission does not exist")
+
+    if request.method == "POST":
+        grade = request.form["grade"] if "grade" in request.form else None
+        if not grade:
+            abort(400)
+
+        grade_submission(submission_id, grade)
+        return redirect("/courses/"+ str(course_id) + "/stats")
+
+    else:
+        return render_template("grading.html", course=get_course_info(course_id),
+                                               submission=submission)
 

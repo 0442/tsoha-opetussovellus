@@ -43,7 +43,8 @@ create table course_exercises (
         -- Null if exercise is answered in plain text.
         -- If not null, exercise is a multiple choice exercise
         -- and should contain a ';' separated list of choices
-    correct_answer text not null
+    correct_answer text not null,
+    max_points integer not null
 );
 
 create table exercise_submissions (
@@ -51,5 +52,6 @@ create table exercise_submissions (
     exercise_id int references course_exercises(id) on delete cascade,
     user_id int references users(id) on delete cascade,
     answer text,
-    constraint UC_submission unique (user_id, exercise_id)
+    constraint UC_submission unique (user_id, exercise_id),
+    grade int
 );

@@ -10,10 +10,26 @@
     <tbody>
         <th>Username</th>
         <th>Exercise name</th>
+        <th>Submitted<br>answer</th>
+        <th>Correct answer<br>(multichoice)</th>
+        <th>Points</th>
     {% for s in stats%}
         <tr>
             <td>{{s.username}}</td>
             <td>{{s.exercise_title}}</td>
+
+            {% if not s.choices %}
+            <td colspan="2"><a href="/courses/{{course.id}}/submissions/{{s.id}}">Grade answer</a></td>
+            {% else %}
+            <td>{{s.answer}}</td>
+            <td>{{s.correct_answer}}</td>
+            {% endif %}
+
+            {% if s.grade == None %}
+            <td>? / {{s.max_points}}</td>
+            {% else %}
+            <td>{{s.grade}} / {{s.max_points}}</td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>

@@ -15,28 +15,35 @@
 
 <form style="width:100%" id="exercise-form" action="/courses/{{course.id}}/edit/add_exercise" method="POST">
     <div style="display:flex; flex-direction:column;">
+        <label for="max-points">Grading (max points)</label>
+        <div style="flex-direction: row;">
+            <input type="number" max=999 min=1 style="width:6rem;padding:0.5rem" required form="exercise-form" name="max-points" id="max-points"></textarea>
+            <label for="max-points">points</label>
+        </div>
+    </div>
+    <div style="display:flex; flex-direction:column;">
         <label for="title">Title</label>
-        <textarea required placeholder="e.g. 'Exercise 1'" class="p textarea" form="exercise-form" name="title" id="title"></textarea>
+        <textarea required placeholder="e.g. 'Exercise 1'" class="p textarea" form="exercise-form" name="title" id="title" style="padding:0.5rem"></textarea>
     </div>
     <div style="display:flex; flex-direction:column;">
         <label for="question">Question</label>
-        <textarea required placeholder="e.g. 'How tall is Mount Everest?'" rows="5" class="p textarea" form="exercise-form" name="question" id="question"></textarea>
+        <textarea required placeholder="e.g. 'How tall is Mount Everest?'" rows="5" class="p textarea" form="exercise-form" name="question" id="question" style="padding:0.5rem"></textarea>
     </div>
 
     <!-- -->
     <div id="text-answer-cont" style="display:flex; flex-direction:column;">
         <label for="text-answer">Correct answer</label>
-        <textarea required placeholder="e.g. '8848 meters.'" rows="5" class="p textarea" form="exercise-form" name="answer" id="text-answer"></textarea>
+        <textarea required placeholder="e.g. '8848 meters.'" rows="5" class="p textarea" form="exercise-form" name="answer" id="text-answer" style="padding:0.5rem"></textarea>
     </div>
 
     <div id="choices-cont" style="display:none;">
         <label for="choices">Choices</label>
         <p>A semicolon separated list of choices.</p>
-        <textarea oninput="setAnswerOptions()" placeholder="e.g. '6626 meters; 7737 meters; 8848 meters'" rows="5" class="p textarea" form="exercise-form" name="choices" id="choices"></textarea>
+        <textarea oninput="setAnswerOptions()" placeholder="e.g. '6626 meters; 7737 meters; 8848 meters'" rows="5" class="p textarea" form="exercise-form" name="choices" id="choices" style="padding:0.5rem"></textarea>
     </div>
     <div id="choice-answer-cont" style="display:none;">
         <label for="choice-answer">Correct answer</label>
-        <select style="width:20rem" form="exercise-form" name="answer" id="choice-answer">
+        <select style="width:20rem;" form="exercise-form" name="answer" id="choice-answer">
         </select>
     </div>
     <!-- -->
