@@ -6,7 +6,7 @@
     padding: 1.8rem;
     border-radius: 0.7rem;
     box-shadow: 0 0 3rem var(--shadow);
-    width: fit-content;
+    min-width: 0rem;
 }
 
 .login-form {
