@@ -1,5 +1,3 @@
-DROP TABLE exercise_submissions, course_exercises, course_text_materials, course_teachers, course_participants, courses, users CASCADE;
-
 create table users (
     id serial primary key,
     name text unique not null,
