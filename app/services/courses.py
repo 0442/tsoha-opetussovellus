@@ -28,15 +28,20 @@ def create_course(name: str, description: str, creator_id: str) -> str:
 
     Returns the newly created course's id.
     """
-    sql_insert_course = text("INSERT INTO courses (name, description) VALUES (:name, :desc)")
-    sql_get_id  = text("SELECT currval('courses_id_seq')")
-    sql_insert_teacher = text("INSERT INTO course_teachers (course_id, user_id) VALUES (:course_id, :user_id)")
 
-    db.session.execute(sql_insert_course, {"name":name, "desc":description})
-    course_id = db.session.execute(sql_get_id).fetchone()[0]
-    db.session.execute(sql_insert_teacher, {"course_id":course_id, "user_id":creator_id})
+    sql = text("""
+        INSERT INTO courses (name, description)
+        VALUES (:name, :desc);
 
+        INSERT INTO course_teachers (course_id, user_id)
+        VALUES ((SELECT currval('courses_id_seq')), :user_id );
+
+        SELECT currval('courses_id_seq');
+    """)
+
+    course_id = db.session.execute(sql, {"name":name, "desc":description, "user_id": creator_id}).fetchone()[0]
     db.session.commit()
+
     return course_id
 
 def delete_course(course_id: int):
@@ -54,12 +59,12 @@ def add_course_material(course_id: int, title: str, text_content: str) -> None:
     db.session.commit()
 
 def add_course_exercise(course_id: int, title: str, question: str, answer: str, max_points: int, choices: None|str) -> None:
-    sql = text("\
-        INSERT INTO course_exercises (\
-            course_id, title, question, correct_answer, choices, max_points \
-        ) VALUES (\
-            :course_id, :title, :question, :correct_answer, :choices, :max_points \
-        )"
+    sql = text("""
+        INSERT INTO course_exercises (
+            course_id, title, question, correct_answer, choices, max_points
+        ) VALUES (
+            :course_id, :title, :question, :correct_answer, :choices, :max_points
+        )"""
     )
 
     if choices:
@@ -67,12 +72,12 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str, 
         choices = choices.strip("; ")
     else:
         print("Creating a text exercise")
-        sql = text("\
-            INSERT INTO course_exercises (\
-                course_id, title, question, correct_answer, choices, max_points \
-            ) VALUES (\
-                :course_id, :title, :question, :correct_answer, NULL, :max_points \
-            )"
+        sql = text("""
+            INSERT INTO course_exercises (
+                course_id, title, question, correct_answer, choices, max_points
+            ) VALUES (
+                :course_id, :title, :question, :correct_answer, NULL, :max_points
+            )"""
         )
 
     db.session.execute(sql, {"course_id": course_id,
@@ -84,15 +89,15 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str, 
     db.session.commit()
 
 def get_all_submissions(course_id: int):
-    sql = text("\
-        SELECT u.name AS username, es.id, es.exercise_id, es.user_id, \
-                      es.answer, es.grade, ce.question, ce.title AS exercise_title, \
-                      ce.correct_answer, ce.max_points, ce.choices \
-        FROM exercise_submissions es \
-        LEFT JOIN users u ON u.id = es.user_id \
-        LEFT JOIN course_exercises ce ON es.exercise_id = ce.id \
-        WHERE ce.course_id = :course_id \
-    ")
+    sql = text("""
+        SELECT u.name AS username, es.id, es.exercise_id, es.user_id,
+                      es.answer, es.grade, ce.question, ce.title AS exercise_title,
+                      ce.correct_answer, ce.max_points, ce.choices
+        FROM exercise_submissions es
+        LEFT JOIN users u ON u.id = es.user_id
+        LEFT JOIN course_exercises ce ON es.exercise_id = ce.id
+        WHERE ce.course_id = :course_id
+    """)
 
     results = db.session.execute(sql, {"course_id": course_id}).fetchall()
     return results
@@ -106,12 +111,12 @@ def _get_course_teachers(course_id: int):
     return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
 
 def get_course_participant_names(course_id: int) -> list[str]:
-    sql = text("\
-        SELECT u.name \
-        FROM course_participants cp \
-        LEFT JOIN users u ON u.id = cp.user_id \
-        WHERE course_id = :course_id \
-    ")
+    sql = text("""
+        SELECT u.name
+        FROM course_participants cp
+        LEFT JOIN users u ON u.id = cp.user_id
+        WHERE course_id = :course_id
+    """)
     return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
 
 def get_all_courses() -> list[Course]:
@@ -128,17 +133,17 @@ def get_all_courses() -> list[Course]:
 
 def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Course]:
     """Returns a list of matching courses"""
+
     """
-    full_sql = text("\
-        SELECT c.id, c.name, c.description \
-        FROM courses c\
-        LEFT JOIN course_participants cp ON c.id = cp.course_id \
-        LEFT JOIN course_teachers ct ON c.id = ct.course_id \
+    full_sql:
+        SELECT c.id, c.name, c.description
+        FROM courses c
+        LEFT JOIN course_participants cp ON c.id = cp.course_id
+        LEFT JOIN course_teachers ct ON c.id = ct.course_id
         WHERE lower(c.name) LIKE lower(:name) OR lower(c.description) LIKE lower(:name)
-        AND cp.user_id = :enrolled_user_id \
-        AND ct.user_id = :teacher_user_id \
-        GROUP BY c.id \
-    ")
+        AND cp.user_id = :enrolled_user_id
+        AND ct.user_id = :teacher_user_id
+        GROUP BY c.id
     """
 
     base_sql = "SELECT c.id, c.name, c.description FROM courses c "
@@ -328,21 +333,21 @@ def submit_answer(exercise_id:int, user_id: int, answer: str) -> None:
     #
     # If the exercise is a multichoice (choices IS NOT NULL),
     # gives full points if answer is correct, otherwise 0.
-    sql = "\
-        INSERT INTO exercise_submissions (\
-            exercise_id, user_id, answer, grade\
-        ) VALUES (\
-            :exercise_id, :user_id, :answer, \
-            CASE WHEN (SELECT choices FROM course_exercises WHERE id = :exercise_id) IS NOT NULL THEN\
-                CASE \
-                    WHEN :answer = (SELECT correct_answer FROM course_exercises WHERE id = :exercise_id) THEN \
-                        (SELECT max_points FROM course_exercises WHERE id = :exercise_id) \
-                    ELSE 0 \
-                END \
-            ELSE \
-                NULL \
-            END \
-        )"
+    sql = """
+        INSERT INTO exercise_submissions (
+            exercise_id, user_id, answer, grade
+        ) VALUES (
+            :exercise_id, :user_id, :answer,
+            CASE WHEN (SELECT choices FROM course_exercises WHERE id = :exercise_id) IS NOT NULL THEN
+                CASE
+                    WHEN :answer = (SELECT correct_answer FROM course_exercises WHERE id = :exercise_id) THEN
+                        (SELECT max_points FROM course_exercises WHERE id = :exercise_id)
+                    ELSE 0
+                END
+            ELSE
+                NULL
+            END
+        )"""
 
     try:
         db.session.execute(text(sql), {"exercise_id":exercise_id, "user_id":user_id, "answer":answer})
@@ -353,24 +358,24 @@ def submit_answer(exercise_id:int, user_id: int, answer: str) -> None:
 
 def get_submission(submission_id:int) -> None | Any:
     """Returns an object containing the user's answer, exercise's question and the example answer."""
-    sql = text("\
-        SELECT es.id, es.exercise_id, es.user_id, u.name AS username, \
-                      es.answer, es.grade, ce.question, \
-                      ce.title AS exercise_title, ce.correct_answer, ce.max_points \
-        FROM exercise_submissions es \
-        LEFT JOIN course_exercises ce ON es.exercise_id = ce.id \
-        LEFT JOIN users u ON es.user_id = u.id \
-        WHERE es.id = :sub_id AND ce.choices IS NULL \
-    ")
+    sql = text("""
+        SELECT es.id, es.exercise_id, es.user_id, u.name AS username,
+                      es.answer, es.grade, ce.question,
+                      ce.title AS exercise_title, ce.correct_answer, ce.max_points
+        FROM exercise_submissions es
+        LEFT JOIN course_exercises ce ON es.exercise_id = ce.id
+        LEFT JOIN users u ON es.user_id = u.id
+        WHERE es.id = :sub_id AND ce.choices IS NULL
+    """)
 
     result = db.session.execute(sql, {"sub_id":submission_id}).fetchone()
     return result
 
 
 def grade_submission(submission_id:int, grade:int):
-    sql = text("\
-        UPDATE exercise_submissions SET grade = :grade WHERE id = :sub_id \
-    ")
+    sql = text("""
+        UPDATE exercise_submissions SET grade = :grade WHERE id = :sub_id
+    """)
 
     db.session.execute(sql, {"grade":grade, "sub_id":submission_id})
     db.session.commit()
