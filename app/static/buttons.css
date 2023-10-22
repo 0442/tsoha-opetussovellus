@@ -72,12 +72,12 @@
 }
 
 .button-4 {
-    background-color: var(--quaternary-lighten-3);
-    color: var(--quaternary-darken-1);
+    background-color: var(--surface-4);
+    color: var(--primary-lighten-1);
 }
 
 .button-4:hover {
-    color: var(--quaternary);
+    color: var(--primary);
 }
 
 .button-5 {

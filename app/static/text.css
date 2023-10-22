@@ -46,6 +46,7 @@ p,
     font-size: 1rem;
     font-weight: 400;
     color: var(--primary-lighten-2);
+    word-break: break-word;
 }
 
 label,

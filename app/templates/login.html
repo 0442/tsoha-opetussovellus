@@ -6,7 +6,7 @@
         {% if error_msg %}
         <p class="error-msg">{{ error_msg }}</p>
         {% endif %}
-        <h2>Log in</h2>
+        <h1>Log in</h1>
         <br>
         <form class="login-form" method="POST">
             <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">

@@ -13,9 +13,9 @@
     <div style="display: flex; flex-direction: column; gap:1rem;">
         <h2>{{exercise.question}}</h2>
         {% if exercise.submitted_answer == None %}
-        <textarea required rows="16" class="p textarea" name="answer" form="answer-form" type="text" placeholder="Answer here"></textarea>
+        <textarea required rows="7" class="textarea" name="answer" form="answer-form" type="text" placeholder="Answer here"></textarea>
         {% else %}
-        <textarea required rows="16" class="p textarea" readonly>{{exercise.submitted_answer}}</textarea>
+        <textarea required rows="7" class="textarea" readonly>{{exercise.submitted_answer}}</textarea>
         {% endif %}
 
         {% if exercise.submitted_answer == None %}
@@ -25,8 +25,8 @@
         <button class="button-1" type="submit">Submit answer</button>
         {% endif %}
         {% else %}
-        <label for="correct-answer">Correct answer:</label>
-        <textarea rows="16" class="p textarea" id="correct-answer" readonly>{{exercise.correct_answer}}</textarea>
+        <label for="correct-answer">Example answer:</label>
+        <textarea rows="7" class="textarea" id="correct-answer" readonly>{{exercise.correct_answer}}</textarea>
         {% endif %}
     </div>
 </form>

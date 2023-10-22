@@ -10,7 +10,7 @@
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
     <h2>Basic information</h2>
-    <div style="padding-left: 1rem;gap: 0.5rem; display:flex; flex-direction: column;">
+    <div style="padding-left: 0.5rem; gap: 0.5rem; display:flex; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
             <label for="name">Name</label>
             <textarea placeholder="Nameless course" form="course-info-form" style="color: var(--primary-darken-1); font-size: 2rem; font-weight:bold; width:fit-content; height: fit-content;" class="textarea" id="name" name="name">{{course.name}}</textarea>

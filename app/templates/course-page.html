@@ -73,7 +73,7 @@
     {% if session.user_id not in course.participant_ids %}
     <form action="/courses/{{course.id}}/join" method="POST">
         <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
-        <button type="submit" class="button-4">Enroll in course</button>
+        <button type="submit" class="button-5">Enroll in course</button>
     </form>
     {% endif %}
 {% endif %}

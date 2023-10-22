@@ -33,6 +33,7 @@ textarea,
     padding: 0.5rem;
     transition-duration: 0.05s;
     background-color: var(--surface-5);
+    max-width: 100%;
 }
 
 textarea:focus,
