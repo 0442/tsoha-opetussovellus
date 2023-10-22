@@ -1,46 +1,51 @@
 {% extends "layout.html" %}
 {% block content %}
 
-    <div class="course-page-container">
-        <div class="course-page-content-container" >
-            <!-- -->
-            <a href="/courses" style="align-self: flex-start;"class="link-button back-button">&laquo Courses</a>
-            <!-- -->
+<div class="course-page-container">
+    <div class="course-page-content-container">
+        <!-- -->
+        <a href="/courses" style="align-self: flex-start;" class="link-button back-button">&laquo Courses</a>
+        <!-- -->
 
-            <!-- -->
-            <div style="width: 100%; display: flex; flex-direction: row; justify-content: space-between; border-bottom: 0.15rem solid var(--primary);">
-                <nav style="display: flex; flex-direction: row;">
-                    <a href="/courses/{{course.id}}" class="link-button tab-button" style="color:var(--primary); font-size:1.2rem; font-weight: normal;">Course page</a>
-                    {% if session.user_id in course.teacher_ids %}
-                    <a href="/courses/{{course.id}}/edit" class="link-button tab-button" style="color:var(--primary); font-size:1.2rem; font-weight: normal;">Edit course</a>
-                    <a href="/courses/{{course.id}}/stats" class="link-button tab-button" style="color:var(--primary); font-size:1.2rem; font-weight: normal;">View course statistics</a>
-                    {% endif %}
-                </nav>
-
-                {% if session.user_id in course.participant_ids %}
-                <form action="/courses/{{course.id}}/leave" method="POST">
-                    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
-                    <button type="button" onclick="confirmLeave()" class="tab-button" style="color: var(--secondary);">Leave course</button>
-                    <button id="submit-form" hidden type="submit"></button>
-                </form>
+        <!-- -->
+        <div
+            style="width: 100%; display: flex; flex-direction: row; justify-content: space-between; border-bottom: 0.15rem solid var(--primary);">
+            <nav style="display: flex; flex-direction: row;">
+                <a href="/courses/{{course.id}}" class="link-button tab-button"
+                    style="color:var(--primary); font-size:1.2rem; font-weight: normal;">Course page</a>
+                {% if session.user_id in course.teacher_ids %}
+                <a href="/courses/{{course.id}}/edit" class="link-button tab-button"
+                    style="color:var(--primary); font-size:1.2rem; font-weight: normal;">Edit course</a>
+                <a href="/courses/{{course.id}}/stats" class="link-button tab-button"
+                    style="color:var(--primary); font-size:1.2rem; font-weight: normal;">View course statistics</a>
                 {% endif %}
-            </div>
-            <!-- -->
+            </nav>
 
-            <!-- -->
-            {% block course_content %}
-            {% endblock %}
-            <!-- -->
+            {% if session.user_id in course.participant_ids %}
+            <form action="/courses/{{course.id}}/leave" method="POST">
+                <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+                <button type="button" onclick="confirmLeave()" class="tab-button" style="color: var(--secondary);">Leave
+                    course</button>
+                <button id="submit-form" hidden type="submit"></button>
+            </form>
+            {% endif %}
         </div>
-    </div>
+        <!-- -->
 
-    <script>
-        function confirmLeave() {
-            let proceed = window.confirm("Are you sure you want to leave the course '{{course.name}}'? All progress will be lost.");
-            if (proceed) {
-                document.getElementById("submit-form").click();
-            }
+        <!-- -->
+        {% block course_content %}
+        {% endblock %}
+        <!-- -->
+    </div>
+</div>
+
+<script>
+    function confirmLeave() {
+        let proceed = window.confirm("Are you sure you want to leave the course '{{course.name}}'? All progress will be lost.");
+        if (proceed) {
+            document.getElementById("submit-form").click();
         }
-    </script>
+    }
+</script>
 
 {% endblock %}

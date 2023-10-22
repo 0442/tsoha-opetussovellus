@@ -7,14 +7,14 @@
 
 <label for="submissions">Exercise submissions sent by users</label>
 <div style="overflow-x:scroll; width: 100%">
-    <table id="submissions" >
+    <table id="submissions">
         <tbody>
             <th>Username</th>
             <th>Exercise name</th>
             <th>Submitted<br>answer</th>
             <th>Correct answer</th>
             <th>Points</th>
-        {% for s in stats%}
+            {% for s in stats%}
             <tr>
                 <td>{{s.username}}</td>
                 <td>{{s.exercise_title}}</td>
@@ -32,7 +32,7 @@
                 <td>{{s.grade}} / {{s.max_points}}</td>
                 {% endif %}
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -44,15 +44,14 @@
     <table id="participants">
         <tbody>
             <th>Username</th>
-        {% for p in participants%}
+            {% for p in participants%}
             <tr>
                 <td>{{p}}</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 </div>
-
 
 {% endif %}
 

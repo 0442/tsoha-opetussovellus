@@ -10,6 +10,7 @@ def courses():
                            courses=courses,
                            course_count=len(courses))
 
+
 @app.route("/courses/search", methods=["POST"])
 def course_search():
     if session["csrf_token"] != request.form["csrf_token"]:
@@ -42,6 +43,7 @@ def course(course_id: int):
                            exercises=exercises,
                            completion_count=count_completed(exercises))
 
+
 @app.route("/new_course", methods=["GET", "POST"])
 def new_course():
     if not is_teacher() and not is_student():
@@ -63,11 +65,14 @@ def new_course():
 
     # Validate data
     if len(name) < 3:
-        return render_template("create-course.html", error="Name too short (min 3 chars).")
+        return render_template("create-course.html",
+                               error="Name too short (min 3 chars).")
     if len(name) > 50:
-        return render_template("create-course.html", error="Name too long (max 200 chars).")
+        return render_template("create-course.html",
+                               error="Name too long (max 200 chars).")
     if len(description) > 200:
-        return render_template("create-course.html", error="Description too long (max 200 chars).")
+        return render_template("create-course.html",
+                               error="Description too long (max 200 chars).")
     if len(description) == 0:
         description = f"A new course created by {session['username']}."
 
@@ -99,9 +104,9 @@ def edit_course(course_id: int):
         return redirect("/")
 
     return render_template("edit-course.html",
-                            course=get_course_info(course_id),
-                            text_materials=get_all_course_materials(course_id),
-                            exercises=get_all_course_exercises(course_id, session["user_id"]))
+                           course=get_course_info(course_id),
+                           text_materials=get_all_course_materials(course_id),
+                           exercises=get_all_course_exercises(course_id, session["user_id"]))
 
 
 @app.route("/courses/<int:course_id>/join", methods=["POST"])
@@ -141,9 +146,9 @@ def course_edit_title_and_desc(course_id: int):
 
     # Validate data
     if len(new_name) < 3:
-        return render_template("Name too short (min 3 chars)")
+        return render_template("edit-course.html", "Name too short (min 3 chars)")
     if len(new_desc) > 200:
-        return render_template("Description too long (max 200 chars)")
+        return render_template("edit-course.html", "Description too long (max 200 chars)")
     if len(new_desc) == 0:
         new_desc = "This course has no description."
 
@@ -173,13 +178,17 @@ def course_add_exercise(course_id: int):
 
     # Validate data
     if len(title) < 3 or len(question) < 3:
-        return render_template("add-exercise.html", error="Text contents too short (min 3 chars)")
+        return render_template("add-exercise.html",
+                               error="Text contents too short (min 3 chars)")
     if len(title) > 500 or len(question) > 500 or (choices and len(choices) > 500):
-        return render_template("add-exercise.html", error="Text contents too long (max 300 chars)")
+        return render_template("add-exercise.html",
+                               error="Text contents too long (max 300 chars)")
     if not 0 < int(max_points) < 999:
-        return render_template("add-exercise.html", error="Grading outside of range 0 - 999")
+        return render_template("add-exercise.html",
+                               error="Grading outside of range 0 - 999")
 
-    add_course_exercise(course_id, title, question, answer, max_points, choices)
+    add_course_exercise(course_id, title, question,
+                        answer, max_points, choices)
     return redirect(f"/courses/{course_id}/edit")
 
 
@@ -189,7 +198,8 @@ def course_add_material(course_id: int):
         return redirect("/")
 
     if request.method == "GET":
-        return render_template("add-course-material.html", course=get_course_info(course_id))
+        return render_template("add-course-material.html",
+                               course=get_course_info(course_id))
 
     if session.get("csrf_token", None) != request.form.get("csrf_token", -1):
         abort(403)
@@ -199,13 +209,17 @@ def course_add_material(course_id: int):
 
     # Validate data
     if len(title) < 3:
-        return render_template("add-course-material.html", error="Title too short (min 3 chars)")
+        return render_template("add-course-material.html",
+                               error="Title too short (min 3 chars)")
     if len(title) > 500:
-        return render_template("add-course-material.html", error="Title too long (max 500 chars)")
+        return render_template("add-course-material.html",
+                               error="Title too long (max 500 chars)")
     if len(text) < 3:
-        return render_template("add-course-material.html", error="Text too short (min 3 chars)")
+        return render_template("add-course-material.html",
+                               error="Text too short (min 3 chars)")
     if len(text) > 10000:
-        return render_template("add-course-material.html", error="Text too long (max 10000 chars)")
+        return render_template("add-course-material.html",
+                               error="Text too long (max 10000 chars)")
 
     add_course_material(course_id, title, text)
     return redirect(f"/courses/{course_id}/edit")
@@ -225,9 +239,13 @@ def course_exercise_page(course_id: int, exercise_id: int):
     if not exercise:
         return redirect(f"/courses/{course_id}")
     if not exercise.choices:
-        return render_template("exercise.html", exercise=exercise, course=get_course_info(course_id))
+        return render_template("exercise.html",
+                               exercise=exercise,
+                               course=get_course_info(course_id))
     else:
-        return render_template("exercise-multichoice.html", exercise=exercise, course=get_course_info(course_id))
+        return render_template("exercise-multichoice.html",
+                               exercise=exercise,
+                               course=get_course_info(course_id))
 
 
 @app.route("/courses/<int:course_id>/materials/<int:material_id>", methods=["GET"])
@@ -241,7 +259,8 @@ def course_material_page(course_id: int, material_id: int):
 
     material = get_course_material(course_id, material_id)
     return render_template("material.html", material=material,
-                                            course=get_course_info(course_id))
+                           course=get_course_info(course_id))
+
 
 @app.route("/courses/<int:course_id>/exercises/<int:exercise_id>/submit", methods=["POST"])
 def submit_exercise(course_id: int, exercise_id: int):
@@ -269,12 +288,13 @@ def course_stats(course_id: int):
     course = get_course_info(course_id)
     participants = get_course_participant_names(course_id)
     return render_template("course-stats.html",
-                           course = course,
-                           stats = stats,
-                           participants = participants)
+                           course=course,
+                           stats=stats,
+                           participants=participants)
+
 
 @app.route("/courses/<int:course_id>/submissions/<int:submission_id>", methods=["GET", "POST"])
-def grading(course_id:int, submission_id: int):
+def grading(course_id: int, submission_id: int):
     submission = get_submission(submission_id)
     if not submission:
         abort(404, "Submission does not exist")
@@ -289,9 +309,9 @@ def grading(course_id:int, submission_id: int):
             abort(400, "Invalid grade")
 
         grade_submission(submission_id, grade)
-        return redirect("/courses/"+ str(course_id) + "/stats")
+        return redirect("/courses/" + str(course_id) + "/stats")
 
     else:
-        return render_template("grading.html", course=get_course_info(course_id),
-                                               submission=submission)
-
+        return render_template("grading.html",
+                               course=get_course_info(course_id),
+                               submission=submission)

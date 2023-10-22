@@ -7,13 +7,15 @@
 {% endif %}
 <!-- -->
 
-<form style="width:100%;" id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit" method="POST">
+<form style="width:100%;" id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit"
+    method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
     <div style="display: flex; flex-direction: column; gap:1rem;">
         <h2>{{exercise.question}}</h2>
         {% if exercise.submitted_answer == None %}
-        <textarea required rows="7" class="textarea" name="answer" form="answer-form" type="text" placeholder="Answer here"></textarea>
+        <textarea required rows="7" class="textarea" name="answer" form="answer-form" type="text"
+            placeholder="Answer here"></textarea>
         {% else %}
         <textarea required rows="7" class="textarea" readonly>{{exercise.submitted_answer}}</textarea>
         {% endif %}

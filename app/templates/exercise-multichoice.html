@@ -7,7 +7,8 @@
 {% endif %}
 <!-- -->
 
-<form style="width:100%;" id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit" method="POST">
+<form style="width:100%;" id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit"
+    method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
     <div style="display: flex; flex-direction: column; gap:1rem;">
@@ -25,8 +26,9 @@
             {% endfor %}
         </div>
         <!-- -->
-        {% else %}
+
         <!-- -->
+        {% else %}
         <div style="display: flex; flex-direction: column; gap: 0.3rem;">
             <label>{{exercise.question}}</label>
             {% for c in exercise.choices %}
@@ -41,8 +43,6 @@
             </div>
             {% endfor %}
         </div>
-        <!-- -->
-
         {% endif %}
         <!-- -->
 
@@ -55,9 +55,11 @@
         {% endif %}
         {% else %}
         {% if exercise.submitted_answer == exercise.correct_answer %}
-        <p style="font-size:1.2rem; color: var(--success); font-weight: bold;">Correct answer: {{exercise.correct_answer}}</p>
+        <p style="font-size:1.2rem; color: var(--success); font-weight: bold;">Correct answer:
+            {{exercise.correct_answer}}</p>
         {% else %}
-        <p style="font-size:1.2rem; color: var(--secondary); font-weight: bold;">Correct answer: {{exercise.correct_answer}}</p>
+        <p style="font-size:1.2rem; color: var(--secondary); font-weight: bold;">Correct answer:
+            {{exercise.correct_answer}}</p>
         {% endif %}
         {% endif %}
         <!-- -->

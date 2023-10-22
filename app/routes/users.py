@@ -3,6 +3,7 @@ from services.users import *
 import secrets
 from app import app
 
+
 def logout_user():
     del session["username"]
     del session["is_teacher"]
@@ -10,7 +11,7 @@ def logout_user():
     del session["csrf_token"]
 
 
-def login_user(username:str):
+def login_user(username: str):
     session["username"] = username
     session["user_id"] = get_user_id(username)
     session["is_teacher"] = is_teacher(username)

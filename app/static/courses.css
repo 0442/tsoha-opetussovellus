@@ -91,6 +91,21 @@
     text-decoration: underline;
 }
 
+.course-page-content-list {
+    width:100%;
+    padding: 2rem;
+
+    display: flex;
+    flex-direction:column;
+    gap: 1rem;
+
+    border: 0.1rem solid var(--tertiary-lighten-2);
+    border-radius: 1rem;
+
+    background-color: var(--surface-2);
+    box-shadow: 0 0 0.5rem var(--shadow);
+}
+
 .add-course-content-form {
     width: 40rem;
     min-width: fit-content;
@@ -136,7 +151,6 @@
     background-color: var(--surface-3);
 
     font-size: 1.1rem;
-    ;
 
     border: solid 0.15rem var(--primary-darken-1);
     border-radius: 1.5rem;

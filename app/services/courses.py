@@ -4,17 +4,20 @@ from app import db
 from typing import NamedTuple, Any
 from flask import session
 
+
 def is_teacher() -> bool:
     """Check whether a request came from someone logged in as a teacher."""
-    return ("user_id"    in session and
+    return ("user_id" in session and
             "is_teacher" in session and
             session["is_teacher"] == True)
 
+
 def is_student() -> bool:
     """Check whether a request came from someone logged in as a student."""
-    return ("user_id"    in session and
+    return ("user_id" in session and
             "is_teacher" in session and
             session["is_teacher"] == False)
+
 
 class Course(NamedTuple):
     id: str
@@ -22,6 +25,7 @@ class Course(NamedTuple):
     description: str
     teacher_ids: list[str]
     participant_ids: list[str]
+
 
 def create_course(name: str, description: str, creator_id: str) -> str:
     """Creates a bare course with only a name and a description without any content or exercises.
@@ -39,33 +43,39 @@ def create_course(name: str, description: str, creator_id: str) -> str:
         SELECT currval('courses_id_seq');
     """)
 
-    course_id = db.session.execute(sql, {"name":name, "desc":description, "user_id": creator_id}).fetchone()[0]
+    course_id = db.session.execute(
+        sql, {"name": name, "desc": description, "user_id": creator_id}).fetchone()[0]
     db.session.commit()
 
     return course_id
 
+
 def delete_course(course_id: int):
     sql = text("DELETE FROM courses WHERE id = :course_id")
     try:
-        db.session.execute(sql, {"course_id":course_id})
+        db.session.execute(sql, {"course_id": course_id})
     # In case of trying to delete a nonexistent course
     except Exception as e:
         print(e)
     db.session.commit()
 
+
 def add_course_material(course_id: int, title: str, text_content: str) -> None:
-    sql = text("INSERT INTO course_text_materials (course_id, title, content) VALUES (:course_id, :title, :content)")
-    db.session.execute(sql, {"course_id":course_id, "title":title, "content":text_content})
+    sql = text(
+        "INSERT INTO course_text_materials (course_id, title, content) VALUES (:course_id, :title, :content)")
+    db.session.execute(sql, {"course_id": course_id,
+                       "title": title, "content": text_content})
     db.session.commit()
 
-def add_course_exercise(course_id: int, title: str, question: str, answer: str, max_points: int, choices: None|str) -> None:
+
+def add_course_exercise(course_id: int, title: str, question: str, answer: str, max_points: int, choices: None | str) -> None:
     sql = text("""
         INSERT INTO course_exercises (
             course_id, title, question, correct_answer, choices, max_points
         ) VALUES (
             :course_id, :title, :question, :correct_answer, :choices, :max_points
         )"""
-    )
+               )
 
     if choices:
         print("Creating a multichoice exercise")
@@ -78,7 +88,7 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str, 
             ) VALUES (
                 :course_id, :title, :question, :correct_answer, NULL, :max_points
             )"""
-        )
+                   )
 
     db.session.execute(sql, {"course_id": course_id,
                              "title": title,
@@ -87,6 +97,7 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str, 
                              "choices": choices,
                              "max_points": max_points})
     db.session.commit()
+
 
 def get_all_submissions(course_id: int):
     sql = text("""
@@ -102,13 +113,17 @@ def get_all_submissions(course_id: int):
     results = db.session.execute(sql, {"course_id": course_id}).fetchall()
     return results
 
+
 def _get_course_participants(course_id: int):
-    sql = text("SELECT user_id FROM course_participants WHERE course_id = :course_id")
-    return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
+    sql = text(
+        "SELECT user_id FROM course_participants WHERE course_id = :course_id")
+    return [row[0] for row in db.session.execute(sql, {"course_id": course_id}).fetchall()]
+
 
 def _get_course_teachers(course_id: int):
     sql = text("SELECT user_id FROM course_teachers WHERE course_id = :course_id")
-    return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
+    return [row[0] for row in db.session.execute(sql, {"course_id": course_id}).fetchall()]
+
 
 def get_course_participant_names(course_id: int) -> list[str]:
     sql = text("""
@@ -117,7 +132,8 @@ def get_course_participant_names(course_id: int) -> list[str]:
         LEFT JOIN users u ON u.id = cp.user_id
         WHERE course_id = :course_id
     """)
-    return [row[0] for row in db.session.execute(sql, {"course_id":course_id}).fetchall()]
+    return [row[0] for row in db.session.execute(sql, {"course_id": course_id}).fetchall()]
+
 
 def get_all_courses() -> list[Course]:
     sql = text("SELECT id, name, description FROM courses")
@@ -127,9 +143,11 @@ def get_all_courses() -> list[Course]:
     for course_id, name, desc in courses:
         teacher_ids = _get_course_teachers(course_id)
         participant_ids = _get_course_participants(course_id)
-        courses_objects.append(Course(course_id, name, desc, teacher_ids, participant_ids))
+        courses_objects.append(
+            Course(course_id, name, desc, teacher_ids, participant_ids))
 
     return courses_objects
+
 
 def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Course]:
     """Returns a list of matching courses"""
@@ -167,41 +185,48 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
     base_sql += "GROUP BY c.id"
 
     print(base_sql)
-    courses = db.session.execute(text(base_sql), {"user_id":user_id, "name":"%"+name+"%"}).fetchall()
+    courses = db.session.execute(
+        text(base_sql), {"user_id": user_id, "name": "%"+name+"%"}).fetchall()
 
     course_objects = []
     for course_id, name, desc in courses:
         teacher_ids = _get_course_teachers(course_id)
         participant_ids = _get_course_participants(course_id)
-        course_objects.append(Course(course_id, name, desc, teacher_ids, participant_ids))
+        course_objects.append(
+            Course(course_id, name, desc, teacher_ids, participant_ids))
 
     return course_objects
 
 
-
 def is_course_teacher(user_id: int, course_id: int) -> bool:
     """Check wether given user is a teacher in given course"""
-    sql = text("SELECT id FROM course_teachers WHERE course_id = :course_id AND user_id = :user_id")
-    result = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
+    sql = text(
+        "SELECT id FROM course_teachers WHERE course_id = :course_id AND user_id = :user_id")
+    result = db.session.execute(
+        sql, {"course_id": course_id, "user_id": user_id}).fetchall()
     if len(result) < 1:
         return False
     else:
         return True
+
 
 def is_course_student(user_id: int, course_id: int) -> bool:
     """Check wether given user is a user enrolled in given course"""
-    sql = text("SELECT id FROM course_participants WHERE course_id = :course_id AND user_id = :user_id")
-    result = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
+    sql = text(
+        "SELECT id FROM course_participants WHERE course_id = :course_id AND user_id = :user_id")
+    result = db.session.execute(
+        sql, {"course_id": course_id, "user_id": user_id}).fetchall()
     if len(result) < 1:
         return False
     else:
         return True
+
 
 def get_course_info(course_id: int) -> Course:
     """Returns None if course with course_id doesn't exist, otherwise return a Course object"""
 
     sql = text("SELECT name, description FROM courses WHERE id = :course_id")
-    result = db.session.execute(sql, {"course_id":course_id}).fetchone()
+    result = db.session.execute(sql, {"course_id": course_id}).fetchone()
     if result == None:
         return None
 
@@ -212,13 +237,16 @@ def get_course_info(course_id: int) -> Course:
 
     return Course(course_id, name, description, teacher_ids, participant_ids)
 
+
 def add_user_to_course(user_id: int, course_id: int) -> None:
-    sql = text("INSERT INTO course_participants (user_id, course_id) VALUES (:user_id, :course_id)")
+    sql = text(
+        "INSERT INTO course_participants (user_id, course_id) VALUES (:user_id, :course_id)")
     try:
-        db.session.execute(sql, {"user_id":user_id, "course_id":course_id})
+        db.session.execute(sql, {"user_id": user_id, "course_id": course_id})
         db.session.commit()
     except IntegrityError:
         pass
+
 
 def remove_user_from_course(user_id: int, course_id: int) -> None:
     sql = text("""
@@ -233,8 +261,9 @@ def remove_user_from_course(user_id: int, course_id: int) -> None:
             WHERE course_id = :course_id
         )
     """)
-    db.session.execute(sql, {"user_id":user_id, "course_id":course_id})
+    db.session.execute(sql, {"user_id": user_id, "course_id": course_id})
     db.session.commit()
+
 
 class Exercise(NamedTuple):
     id: int
@@ -242,12 +271,13 @@ class Exercise(NamedTuple):
     title: str
     question: str
     correct_answer: str
-    choices: None|list[str]
+    choices: None | list[str]
 
     user_id: int
-    submitted_answer: None|str
-    grade: None|int
+    submitted_answer: None | str
+    grade: None | int
     max_points: int
+
 
 def get_course_exercise(exercise_id: int, user_id: int, course_id: int):
     sql = text("""
@@ -260,14 +290,16 @@ def get_course_exercise(exercise_id: int, user_id: int, course_id: int):
         ) es ON ce.id = es.exercise_id
         WHERE ce.id = :exercise_id
     """)
-    r = db.session.execute(sql, {"exercise_id": exercise_id, "user_id": user_id}).fetchone()
+    r = db.session.execute(
+        sql, {"exercise_id": exercise_id, "user_id": user_id}).fetchone()
     id, title, question, max_points, choices, submitted_answer, correct_answer, grade = r
     if choices:
         choices = choices.split(";")
     exc = Exercise(id, course_id, title, question,
-                    correct_answer, choices, user_id,
-                    submitted_answer, grade, max_points)
+                   correct_answer, choices, user_id,
+                   submitted_answer, grade, max_points)
     return exc
+
 
 def get_all_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
     sql = text("""
@@ -280,7 +312,8 @@ def get_all_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
         ) es ON ce.id = es.exercise_id
         WHERE course_id = :course_id
     """)
-    results = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
+    results = db.session.execute(
+        sql, {"course_id": course_id, "user_id": user_id}).fetchall()
     exercises = []
     for r in results:
         id, title, question, max_points, choices, submitted_answer, correct_answer, grade = r
@@ -293,6 +326,7 @@ def get_all_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
 
     return exercises
 
+
 def get_exercise_by_submission(submission_id: int):
     sql = text("""
         SELECT ce.id, ce.title, ce.question, ce.max_points, ce.choices, es.answer, ce.correct_answer, es.grade
@@ -302,11 +336,13 @@ def get_exercise_by_submission(submission_id: int):
     """)
     return db.session.execute(sql, {"submission_id": submission_id}).fetchone()
 
+
 def count_completed(exercises: list[Exercise]):
     completion_count = 0
     for e in exercises:
         completion_count += 1 if e.submitted_answer != None else 0
     return completion_count
+
 
 def get_course_material(course_id: int, material_id: int) -> list[str]:
     sql = text("""
@@ -314,8 +350,10 @@ def get_course_material(course_id: int, material_id: int) -> list[str]:
         FROM course_text_materials
         WHERE course_id = :course_id AND id = :material_id
     """)
-    results = db.session.execute(sql, {"course_id": course_id, "material_id": material_id}).fetchone()
+    results = db.session.execute(
+        sql, {"course_id": course_id, "material_id": material_id}).fetchone()
     return results
+
 
 def get_all_course_materials(course_id: int) -> list[str]:
     sql = text("""
@@ -323,20 +361,23 @@ def get_all_course_materials(course_id: int) -> list[str]:
         FROM course_text_materials
         WHERE course_id = :course_id
     """)
-    results = db.session.execute(sql, {"course_id":course_id}).fetchall()
+    results = db.session.execute(sql, {"course_id": course_id}).fetchall()
     return results
+
 
 def update_course_name(course_id: int, new_name: str) -> None:
     sql = text("UPDATE courses SET name = :new_name WHERE id = :course_id")
-    db.session.execute(sql, {"new_name":new_name, "course_id":course_id})
+    db.session.execute(sql, {"new_name": new_name, "course_id": course_id})
     db.session.commit()
+
 
 def update_course_desc(course_id: int, new_desc: str) -> None:
     sql = text("UPDATE courses SET description = :new_desc WHERE id = :course_id")
-    db.session.execute(sql, {"new_desc":new_desc, "course_id":course_id})
+    db.session.execute(sql, {"new_desc": new_desc, "course_id": course_id})
     db.session.commit()
 
-def submit_answer(exercise_id:int, user_id: int, answer: str) -> None:
+
+def submit_answer(exercise_id: int, user_id: int, answer: str) -> None:
     """ Automatically grades the exercise if it was a multiple choice exercise. """
 
     # If exercise is an essay exercise (choices IS NULL),
@@ -361,13 +402,14 @@ def submit_answer(exercise_id:int, user_id: int, answer: str) -> None:
         )"""
 
     try:
-        db.session.execute(text(sql), {"exercise_id":exercise_id, "user_id":user_id, "answer":answer})
+        db.session.execute(
+            text(sql), {"exercise_id": exercise_id, "user_id": user_id, "answer": answer})
         db.session.commit()
     except IntegrityError:
         pass
 
 
-def get_submission(submission_id:int) -> None | Any:
+def get_submission(submission_id: int) -> None | Any:
     """Returns an object containing the user's answer, exercise's question and the example answer."""
     sql = text("""
         SELECT es.id, es.exercise_id, es.user_id, u.name AS username,
@@ -379,15 +421,14 @@ def get_submission(submission_id:int) -> None | Any:
         WHERE es.id = :sub_id AND ce.choices IS NULL
     """)
 
-    result = db.session.execute(sql, {"sub_id":submission_id}).fetchone()
+    result = db.session.execute(sql, {"sub_id": submission_id}).fetchone()
     return result
 
 
-def grade_submission(submission_id:int, grade:int):
+def grade_submission(submission_id: int, grade: int):
     sql = text("""
         UPDATE exercise_submissions SET grade = :grade WHERE id = :sub_id
     """)
 
-    db.session.execute(sql, {"grade":grade, "sub_id":submission_id})
+    db.session.execute(sql, {"grade": grade, "sub_id": submission_id})
     db.session.commit()
-

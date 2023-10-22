@@ -13,31 +13,35 @@
     <div style="padding-left: 0.5rem; gap: 0.5rem; display:flex; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
             <label for="name">Name</label>
-            <textarea placeholder="Nameless course" form="course-info-form" style="color: var(--primary-darken-1); font-size: 2rem; font-weight:bold; width:fit-content; height: fit-content;" class="textarea" id="name" name="name">{{course.name}}</textarea>
+            <textarea placeholder="Nameless course" form="course-info-form"
+                style="color: var(--primary-darken-1); font-size: 2rem; font-weight:bold; width:fit-content; height: fit-content;"
+                class="textarea" id="name" name="name">{{course.name}}</textarea>
         </div>
 
         <div style="display: flex; flex-direction: column;">
             <label for="desc">Description</label>
-            <textarea placeholder="A course without a description." form="course-info-form" style="width:fit-content; height: fit-content;" class="textarea" id="desc" name="desc">{{course.description}}</textarea>
+            <textarea placeholder="A course without a description." form="course-info-form"
+                style="width:fit-content; height: fit-content;" class="textarea" id="desc"
+                name="desc">{{course.description}}</textarea>
         </div>
         <button type="submit" class="button-1">Save</button>
     </div>
 </form>
 <!-- -->
 
-
 <hr>
 
 <!-- -->
 <h2>Course content</h2>
-    <a href="/courses/{{course.id}}/edit/add_material" style="padding-left:1rem;" class="link-button">+ Add text material</a>
-    <a href="/courses/{{course.id}}/edit/add_exercise" style="padding-left:1rem;" class="link-button">+ Add an exercise</a>
+<a href="/courses/{{course.id}}/edit/add_material" style="padding-left:1rem;" class="link-button">+ Add text
+    material</a>
+<a href="/courses/{{course.id}}/edit/add_exercise" style="padding-left:1rem;" class="link-button">+ Add an exercise</a>
 <div>
 </div>
 <!-- -->
 
-
 <hr>
+
 <!-- -->
 <form method="POST" action="/courses/{{course.id}}/delete">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
