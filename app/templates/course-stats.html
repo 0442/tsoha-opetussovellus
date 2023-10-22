@@ -6,47 +6,52 @@
 {% if session.user_id in course.teacher_ids %}
 
 <label for="submissions">Exercise submissions sent by users</label>
-<table id="submissions">
-    <tbody>
-        <th>Username</th>
-        <th>Exercise name</th>
-        <th>Submitted<br>answer</th>
-        <th>Correct answer<br>(multichoice)</th>
-        <th>Points</th>
-    {% for s in stats%}
-        <tr>
-            <td>{{s.username}}</td>
-            <td>{{s.exercise_title}}</td>
+<div style="overflow-x:scroll; width: 100%">
+    <table id="submissions" >
+        <tbody>
+            <th>Username</th>
+            <th>Exercise name</th>
+            <th>Submitted<br>answer</th>
+            <th>Correct answer<br>(multichoice)</th>
+            <th>Points</th>
+        {% for s in stats%}
+            <tr>
+                <td>{{s.username}}</td>
+                <td>{{s.exercise_title}}</td>
 
-            {% if not s.choices %}
-            <td colspan="2"><a href="/courses/{{course.id}}/submissions/{{s.id}}">Grade answer</a></td>
-            {% else %}
-            <td>{{s.answer}}</td>
-            <td>{{s.correct_answer}}</td>
-            {% endif %}
+                {% if not s.choices %}
+                <td colspan="2"><a href="/courses/{{course.id}}/submissions/{{s.id}}">Grade answer</a></td>
+                {% else %}
+                <td>{{s.answer}}</td>
+                <td>{{s.correct_answer}}</td>
+                {% endif %}
 
-            {% if s.grade == None %}
-            <td>? / {{s.max_points}}</td>
-            {% else %}
-            <td>{{s.grade}} / {{s.max_points}}</td>
-            {% endif %}
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+                {% if s.grade == None %}
+                <td>? / {{s.max_points}}</td>
+                {% else %}
+                <td>{{s.grade}} / {{s.max_points}}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <h1>Participants</h1>
 <label for="participants">Users currently enrolled in the course</label>
-<table id="participants">
-    <tbody>
-        <th>Username</th>
-    {% for p in participants%}
-        <tr>
-            <td>{{p}}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+
+<div style="overflow-x:scroll; width: 100%">
+    <table id="participants">
+        <tbody>
+            <th>Username</th>
+        {% for p in participants%}
+            <tr>
+                <td>{{p}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 
 {% endif %}
