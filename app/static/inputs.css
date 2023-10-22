@@ -1,5 +1,6 @@
 input {
     background-color: var(--quaternary-lighten-3);
+    background-color: var(--surface-5);
     border-radius: 0.5rem;
     font-size: 1.2rem;
     border: none;
@@ -11,7 +12,8 @@ input {
     transition-duration: 0.05s;
 }
 input[type="text"] {
-    width:100%;
+    width: auto;
+    min-width: 0rem;
 }
 
 input:focus {
@@ -21,13 +23,16 @@ input:focus {
 
 textarea,
 .textarea {
-    border-radius: 0.3rem;
-    border: 0.1rem solid transparent;
+    font-family: inherit;
+    color: var(--tertiary);
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    border: 0.13rem solid transparent;
     outline: none;
     margin: 0;
     padding: 0.5rem;
     transition-duration: 0.05s;
-    background-color: var(--quaternary-lighten-3);
+    background-color: var(--surface-5);
 }
 
 textarea:focus,
@@ -37,7 +42,6 @@ textarea:focus,
 
 .checkbox {
     cursor: pointer;
-    border: solid 0.1rem var(--quaternary-lighten-2);
     border-radius: 0.5rem;
     padding: 0.2rem 0.7rem;
     height: 100%;
@@ -45,10 +49,13 @@ textarea:focus,
     justify-content: center;
     align-items: center;
     margin:0;
+    height: 3rem;
+
+    background-color: var(--surface-4);
 }
 
 .checkbox:hover {
-    background-color: var(--quaternary-lighten-3);
+    background-color: var(--surface-5);
 }
 
 ::placeholder {

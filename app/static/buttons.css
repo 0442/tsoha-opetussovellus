@@ -38,15 +38,16 @@
 
 .tab-button:hover {
     transition-duration: 0s;
-    background-color: var(--quaternary-lighten-3);
+    background-color: var(--surface-5);
 }
 
 .button-1 {
-    background-color: var(--primary-darken-1);
+    background-color: var(--primary);
 }
 
 .button-1:hover {
     background-color: var(--primary-darken-2);
+    color: var(--primary-lighten-2);
 }
 
 .button-2 {
@@ -58,9 +59,11 @@
 }
 
 .button-3 {
+    /*background-color: var(--secondary-lighten-2);
+    border: solid 0.1rem;
+    */
     background-color: var(--secondary-lighten-2);
     color: var(--secondary);
-    border: solid 0.1rem;
 }
 
 .button-3:hover {
@@ -82,7 +85,15 @@
 }
 
 .button-5:hover {
-    background: var(--quaternary-lighten-1);
+    background-color: var(--quaternary-darken-1);
+}
+
+.button-5 {
+    background-color: hsl(240, 68%, 67%);
+}
+
+.button-5:hover {
+    background-color: hsl(240, 68%, 57%);
 }
 
 .back-button {
@@ -94,17 +105,4 @@
     background-color: transparent;
     color: var(--primary);
     border: none;
-}
-
-
-/* Button modifiers */
-.large-button {
-    display: none
-}
-
-.small-button {
-    font-size: 0.9rem;
-    padding: 0.4rem;
-    padding-left: 0.9rem;
-    padding-right: 0.9rem;
 }

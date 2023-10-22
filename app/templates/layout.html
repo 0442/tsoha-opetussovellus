@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/main.css">
     <title>Opetussovellus</title>
 </head>
 
 <body class="disable-transitions">
-    <div class="top-bar">
+    <nav class="top-bar">
         <a class="link-button top-bar-button item1" href="/">📖 Courses</a>
         {% if session.is_teacher == True %}
         <a class="link-button top-bar-button item2" href="/new_course">＋ Create a course</a>
         {% endif %}
         {% if session.username %}
-        <a class="link-button top-bar-button item4" style="flex-direction: row;" href="/profile">
+        <a class="link-button top-bar-button item4" style="flex-direction: row; flex-wrap: wrap;" href="/profile">
             {{session.username}}
             <span style="font-size:0.8rem;">
                 {% if session.is_teacher == True %}
@@ -23,9 +23,10 @@
             </span>
         </a>
         {% else %}
-        <a class="link-button button-1 item3" href="/login">Log in</a>
+        <a class="link-button button-1 item3" style="background-color: transparent;"href="/login">Log in</a>
         <a class="link-button button-5 item4" href="/register">Register</a>
         {% endif %}
+    </nav>
 
 
     {% if error %}

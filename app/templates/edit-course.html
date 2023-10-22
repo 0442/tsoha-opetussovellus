@@ -2,33 +2,46 @@
 {% block course_content %}
 
 
+<h1>Edit course</h1>
+
+<hr>
 <!-- -->
-<form style="width:100%;" id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
+<form style="width:100%; " id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
-    <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
-        <label for="name">Course name</label>
-        <textarea placeholder="Nameless course" form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="h1 textarea" id="name" name="name">{{course.name}}</textarea>
-        <label for="desc">Course description</label>
-        <textarea placeholder="A course without a description." form="course-info-form" style="width:100%; height: fit-content; white-space: nowrap;" class="p textarea" id="desc" name="desc">{{course.description}}</textarea>
-        <button type="submit" class="button-1">Update name and description</button>
+    <h2>Basic information</h2>
+    <div style="padding-left: 1rem;gap: 0.5rem; display:flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: column;">
+            <label for="name">Name</label>
+            <textarea placeholder="Nameless course" form="course-info-form" style="color: var(--primary-darken-1); font-size: 2rem; font-weight:bold; width:fit-content; height: fit-content;" class="textarea" id="name" name="name">{{course.name}}</textarea>
+        </div>
+
+        <div style="display: flex; flex-direction: column;">
+            <label for="desc">Description</label>
+            <textarea placeholder="A course without a description." form="course-info-form" style="width:fit-content; height: fit-content;" class="textarea" id="desc" name="desc">{{course.description}}</textarea>
+        </div>
+        <button type="submit" class="button-1">Save</button>
     </div>
 </form>
 <!-- -->
 
 
-<!-- -->
-<a href="/courses/{{course.id}}/edit/add_material" class="button-1 link-button">+ New Text Material</a>
-<!-- -->
+<hr>
 
 <!-- -->
-<a href="/courses/{{course.id}}/edit/add_exercise" class="button-1 link-button">+ New Exercise</a>
+<h2>Course content</h2>
+    <a href="/courses/{{course.id}}/edit/add_material" style="padding-left:1rem;" class="link-button">+ Add text material</a>
+    <a href="/courses/{{course.id}}/edit/add_exercise" style="padding-left:1rem;" class="link-button">+ Add an exercise</a>
+<div>
+</div>
 <!-- -->
 
+
+<hr>
 <!-- -->
 <form method="POST" action="/courses/{{course.id}}/delete">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
-    <button class="button-2">Delete Course</button>
+    <button class="button-3">Delete Course</button>
 </form>
 <!-- -->
 

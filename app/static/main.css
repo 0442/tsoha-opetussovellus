@@ -10,20 +10,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smooting: grayscale;
 
-    --primary-darken-3: hsl(224, 40%, 10%);
-    --primary-darken-2: hsl(224, 60%, 23%);
-    --primary-darken-1: hsl(224, 60%, 40%);
-    --primary: hsl(224, 80%, 60%);
-    --primary-lighten-1: hsl(224, 100%, 80%);
-    --primary-lighten-2: hsl(224, 100%, 90%);
-    --primary-lighten-3: hsl(224, 100%, 98%);
+    --primary-darken-3:  hsl();
+    --primary-darken-2:  hsl(230, 71%, 21%);
+    --primary-darken-1:  hsl(230, 72%, 33%);
+    --primary:           hsl(230, 80%, 40%);
+    --primary-lighten-1: hsl(230, 70%, 60%);
+    --primary-lighten-2: hsl(230, 60%, 70%); /**/
+    --primary-lighten-3: hsl(230, 80%, 90%);
 
 
-    --secondary-darken-2: hsl(3, 25%, 20%);
-    --secondary-darken-1: hsl(3, 30%, 40%);
-    --secondary: hsl(6, 50%, 60%);
-    --secondary-lighten-1: hsl(10, 80%, 80%);
-    --secondary-lighten-2: hsl(15, 100%, 90%);
+    --secondary-darken-2:  hsl(350,   50%, 20%);
+    --secondary-darken-1:  hsl(350,   50%, 40%);
+    --secondary:           hsl(350,   50%, 50%);
+    --secondary-lighten-1: hsl(350,   50%, 80%);
+    --secondary-lighten-2: hsl(350,   50%, 90%);
 
     --tertiary-darken-3: hsl(225, 30%, 20%);
     --tertiary-darken-2: hsl(225, 30%, 30%);
@@ -41,15 +41,30 @@
     --quaternary-lighten-2: hsl(203, 70%, 90%);
     --quaternary-lighten-3: hsl(203, 70%, 97%);
 
-    --surface: hsl(0, 100%, 100%);
-    --shadow: hsl(220, 100%, 30%, 0.10);
+    --surface-1: hsl(235, 100%, 99%);
+    --surface-2: hsl(235, 100%, 97%);
+    --surface-3: hsl(235, 100%, 96%);
+    --surface-4: hsl(235, 100%, 94%);
+    --surface-5: hsl(235, 100%, 92%);
+    --surface-6: hsl(235, 100%, 90%);
+
+    --shadow: hsl(225, 100%, 29%, 0.10);
     --success: hsl(132, 30%, 60%);
+    --link: hsl(230, 95%, 45%);
 }
 
 html {
     box-sizing: border-box;
     display: flex;
+
+    /*
+    height:100vh;
+    flex-direction: column;
+    z-index: -10;
+    background-image: linear-gradient(hsl(151, 100%, 12%), hsl(295, 100%, 11%)) ;
+    */
 }
+
 
 .disable-transitions {
     -webkit-transition: none !important;
@@ -82,12 +97,24 @@ body {
     align-content: center;
     flex-direction: column;
     z-index: -2;
-    background-color: white;
+
+    background-color: hsl(295, 100%, 11%);
+    background-color: var(--primary-darken-2);
+    background-color: black;
+    background-image: url("/static/bitmap.svg");
+    background-repeat: repeat-y;
+    background-position: 0 10%;
+    background-size: cover;
+    overflow: auto;
 }
 
 a {
     color: rgba(0, 100, 255);
+    color: var(--link);
     font-weight: bold;
+}
+a:hover {
+    color: var(--primary-lighten-2);
 }
 
 .link-button {
@@ -107,24 +134,9 @@ td,
 th {
     padding: 0.7rem 1.4rem;
     border: 0.1rem solid;
-    border-color: var(--tertiary-lighten-2);
-    background-color: var(--tertiary-lighten-3);
+    border-color: var(--surface-4);
+    background-color: var(--surface-5);
     text-align: center;
-}
-
-.bg {
-    position: absolute;
-    align-self: center;
-    left: 0;
-    top: 0;
-    overflow: clip;
-    height: 100%;
-    width: 100%;
-    min-height: 100%;
-    min-width: 100%;
-    z-index: -1;
-    opacity: 1;
-    background-color: var(--primary-darken-2);
 }
 
 .narrow-page-container {
@@ -151,7 +163,7 @@ th {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background-color: var(--surface);
+    background-color: var(--surface-3);
     padding: 1rem;
     border-radius: 0.5rem;
     justify-content: flex-start;
@@ -172,11 +184,34 @@ th {
     width: 100%;
     z-index: 2;
     background-color: var(--secondary-lighten-1);
+    height: 3rem;
 }
 
 .error-notif {
     color: var(--secondary-darken-2);
-    font-weight: bold;
+    align-self: center;
+    font-weight: normal;
     font-size: 1.3rem;
-    padding: 0.5rem;
+}
+
+.error-close-button {
+    display: none;
+    padding: 0;
+    height: 1.8rem;
+    width: 1.8rem;
+    font-size: 1.3rem;
+    color: var(--secondary-darken-1);
+    background-color: var(--secondary-lighten-2);
+    border-radius: 2rem;
+
+
+    align-self: center;
+    text-align: center;
+
+    border: none;
+    cursor: pointer;
+}
+
+.error-close-button:hover {
+    color: var(--secondary);
 }

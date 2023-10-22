@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<img alt="" class="bg" src="/static/bitmap.svg">
 <div class="empty-page-container">
     <div class="profile-card">
         <hgroup>
@@ -14,7 +13,7 @@
         </hgroup>
 
         <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <a href="/logout" class="button-4 link-button">Logout</a>
+            <a href="/logout" class="button-1 link-button">Logout</a>
             <form action="/delete" method="POST">
                 <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
                 <button type="submit" class="button-3">Delete User</button>

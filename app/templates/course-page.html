@@ -3,11 +3,13 @@
 
 
 
-<h1>{{course.name}}</h1>
-<p>{{course.description}}</p>
+<hgroup>
+    <h1>{{course.name}}</h1>
+    <p>{{course.description}}</p>
+</hgroup>
 {% if not session.username %}
 <div class="notice-container">
-    <p>You must <a style="color:var(--primary)" href="/login">login</a> first before you can complete any courses.</p>
+    <p>You must <a style="color:var(--primary)" href="/login">log in</a> first before you can join any courses.</p>
 </div>
 {% endif %}
 
@@ -16,7 +18,7 @@
 {% if session.user_id in course.participant_ids or session.user_id in course.teacher_ids %}
 
 <!-- -->
-<div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.1rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
+<div style="width:100%; background-color: var(--surface-2); display: flex; flex-direction:column; border: 0.1rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
     <h2>Course Materials</h2>
     {% if text_materials.__len__() == 0 %}
     <p>No course materials</p>
@@ -33,7 +35,7 @@
 <!-- -->
 
 <!-- -->
-<div style="width:100%; background-color: var(--surface); display: flex; flex-direction:column; border: 0.1rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
+<div style="width:100%; background-color: var(--surface-2); display: flex; flex-direction:column; border: 0.1rem solid var(--tertiary-lighten-2); box-shadow: 0 0 0.5rem rgba(10,10,10,0.05); padding: 2rem; border-radius: 0.5rem; gap: 1rem;">
     <h2>Course Exercises</h2>
     <div style="display:flex; flex-direction: column; gap: 0.5rem;">
         {% if exercises.__len__() == 0 %}
