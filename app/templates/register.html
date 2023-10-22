@@ -13,15 +13,15 @@
 
             <div style="display:flex; flex-direction: column;">
                 <label for="username-input">Username</label>
-                <input required id="username-input" type="text" name="username" placeholder="username">
+                <input required minlength="3" maxlength="20" id="username-input" type="text" name="username" placeholder="username">
             </div>
             <div style="display:flex; flex-direction: column;">
                 <label for="password-input">Password</label>
-                <input required oninput="confirmPassword()" id="password-input" type="password" name="password" placeholder="password">
+                <input required minlength="3" maxlength="20" oninput="confirmPassword()" id="password-input" type="password" name="password" placeholder="password">
             </div>
             <div style="display:flex; flex-direction: column;">
                 <label for="confirm-password-input">Confirm Password</label>
-                <input required oninput="confirmPassword()" id="confirm-password-input" type="password" name="confirm-password" placeholder="password">
+                <input required minlength="3" maxlength="20" oninput="confirmPassword()" id="confirm-password-input" type="password" name="confirm-password" placeholder="password">
             </div>
             <p id="password-error" hidden style="display:none; color:red">Passwords do not match</p>
             <div>
