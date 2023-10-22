@@ -1,9 +1,9 @@
 # Opetussovellus
 
-Sovelluksen avulla voidaan järjestää verkkokursseja, joissa on tekstimateriaalia ja automaattisesti tarkastettavia tehtäviä. Jokainen käyttäjä on opettaja tai opiskelija.
+Sovelluksen avulla voidaan järjestää verkkokursseja, joissa on tekstimateriaalia ja tehtäviä. Jokainen käyttäjä on opettaja tai opiskelija.
 
 ## Sovelluksen ominaisuudet
-### Alkuperäiset ominaisuudet:
+### Perusominaisuudet:
 * Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
 * Opiskelija näkee listan kursseista ja voi liittyä kurssille.
 * Opiskelija voi lukea kurssin tekstimateriaalia sekä ratkoa kurssin tehtäviä.
@@ -12,7 +12,7 @@ Sovelluksen avulla voidaan järjestää verkkokursseja, joissa on tekstimateriaa
 * Opettaja pystyy lisäämään kurssille tekstimateriaalia ja tehtäviä. Tehtävä voi olla monivalinta tai esseetehtävä.
 * Opettaja pystyy näkemään kurssistaan tilaston, keitä opiskelijoita on kurssilla ja mitkä kurssin tehtävät kukin on ratkonut.
 
-### Muita lisättyjä ominaisuuksia:
+### Muita ominaisuuksia:
 * Opiskelija saa ratkomistaan kurssien tehtävistä arvosanan
     * Opettaja arvioi esseetehtävät
     * Monivalintatehtävät arvioidaan automaattisesti
@@ -20,6 +20,8 @@ Sovelluksen avulla voidaan järjestää verkkokursseja, joissa on tekstimateriaa
 * Opettaja näkee opiskelijoiden tehtävistä saamat pisteet
 * Kursseja voi hakea nimen ja kuvauksen mukaan. Kurssihakua voi myös rajata käyttäjän omiin kursseihin sekä kursseihin joihin käyttäjä on osallistunut.
 
+## Sovelluksen tilanne
+Kaikki yllä mainitut sovelluksen ominaisuudet on toteutettu.
 
 ## Sovelluksen testaaminen
 1. Luo sovellusta varten uusi tietokanta psql-tulkissa:
@@ -46,17 +48,17 @@ Sovelluksen avulla voidaan järjestää verkkokursseja, joissa on tekstimateriaa
     source venv/bin/activate
     pip install -r requirements.txt
     ```
-6. Restarttaa virtuaaliympäristö
+
+6. Uudelleenaktivoi virtuaaliympäristö:
     ```shell
     deactivate
     source venv/bin/activate
     ```
+
 7. Käynnistä sovelluksen backend:
     ```shell
     cd app
     flask run
     ```
-8. Mene osoitteeseen <localhost:5000>
 
-## Sovelluksen nykytilanne
-Kaikki yllä määritellyt sovelluksen ominaisuudet on toteutettu.
+8. Avaa sovellus menemällä osoitteeseen <http://localhost:5000>
