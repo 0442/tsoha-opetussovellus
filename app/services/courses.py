@@ -164,8 +164,17 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
 def is_course_teacher(user_id: int, course_id: int) -> bool:
     """Check wether given user is a teacher in given course"""
     sql = text("SELECT id FROM course_teachers WHERE course_id = :course_id AND user_id = :user_id")
-    result = db.session.execute(sql, {"course_id":course_id, "user_id":user_id})
-    if len(result.fetchall()) < 1:
+    result = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
+    if len(result) < 1:
+        return False
+    else:
+        return True
+
+def is_course_student(user_id: int, course_id: int) -> bool:
+    """Check wether given user is a user enrolled in given course"""
+    sql = text("SELECT id FROM course_participants WHERE course_id = :course_id AND user_id = :user_id")
+    result = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
+    if len(result) < 1:
         return False
     else:
         return True
@@ -211,21 +220,41 @@ class Exercise(NamedTuple):
     grade: None|int
     max_points: int
 
-def get_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
-    sql = text("\
-        SELECT ce.id, ce.title, ce.question, ce.max_points, ce.correct_answer, ce.choices, es.answer, es.grade \
-        FROM course_exercises ce \
-        LEFT JOIN (\
-            SELECT id, exercise_id, user_id, answer, grade \
-            FROM exercise_submissions \
-            WHERE user_id = :user_id \
-        ) es ON ce.id = es.exercise_id \
-        WHERE course_id = :course_id \
-    ")
+def get_course_exercise(exercise_id: int, user_id: int, course_id: int):
+    sql = text("""
+        SELECT ce.id, ce.title, ce.question, ce.max_points, ce.choices, es.answer, ce.correct_answer, es.grade
+        FROM course_exercises ce
+        LEFT JOIN (
+            SELECT id, exercise_id, user_id, answer, grade
+            FROM exercise_submissions
+            WHERE user_id = :user_id
+        ) es ON ce.id = es.exercise_id
+        WHERE ce.id = :exercise_id
+    """)
+    r = db.session.execute(sql, {"exercise_id": exercise_id, "user_id": user_id}).fetchone()
+    id, title, question, max_points, choices, submitted_answer, correct_answer, grade = r
+    if choices:
+        choices = choices.split(";")
+    exc = Exercise(id, course_id, title, question,
+                    correct_answer, choices, user_id,
+                    submitted_answer, grade, max_points)
+    return exc
+
+def get_all_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
+    sql = text("""
+        SELECT ce.id, ce.title, ce.question, ce.max_points, ce.choices, es.answer, ce.correct_answer, es.grade
+        FROM course_exercises ce
+        LEFT JOIN (
+            SELECT id, exercise_id, user_id, answer, grade
+            FROM exercise_submissions
+            WHERE user_id = :user_id
+        ) es ON ce.id = es.exercise_id
+        WHERE course_id = :course_id
+    """)
     results = db.session.execute(sql, {"course_id":course_id, "user_id":user_id}).fetchall()
     exercises = []
     for r in results:
-        id, title, question, max_points, correct_answer, choices, submitted_answer, grade = r
+        id, title, question, max_points, choices, submitted_answer, correct_answer, grade = r
         if choices:
             choices = choices.split(";")
         exc = Exercise(id, course_id, title, question,
@@ -235,17 +264,38 @@ def get_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
 
     return exercises
 
+def get_exercise_by_submission(submission_id: int):
+    sql = text("""
+        SELECT ce.id, ce.title, ce.question, ce.max_points, ce.choices, es.answer, ce.correct_answer, es.grade
+        FROM course_exercises ce
+        JOIN exercise_submissions es ON ce.id = es.exercise_id
+        WHERE es.id = :submission_id
+    """)
+    return db.session.execute(sql, {"submission_id": submission_id}).fetchone()
+
 def count_completed(exercises: list[Exercise]):
     completion_count = 0
     for e in exercises:
         completion_count += 1 if e.submitted_answer != None else 0
     return completion_count
 
-def get_course_materials(course_id: int) -> list[str]:
-    sql = text("SELECT id, title, content FROM course_text_materials WHERE course_id = :course_id")
-    results = db.session.execute(sql, {"course_id":course_id}).fetchall()
+def get_course_material(course_id: int, material_id: int) -> list[str]:
+    sql = text("""
+        SELECT id, title, content
+        FROM course_text_materials
+        WHERE course_id = :course_id AND id = :material_id
+    """)
+    results = db.session.execute(sql, {"course_id": course_id, "material_id": material_id}).fetchone()
     return results
 
+def get_all_course_materials(course_id: int) -> list[str]:
+    sql = text("""
+        SELECT id, title, content
+        FROM course_text_materials
+        WHERE course_id = :course_id
+    """)
+    results = db.session.execute(sql, {"course_id":course_id}).fetchall()
+    return results
 
 def update_course_name(course_id: int, new_name: str) -> None:
     sql = text("UPDATE courses SET name = :new_name WHERE id = :course_id")
@@ -311,3 +361,4 @@ def grade_submission(submission_id:int, grade:int):
 
     db.session.execute(sql, {"grade":grade, "sub_id":submission_id})
     db.session.commit()
+

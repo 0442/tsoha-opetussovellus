@@ -29,44 +29,59 @@ def course_search():
     if "user_id" not in session:
         return redirect("/")
 
-    name = None
-    if "search" in request.form:
-        name = request.form["search"]
-
+    search_word = request.form.get("search", "")
     my = True if "my-courses" in request.form else False
     enrolled = True if "enrolled-courses" in request.form else False
-    courses = search_courses(name, my, enrolled, session["user_id"])
-    print(courses)
+
+    courses = search_courses(search_word, my, enrolled, session["user_id"])
+
     return render_template("courses.html",
                            courses=courses,
-                           course_count=len(courses))
+                           course_count=len(courses),
+                           search_word=search_word)
 
 
 @app.route("/courses/<int:course_id>")
 def course(course_id: int):
     if "user_id" in session:
-        exercises = get_course_exercises(course_id, session["user_id"])
+        exercises = get_all_course_exercises(course_id, session["user_id"])
     else:
         exercises = []
     return render_template("course-page.html",
                            course=get_course_info(course_id),
-                           text_materials=get_course_materials(course_id),
+                           text_materials=get_all_course_materials(course_id),
                            exercises=exercises,
                            completion_count=count_completed(exercises))
 
 @app.route("/new_course", methods=["GET", "POST"])
 def new_course():
+    if not is_teacher() and not is_student():
+        return redirect("/login")
+
     if not is_teacher():
         return redirect("/")
 
     if request.method == "GET":
         return render_template("create-course.html")
 
+    # from here on request is POST and user is teacher...
+
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    name = request.form["name"]
-    description = request.form["description"]
+    name = request.form.get("name", "").strip()
+    description = request.form.get("description", "").strip()
+
+    # Validate data
+    if len(name) < 3:
+        return render_template("create-course.html", error="Name too short (min 3 chars).")
+    if len(name) > 50:
+        return render_template("create-course.html", error="Name too long (max 200 chars).")
+    if len(description) > 200:
+        return render_template("create-course.html", error="Description too long (max 200 chars).")
+    if len(description) == 0:
+        description = f"A new course created by {session['username']}."
+
     course_id = create_course(name, description, session["user_id"])
     return redirect("/courses/" + str(course_id))
 
@@ -79,8 +94,12 @@ def remove_course(course_id: int):
     if not is_teacher():
         return redirect("/")
 
-    if is_course_teacher(session["user_id"], course_id):
+    user_id = session.get("user_id", -1)
+    if is_course_teacher(user_id, course_id):
         delete_course(course_id)
+    else:
+        return render_template("courses.html",
+                               error="You can only delete courses owned by you.")
 
     return redirect("/courses")
 
@@ -101,7 +120,7 @@ def join_course(course_id: int):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    if not (is_student() or is_teacher) or is_course_teacher(session["user_id"], course_id):
+    if not (is_student() or is_teacher()) or is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
     add_user_to_course(session["user_id"], course_id)
@@ -113,7 +132,7 @@ def leave_course(course_id: int):
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    if not is_student():
+    if not is_student() and not is_teacher():
         return redirect("/")
 
     remove_user_from_course(session["user_id"], course_id)
@@ -128,8 +147,19 @@ def course_edit_title_and_desc(course_id: int):
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
         return redirect("/")
 
-    update_course_name(course_id, request.form["name"])
-    update_course_desc(course_id, request.form["desc"])
+    new_name = request.form.get("name", "").strip()
+    new_desc = request.form.get("desc", "").strip()
+
+    # Validate data
+    if len(new_name) < 3:
+        return render_template("Name too short (min 3 chars)")
+    if len(new_desc) > 200:
+        return render_template("Description too long (max 200 chars)")
+    if len(new_desc) == 0:
+        new_desc = "This course has no description."
+
+    update_course_name(course_id, new_name)
+    update_course_desc(course_id, new_desc)
     return redirect(f"/courses/{course_id}/edit")
 
 
@@ -141,14 +171,25 @@ def course_add_exercise(course_id: int):
     if request.method == "GET":
         return render_template("add-exercise.html", course=get_course_info(course_id))
 
+    # from here on request is POST and user is the course's teacher
+
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-    title = request.form["title"]
-    question = request.form["question"]
-    answer = request.form["answer"]
-    max_points = request.form["max-points"]
-    choices = request.form["choices"] if "choices" in request.form else None
+    title = request.form.get("title", "").strip()
+    question = request.form.get("question", "").strip()
+    answer = request.form.get("answer", "").strip()
+    max_points = request.form.get("max-points", "").strip()
+    choices = request.form.get("choices", None)
+
+    # Validate data
+    if len(title) < 3 or len(question) < 3:
+        return render_template("add-exercise.html", error="Text contents too short (min 3 chars)")
+    if len(title) > 500 or len(question) > 500 or (choices and len(choices) > 500):
+        return render_template("add-exercise.html", error="Text contents too long (max 300 chars)")
+    if not 0 < int(max_points) < 999:
+        return render_template("add-exercise.html", error="Grading outside of range 0 - 999")
+
     add_course_exercise(course_id, title, question, answer, max_points, choices)
     return redirect(f"/courses/{course_id}/edit")
 
@@ -161,11 +202,22 @@ def course_add_material(course_id: int):
     if request.method == "GET":
         return render_template("add-course-material.html", course=get_course_info(course_id))
 
-    if session["csrf_token"] != request.form["csrf_token"]:
+    if session.get("csrf_token", None) != request.form.get("csrf_token", -1):
         abort(403)
 
-    title = request.form["title"]
-    text = request.form["text"]
+    title = request.form.get("title", "")
+    text = request.form.get("text", "")
+
+    # Validate data
+    if len(title) < 3:
+        return render_template("add-course-material.html", error="Title too short (min 3 chars)")
+    if len(title) > 500:
+        return render_template("add-course-material.html", error="Title too long (max 500 chars)")
+    if len(text) < 3:
+        return render_template("add-course-material.html", error="Text too short (min 3 chars)")
+    if len(text) > 10000:
+        return render_template("add-course-material.html", error="Text too long (max 10000 chars)")
+
     add_course_material(course_id, title, text)
     return redirect(f"/courses/{course_id}/edit")
 
@@ -174,14 +226,16 @@ def course_add_material(course_id: int):
 def course_exercise_page(course_id: int, exercise_id: int):
     if not (is_student() or is_teacher()):
         return redirect("/")
-    # TODO: restrict access to students enrolled in course only.
 
-    exercise = None
-    for e in get_course_exercises(course_id, session["user_id"]):
-        if e.id == exercise_id:
-            exercise = e
-            break
-    if not e.choices:
+    user_id = session.get("user_id", -1)
+
+    if not (is_course_student(user_id, course_id) or is_course_teacher(user_id, course_id)):
+        return redirect("/")
+
+    exercise = get_course_exercise(exercise_id, user_id, course_id)
+    if not exercise:
+        return redirect(f"/courses/{course_id}")
+    if not exercise.choices:
         return render_template("exercise.html", exercise=exercise, course=get_course_info(course_id))
     else:
         return render_template("exercise-multichoice.html", exercise=exercise, course=get_course_info(course_id))
@@ -191,24 +245,30 @@ def course_exercise_page(course_id: int, exercise_id: int):
 def course_material_page(course_id: int, material_id: int):
     if not (is_student() or is_teacher()):
         return redirect("/")
-    # TODO: restrict access to students enrolled in course only.
 
-    material = None
-    for m in get_course_materials(course_id):
-        if m.id == material_id:
-            material = m
-            break
-    print(material)
-    return render_template("material.html", material=material, course=get_course_info(course_id))
+    user_id = session.get("user_id", -1)
+    if not (is_course_student(user_id, course_id) or is_course_teacher(user_id, course_id)):
+        return redirect("/")
+
+    material = get_course_material(course_id, material_id)
+    return render_template("material.html", material=material,
+                                            course=get_course_info(course_id))
 
 @app.route("/courses/<int:course_id>/exercises/<int:exercise_id>/submit", methods=["POST"])
 def submit_exercise(course_id: int, exercise_id: int):
     if not is_student():
         return redirect("/")
-    # TODO: restrict access to students enrolled in course only.
 
-    submit_answer(exercise_id, session["user_id"], request.form["answer"])
-    return redirect("/courses/"+ str(course_id) + "/exercises/" + str(exercise_id))
+    user_id = session.get("user_id", -1)
+    if not is_course_student(user_id, course_id):
+        return redirect("/")
+
+    answer = request.form.get("answer", "")
+    if len(answer) == 0 or len(answer) > 500:
+        abort(400)
+
+    submit_answer(exercise_id, user_id, answer)
+    return redirect(f"/courses/{course_id}/exercises/{exercise_id}")
 
 
 @app.route("/courses/<int:course_id>/stats", methods=["GET"])
@@ -234,9 +294,10 @@ def grading(course_id:int, submission_id: int):
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
-        grade = request.form["grade"] if "grade" in request.form else None
-        if not grade:
-            abort(400)
+        grade = request.form.get("grade")
+        exercise = get_exercise_by_submission(submission_id)
+        if not grade or not 0 <= int(grade) <= exercise.max_points:
+            abort(400, "Invalid grade")
 
         grade_submission(submission_id, grade)
         return redirect("/courses/"+ str(course_id) + "/stats")
