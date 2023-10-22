@@ -2,9 +2,13 @@
 {% block content %}
 
 <div class="course-page-container">
-    <div style="display: flex; flex-direction: column; gap:0.5rem; padding: 5%; ">
-        <h1 style="font-size: 4.5rem; color: var(--primary-lighten-3)">Courses</h1>
-        <p style="font-size: 2rem;">Find and complete cool courses to gain great amounts of knowledge, or share you own expertise by <a style="color: var(--primary-lighten-1)" href="/new_course">creating your own courses</a>.</p>
+    <div style="display: flex; flex-direction: column; padding: 10%; ">
+        <h1 style="font-size: 4.0rem; color: var(--primary-lighten-3)">Courses</h1>
+        {% if session.is_teacher == True %}
+        <p style="font-size: 1.7rem;">Find and complete courses created by other teachers, or go to the <a style="color: var(--primary-lighten-1)" href="/new_course">course creation page</a> to create your own courses.<p>
+        {% elif session.is_teacher == False or not session.user_id %}
+        <p style="font-size: 1.7rem;">Find and complete courses created by other teachers, or <a style="color: var(--primary-lighten-1)" href="/register">sign up</a> as a teacher yourself to start creating your own courses.</p>
+        {% endif %}
     </div>
 
 
@@ -109,12 +113,12 @@
 
             </div>
         </section>
+        <hr>
 
     </main>
 
-    <div style="height:5rem; padding:5rem; width:100%;">
-    </div>
 </div>
+
 
 <script>
     function saveScroll() {
