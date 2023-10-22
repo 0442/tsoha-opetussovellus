@@ -2,6 +2,19 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from app import db
 from typing import NamedTuple, Any
+from flask import session
+
+def is_teacher() -> bool:
+    """Check whether a request came from someone logged in as a teacher."""
+    return ("user_id"    in session and
+            "is_teacher" in session and
+            session["is_teacher"] == True)
+
+def is_student() -> bool:
+    """Check whether a request came from someone logged in as a student."""
+    return ("user_id"    in session and
+            "is_teacher" in session and
+            session["is_teacher"] == False)
 
 class Course(NamedTuple):
     id: str

@@ -2,17 +2,6 @@ from flask import render_template, redirect, session, request, abort
 from services.courses import *
 from app import app
 
-def is_teacher() -> bool:
-    """Check whether a request came from someone logged in as a teacher."""
-    return ("user_id"    in session and
-            "is_teacher" in session and
-            session["is_teacher"] == True)
-
-def is_student() -> bool:
-    """Check whether a request came from someone logged in as a student."""
-    return ("user_id"    in session and
-            "is_teacher" in session and
-            session["is_teacher"] == False)
 
 @app.route("/courses")
 def courses():
@@ -111,8 +100,8 @@ def edit_course(course_id: int):
 
     return render_template("edit-course.html",
                             course=get_course_info(course_id),
-                            text_materials=get_course_materials(course_id),
-                            exercises=get_course_exercises(course_id, session["user_id"]))
+                            text_materials=get_all_course_materials(course_id),
+                            exercises=get_all_course_exercises(course_id, session["user_id"]))
 
 
 @app.route("/courses/<int:course_id>/join", methods=["POST"])
