@@ -221,7 +221,18 @@ def add_user_to_course(user_id: int, course_id: int) -> None:
         pass
 
 def remove_user_from_course(user_id: int, course_id: int) -> None:
-    sql = text("DELETE FROM course_participants WHERE user_id = :user_id AND course_id = :course_id")
+    sql = text("""
+        DELETE FROM course_participants
+        WHERE user_id = :user_id AND course_id = :course_id;
+
+        DELETE FROM exercise_submissions
+        WHERE user_id = :user_id
+        AND exercise_id IN (
+            SELECT id
+            FROM course_exercises
+            WHERE course_id = :course_id
+        )
+    """)
     db.session.execute(sql, {"user_id":user_id, "course_id":course_id})
     db.session.commit()
 

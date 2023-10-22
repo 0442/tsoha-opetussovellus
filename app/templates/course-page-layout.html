@@ -21,7 +21,8 @@
                 {% if session.user_id in course.participant_ids %}
                 <form action="/courses/{{course.id}}/leave" method="POST">
                     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
-                    <button type="submit" class="tab-button" style="color: var(--secondary);">Leave course</button>
+                    <button type="button" onclick="confirmLeave()" class="tab-button" style="color: var(--secondary);">Leave course</button>
+                    <button id="submit-form" hidden type="submit"></button>
                 </form>
                 {% endif %}
             </div>
@@ -33,6 +34,14 @@
             <!-- -->
         </div>
     </div>
-</div>
+
+    <script>
+        function confirmLeave() {
+            let proceed = window.confirm("Are you sure you want to leave the course '{{course.name}}'? All progress will be lost.");
+            if (proceed) {
+                document.getElementById("submit-form").click();
+            }
+        }
+    </script>
 
 {% endblock %}
