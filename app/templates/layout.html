@@ -26,7 +26,15 @@
         <a class="link-button button-1 item3" href="/login">Log in</a>
         <a class="link-button button-5 item4" href="/register">Register</a>
         {% endif %}
+
+
+    {% if error %}
+    <div id="error-notif-container" class="error-notif-container">
+        <p class="error-notif">{{error}}</p>
+        <button class="error-close-button" onclick="closeError()">×</button>
     </div>
+    {% endif %}
+
 
     {% block content %}
     {% endblock %}
@@ -38,4 +46,10 @@
     document.addEventListener("DOMContentLoaded", () => {
         document.querySelector('.disable-transitions').classList.remove('disable-transitions');
     });
+
+    // close error notif
+    function closeError() {
+        document.getElementById("error-notif-container").setAttribute("hidden", true);
+        document.getElementById("error-notif-container").setAttribute("style", "display: none;");
+    }
 </script>
