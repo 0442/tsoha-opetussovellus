@@ -253,7 +253,7 @@ def submit_exercise(course_id: int, exercise_id: int):
         return redirect("/")
 
     answer = request.form.get("answer", "")
-    if len(answer) == 0 or len(answer) > 500:
+    if len(answer) == 0 or len(answer) > 10000:
         abort(400)
 
     submit_answer(exercise_id, user_id, answer)
