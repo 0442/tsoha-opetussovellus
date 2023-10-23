@@ -13,17 +13,16 @@ def courses():
 
 @app.route("/courses/search", methods=["POST"])
 def course_search():
-    if session["csrf_token"] != request.form["csrf_token"]:
-        abort(403)
+    user_id = session.get("user_id", -1)
 
-    if "user_id" not in session:
-        return redirect("/")
+    if user_id != -1 and session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
 
     search_word = request.form.get("search", "")
     my = True if "my-courses" in request.form else False
     enrolled = True if "enrolled-courses" in request.form else False
 
-    courses = search_courses(search_word, my, enrolled, session["user_id"])
+    courses = search_courses(search_word, my, enrolled, user_id)
 
     return render_template("courses.html",
                            courses=courses,
