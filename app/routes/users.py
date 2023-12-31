@@ -1,5 +1,5 @@
 import secrets
-from flask import render_template, redirect, session, request, abort
+from flask import render_template, redirect, session, request, abort, url_for
 
 from ..app import app
 from ..services.users import *
@@ -29,7 +29,7 @@ def login():
 
     if validate_credentials(username, password):
         login_user(username)
-        return redirect("/profile")
+        return redirect(url_for("profile"))
 
     return render_template("login.html", error_msg="Wrong username or password")
 
@@ -47,7 +47,7 @@ def register():
                         role == "teacher")
     if not err:
         login_user(username)
-        return redirect("/profile")
+        return redirect(url_for("profile"))
 
     return render_template("register.html", error_msg=err)
 
@@ -55,7 +55,7 @@ def register():
 @app.route("/profile")
 def profile():
     if "user_id" not in session:
-        return redirect("/login")
+        return redirect(url_for("login"))
 
     return render_template("profilepage.html")
 
@@ -63,17 +63,17 @@ def profile():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect(url_for("root"))
 
 
 @app.route("/delete", methods=["POST"])
 def delete():
     if "user_id" not in session:
-        return redirect("/")
+        return redirect(url_for("root"))
 
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
     delete_user(session["user_id"])
     logout_user()
-    return redirect("/")
+    return redirect(url_for("root"))

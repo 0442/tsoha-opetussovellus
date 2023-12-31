@@ -1,4 +1,4 @@
-from flask import render_template, redirect, session, request, abort
+from flask import render_template, redirect, session, request, abort, url_for
 
 from ..services.courses import *
 from ..app import app
@@ -47,10 +47,10 @@ def course(course_id: int):
 @app.route("/new_course", methods=["GET", "POST"])
 def new_course():
     if not is_teacher() and not is_student():
-        return redirect("/login")
+        return redirect(url_for("login"))
 
     if not is_teacher():
-        return redirect("/")
+        return redirect(url_for("root"))
 
     if request.method == "GET":
         return render_template("create-course.html")
@@ -77,7 +77,7 @@ def new_course():
         description = f"A new course created by {session['username']}."
 
     course_id = create_course(name, description, session["user_id"])
-    return redirect("/courses/" + str(course_id))
+    return redirect(url_for("course", course_id = course_id))
 
 
 @app.route("/courses/<int:course_id>/delete", methods=["POST"])
@@ -86,7 +86,7 @@ def remove_course(course_id: int):
         abort(403)
 
     if not is_teacher():
-        return redirect("/")
+        return redirect(url_for("root"))
 
     user_id = session.get("user_id", -1)
     if is_course_teacher(user_id, course_id):
@@ -96,13 +96,13 @@ def remove_course(course_id: int):
                                error="You can only delete courses owned by you.",
                                course=get_course_info(course_id))
 
-    return redirect("/courses")
+    return redirect(url_for("courses"))
 
 
 @app.route("/courses/<int:course_id>/edit")
 def edit_course(course_id: int):
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     return render_template("edit-course.html",
                            course=get_course_info(course_id),
@@ -116,10 +116,10 @@ def join_course(course_id: int):
         abort(403)
 
     if not (is_student() or is_teacher()) or is_course_teacher(session["user_id"], course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     add_user_to_course(session["user_id"], course_id)
-    return redirect("/courses/" + str(course_id))
+    return redirect(url_for("course", course_id=course_id))
 
 
 @app.route("/courses/<int:course_id>/leave", methods=["POST"])
@@ -128,10 +128,10 @@ def leave_course(course_id: int):
         abort(403)
 
     if not is_student() and not is_teacher():
-        return redirect("/")
+        return redirect(url_for("root"))
 
     remove_user_from_course(session["user_id"], course_id)
-    return redirect("/courses/" + str(course_id))
+    return redirect(url_for("course", course_id=course_id))
 
 
 @app.route("/courses/<int:course_id>/edit/title_and_desc", methods=["POST"])
@@ -140,7 +140,7 @@ def course_edit_title_and_desc(course_id: int):
         abort(403)
 
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     new_name = request.form.get("name", "").strip()
     new_desc = request.form.get("desc", "").strip()
@@ -157,13 +157,13 @@ def course_edit_title_and_desc(course_id: int):
 
     update_course_name(course_id, new_name)
     update_course_desc(course_id, new_desc)
-    return redirect(f"/courses/{course_id}/edit")
+    return redirect(url_for("edit_course", course_id=course_id))
 
 
 @app.route("/courses/<int:course_id>/edit/add_exercise", methods=["GET", "POST"])
 def course_add_exercise(course_id: int):
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     if request.method == "GET":
         return render_template("add-exercise.html", course=get_course_info(course_id))
@@ -195,13 +195,13 @@ def course_add_exercise(course_id: int):
 
     add_course_exercise(course_id, title, question,
                         answer, max_points, choices)
-    return redirect(f"/courses/{course_id}/edit")
+    return redirect(url_for("edit_course", course_id=course_id))
 
 
 @app.route("/courses/<int:course_id>/edit/add_material", methods=["GET", "POST"])
 def course_add_material(course_id: int):
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     if request.method == "GET":
         return render_template("add-course-material.html",
@@ -232,23 +232,23 @@ def course_add_material(course_id: int):
                                course=get_course_info(course_id))
 
     add_course_material(course_id, title, text)
-    return redirect(f"/courses/{course_id}/edit")
+    return redirect(url_for("edit_course", course_id=course_id))
 
 
 @app.route("/courses/<int:course_id>/exercises/<int:exercise_id>", methods=["GET"])
 def course_exercise_page(course_id: int, exercise_id: int):
     if not (is_student() or is_teacher()):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     user_id = session.get("user_id", -1)
 
     if not (is_course_student(user_id, course_id) or is_course_teacher(user_id, course_id)):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     exercise = get_course_exercise(exercise_id, user_id, course_id)
 
     if not exercise:
-        return redirect(f"/courses/{course_id}")
+        return redirect(url_for("course", course_id=course_id))
 
     if not exercise.choices:
         return render_template("exercise.html",
@@ -263,11 +263,11 @@ def course_exercise_page(course_id: int, exercise_id: int):
 @app.route("/courses/<int:course_id>/materials/<int:material_id>", methods=["GET"])
 def course_material_page(course_id: int, material_id: int):
     if not (is_student() or is_teacher()):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     user_id = session.get("user_id", -1)
     if not (is_course_student(user_id, course_id) or is_course_teacher(user_id, course_id)):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     material = get_course_material(course_id, material_id)
     return render_template("material.html", material=material,
@@ -277,24 +277,25 @@ def course_material_page(course_id: int, material_id: int):
 @app.route("/courses/<int:course_id>/exercises/<int:exercise_id>/submit", methods=["POST"])
 def submit_exercise(course_id: int, exercise_id: int):
     if not is_student():
-        return redirect("/")
+        return redirect(url_for("root"))
 
     user_id = session.get("user_id", -1)
     if not is_course_student(user_id, course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     answer = request.form.get("answer", "")
     if len(answer) == 0 or len(answer) > 10000:
         abort(400)
 
     submit_answer(exercise_id, user_id, answer)
-    return redirect(f"/courses/{course_id}/exercises/{exercise_id}")
+    return redirect(url_for("course_exercise_page", exercise_id=exercise_id))
+
 
 
 @app.route("/courses/<int:course_id>/stats", methods=["GET"])
 def course_stats(course_id: int):
     if not is_teacher() or not is_course_teacher(session["user_id"], course_id):
-        return redirect("/")
+        return redirect(url_for("root"))
 
     stats = get_all_submissions(course_id)
     crs = get_course_info(course_id)
@@ -321,7 +322,7 @@ def grading(course_id: int, submission_id: int):
             abort(400, "Invalid grade")
 
         grade_submission(submission_id, grade)
-        return redirect("/courses/" + str(course_id) + "/stats")
+        return redirect(url_for("course_stats"), course_id = course_id)
 
     return render_template("grading.html",
                            course=get_course_info(course_id),
