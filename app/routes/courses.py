@@ -288,7 +288,8 @@ def submit_exercise(course_id: int, exercise_id: int):
         abort(400)
 
     submit_answer(exercise_id, user_id, answer)
-    return redirect(url_for("course_exercise_page", exercise_id=exercise_id))
+    return redirect(url_for("course_exercise_page", course_id=course_id,
+                            exercise_id=exercise_id))
 
 
 
