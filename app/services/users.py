@@ -1,28 +1,26 @@
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
-from app import db
+
+from ..app import db
 
 
 def validate_credentials(username: str, password: str) -> bool:
     """Returns True if credentials are valid, otherwise False."""
 
     sql = text("SELECT password FROM users WHERE name = :username")
-    result = db.session.execute(sql, {"username": username}).fetchone()
+    user = db.session.execute(sql, {"username": username}).fetchone()
 
-    if not result:
+    if not user:
         return False
 
-    if check_password_hash(result.password, password):
-        return True
-    else:
-        return False
+    return check_password_hash(user.password, password)
 
 
 def get_user_id(username: str) -> str:
     sql = text("SELECT id FROM users WHERE name = :name")
-    id = db.session.execute(sql, {"name": username}).fetchone()[0]
-    return id
+    user_id = db.session.execute(sql, {"name": username}).fetchone()[0]
+    return user_id
 
 
 def register_user(username: str, password: str, is_teacher: bool) -> str | None:
@@ -35,7 +33,7 @@ def register_user(username: str, password: str, is_teacher: bool) -> str | None:
 
     password_hash = generate_password_hash(password)
 
-    role = 1 if is_teacher == True else 0
+    role = int(is_teacher)
     sql = text(
         "INSERT INTO users (name, password, role) VALUES (:username, :password_hash, :role)")
     try:
@@ -58,4 +56,4 @@ def is_teacher(username: str) -> bool:
     sql = text("SELECT role FROM users WHERE name = :name")
     result = db.session.execute(sql, {"name": username})
     role = result.fetchone()[0]
-    return True if role == 1 else False
+    return bool(role)

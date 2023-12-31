@@ -1,22 +1,23 @@
+from typing import NamedTuple, Any
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
-from app import db
-from typing import NamedTuple, Any
 from flask import session
+
+from ..app import db
 
 
 def is_teacher() -> bool:
     """Check whether a request came from someone logged in as a teacher."""
     return ("user_id" in session and
             "is_teacher" in session and
-            session["is_teacher"] == True)
+            session["is_teacher"] is True)
 
 
 def is_student() -> bool:
     """Check whether a request came from someone logged in as a student."""
     return ("user_id" in session and
             "is_teacher" in session and
-            session["is_teacher"] == False)
+            session["is_teacher"] is False)
 
 
 class Course(NamedTuple):
@@ -55,20 +56,24 @@ def delete_course(course_id: int):
     try:
         db.session.execute(sql, {"course_id": course_id})
     # In case of trying to delete a nonexistent course
-    except Exception as e:
-        print(e)
+    except Exception as exc:
+        print(exc)
     db.session.commit()
 
 
 def add_course_material(course_id: int, title: str, text_content: str) -> None:
-    sql = text(
-        "INSERT INTO course_text_materials (course_id, title, content) VALUES (:course_id, :title, :content)")
+    sql = text("""
+        INSERT INTO course_text_materials (
+            course_id, title, content
+        ) VALUES (:course_id, :title, :content)
+    """)
     db.session.execute(sql, {"course_id": course_id,
                        "title": title, "content": text_content})
     db.session.commit()
 
 
-def add_course_exercise(course_id: int, title: str, question: str, answer: str, max_points: int, choices: None | str) -> None:
+def add_course_exercise(course_id: int, title: str, question: str, answer: str,
+                        max_points: int, choices: None | str) -> None:
     sql = text("""
         INSERT INTO course_exercises (
             course_id, title, question, correct_answer, choices, max_points
@@ -79,7 +84,9 @@ def add_course_exercise(course_id: int, title: str, question: str, answer: str, 
 
     if choices:
         print("Creating a multichoice exercise")
-        choices = choices.strip("; ")
+        choices = ";".join(
+            list({c.strip("; ") for c in choices.strip("; ").split(";")}))
+        print(choices)
     else:
         print("Creating a text exercise")
         sql = text("""
@@ -149,7 +156,7 @@ def get_all_courses() -> list[Course]:
     return courses_objects
 
 
-def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Course]:
+def search_courses(name: str, own: bool, enrolled: bool, user_id: int) -> list[Course]:
     """Returns a list of matching courses"""
 
     """
@@ -167,19 +174,19 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
     base_sql = "SELECT c.id, c.name, c.description FROM courses c "
     if enrolled:
         base_sql += "LEFT JOIN course_participants cp ON c.id = cp.course_id "
-    if my:
+    if own:
         base_sql += "LEFT JOIN course_teachers ct ON c.id = ct.course_id "
-    if enrolled or my or name:
+    if enrolled or own or name:
         base_sql += "WHERE "
     if name:
         base_sql += "lower(c.name) LIKE lower(:name) OR lower(c.description) LIKE lower(:name) "
-    if name and (enrolled or my):
+    if name and (enrolled or own):
         base_sql += "AND "
     if enrolled:
         base_sql += "cp.user_id = :user_id "
-    if enrolled and my:
+    if enrolled and own:
         base_sql += "OR "
-    if my:
+    if own:
         base_sql += "ct.user_id = :user_id "
 
     base_sql += "GROUP BY c.id"
@@ -189,11 +196,11 @@ def search_courses(name: str, my: bool, enrolled: bool, user_id: int) -> list[Co
         text(base_sql), {"user_id": user_id, "name": "%"+name+"%"}).fetchall()
 
     course_objects = []
-    for course_id, name, desc in courses:
+    for course_id, course_name, desc in courses:
         teacher_ids = _get_course_teachers(course_id)
         participant_ids = _get_course_participants(course_id)
         course_objects.append(
-            Course(course_id, name, desc, teacher_ids, participant_ids))
+            Course(course_id, course_name, desc, teacher_ids, participant_ids))
 
     return course_objects
 
@@ -204,10 +211,11 @@ def is_course_teacher(user_id: int, course_id: int) -> bool:
         "SELECT id FROM course_teachers WHERE course_id = :course_id AND user_id = :user_id")
     result = db.session.execute(
         sql, {"course_id": course_id, "user_id": user_id}).fetchall()
-    if len(result) < 1:
+
+    if not result:
         return False
-    else:
-        return True
+
+    return True
 
 
 def is_course_student(user_id: int, course_id: int) -> bool:
@@ -216,10 +224,11 @@ def is_course_student(user_id: int, course_id: int) -> bool:
         "SELECT id FROM course_participants WHERE course_id = :course_id AND user_id = :user_id")
     result = db.session.execute(
         sql, {"course_id": course_id, "user_id": user_id}).fetchall()
-    if len(result) < 1:
+
+    if not result:
         return False
-    else:
-        return True
+
+    return True
 
 
 def get_course_info(course_id: int) -> Course:
@@ -227,7 +236,7 @@ def get_course_info(course_id: int) -> Course:
 
     sql = text("SELECT name, description FROM courses WHERE id = :course_id")
     result = db.session.execute(sql, {"course_id": course_id}).fetchone()
-    if result == None:
+    if not result:
         return None
 
     name, description = result
@@ -290,15 +299,15 @@ def get_course_exercise(exercise_id: int, user_id: int, course_id: int):
         ) es ON ce.id = es.exercise_id
         WHERE ce.id = :exercise_id
     """)
-    r = db.session.execute(
+    res = db.session.execute(
         sql, {"exercise_id": exercise_id, "user_id": user_id}).fetchone()
-    id, title, question, max_points, choices, submitted_answer, correct_answer, grade = r
+    exr_id, title, question, max_points, choices, submitted_answer, correct_answer, grade = res
     if choices:
         choices = choices.split(";")
-    exc = Exercise(id, course_id, title, question,
+    exr = Exercise(exr_id, course_id, title, question,
                    correct_answer, choices, user_id,
                    submitted_answer, grade, max_points)
-    return exc
+    return exr
 
 
 def get_all_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
@@ -315,14 +324,14 @@ def get_all_course_exercises(course_id: int, user_id: int) -> list[Exercise]:
     results = db.session.execute(
         sql, {"course_id": course_id, "user_id": user_id}).fetchall()
     exercises = []
-    for r in results:
-        id, title, question, max_points, choices, submitted_answer, correct_answer, grade = r
+    for res in results:
+        exr_id, title, question, max_points, choices, submitted_answer, correct_answer, grade = res
         if choices:
             choices = choices.split(";")
-        exc = Exercise(id, course_id, title, question,
+        exr = Exercise(exr_id, course_id, title, question,
                        correct_answer, choices, user_id,
                        submitted_answer, grade, max_points)
-        exercises.append(exc)
+        exercises.append(exr)
 
     return exercises
 
@@ -339,8 +348,8 @@ def get_exercise_by_submission(submission_id: int):
 
 def count_completed(exercises: list[Exercise]):
     completion_count = 0
-    for e in exercises:
-        completion_count += 1 if e.submitted_answer != None else 0
+    for exr in exercises:
+        completion_count += 1 if exr.submitted_answer is not None else 0
     return completion_count
 
 
@@ -410,7 +419,8 @@ def submit_answer(exercise_id: int, user_id: int, answer: str) -> None:
 
 
 def get_submission(submission_id: int) -> None | Any:
-    """Returns an object containing the user's answer, exercise's question and the example answer."""
+    """Returns an object containing the user's answer, exercise's question
+    and the example answer."""
     sql = text("""
         SELECT es.id, es.exercise_id, es.user_id, u.name AS username,
                       es.answer, es.grade, ce.question,

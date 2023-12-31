@@ -1,7 +1,8 @@
-from flask import render_template, redirect, session, request, abort
-from services.users import *
 import secrets
-from app import app
+from flask import render_template, redirect, session, request, abort
+
+from ..app import app
+from ..services.users import *
 
 
 def logout_user():
@@ -29,8 +30,8 @@ def login():
     if validate_credentials(username, password):
         login_user(username)
         return redirect("/profile")
-    else:
-        return render_template("login.html", error_msg="Wrong username or password")
+
+    return render_template("login.html", error_msg="Wrong username or password")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -43,12 +44,12 @@ def register():
     role = request.form["role"]
     err = register_user(username,
                         password,
-                        True if role == "teacher" else False)
+                        role == "teacher")
     if not err:
         login_user(username)
         return redirect("/profile")
-    else:
-        return render_template("register.html", error_msg=err)
+
+    return render_template("register.html", error_msg=err)
 
 
 @app.route("/profile")
@@ -67,7 +68,7 @@ def logout():
 
 @app.route("/delete", methods=["POST"])
 def delete():
-    if not "user_id" in session:
+    if "user_id" not in session:
         return redirect("/")
 
     if session["csrf_token"] != request.form["csrf_token"]:
