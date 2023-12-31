@@ -6,7 +6,7 @@
     <title>Opetussovellus</title>
 </head>
 
-<body class="disable-transitions">
+<body class="disable-transitions" style="background-image: url({{url_for('static', filename='bg.svg')}})">
     <nav class="top-bar">
         <a class="link-button top-bar-button item1" href="{{url_for('root')}}">📖 Courses</a>
         {% if session.is_teacher == True %}

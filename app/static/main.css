@@ -99,7 +99,6 @@ body {
     z-index: -2;
 
     background-color: black;
-    background-image: url("/static/bitmap.svg");
     background-repeat: repeat-y;
     background-position: 0 -30rem;
     background-size: cover;
