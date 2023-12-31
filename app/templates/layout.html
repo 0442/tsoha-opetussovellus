@@ -2,18 +2,18 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
     <title>Opetussovellus</title>
 </head>
 
 <body class="disable-transitions">
     <nav class="top-bar">
-        <a class="link-button top-bar-button item1" href="/">📖 Courses</a>
+        <a class="link-button top-bar-button item1" href="{{url_for('root')}}">📖 Courses</a>
         {% if session.is_teacher == True %}
-        <a class="link-button top-bar-button item2" href="/new_course">＋ Create a course</a>
+        <a class="link-button top-bar-button item2" href="{{url_for('new_course')}}">＋ Create a course</a>
         {% endif %}
         {% if session.username %}
-        <a class="link-button top-bar-button item4" style="flex-direction: row; flex-wrap: wrap;" href="/profile">
+        <a class="link-button top-bar-button item4" style="flex-direction: row; flex-wrap: wrap;" href="{{url_for('profile')}}">
             {{session.username}}
             <span style="font-size:0.8rem;">
                 {% if session.is_teacher == True %}
@@ -24,8 +24,8 @@
             </span>
         </a>
         {% else %}
-        <a class="link-button button-1 item3" style="background-color: transparent;" href="/login">Log in</a>
-        <a class="link-button button-5 item4" href="/register">Register</a>
+        <a class="link-button button-1 item3" style="background-color: transparent;" href="{{url_for('login')}}">Log in</a>
+        <a class="link-button button-5 item4" href="{{url_for('register')}}">Register</a>
         {% endif %}
     </nav>
 

@@ -9,7 +9,7 @@
 </hgroup>
 {% if not session.username %}
 <div class="notice-container">
-    <p>You must <a style="color:var(--primary)" href="/login">log in</a> first before you can join any courses.</p>
+    <p>You must <a style="color:var(--primary)" href="{{url_for('login')}}">log in</a> first before you can join any courses.</p>
 </div>
 {% endif %}
 
@@ -26,7 +26,7 @@
 
     {% for m in text_materials %}
     <div class="course-content-block">
-        <a class="link-button" href="/courses/{{course.id}}/materials/{{m.id}}">
+        <a class="link-button" href="{{url_for('course_material_page', course_id=course.id, material_id=m.id)}}">
             <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{m.title}}</h3>
         </a>
     </div>
@@ -48,7 +48,7 @@
 
         {% for e in exercises %}
         <div class="course-content-block">
-            <a class="link-button" style="width: 100%;" href="/courses/{{course.id}}/exercises/{{e.id}}">
+            <a class="link-button" style="width: 100%;" href="{{url_for('course_exercise_page', course_id=course.id, exercise_id=e.id)}}">
                 <div style="width:100%; display: flex; justify-content: space-between;">
                     <h3 style="color:var(--primary); font-weight: normal; padding: 0.5rem;">{{e.title}}</h3>
                     {% if e.submitted_answer == None %}
@@ -73,7 +73,7 @@
 {% if session.user_id and not session.user_id in course.teacher_ids %}
 
 {% if session.user_id not in course.participant_ids %}
-<form action="/courses/{{course.id}}/join" method="POST">
+<form action="{{url_for('join_course', course_id=course.id)}}" method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
     <button type="submit" class="button-5">Enroll in course</button>
 </form>

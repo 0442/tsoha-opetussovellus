@@ -16,7 +16,7 @@
 </div>
 
 
-<form method="POST" action="/courses/{{course.id}}/submissions/{{submission.id}}">
+<form method="POST" action="{{url_for('grading', course_id=course.id, submission_id=submission.id)}}">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
     <label>Grade</label>

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="empty-page-container">
     <div class="login-card">
-        <form id="course-form" style="display: flex; flex-direction: column; gap: 0.5rem;" action="/new_course"
+        <form id="course-form" style="display: flex; flex-direction: column; gap: 0.5rem;" action="{{url_for('new_course')}}"
             method="POST">
             <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 

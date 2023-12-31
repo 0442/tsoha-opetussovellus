@@ -6,7 +6,7 @@
 
 <hr>
 <!-- -->
-<form style="width:100%; " id="course-info-form" action="/courses/{{course.id}}/edit/title_and_desc" method="POST">
+<form style="width:100%; " id="course-info-form" action="{{url_for('course_edit_title_and_desc', course_id=course.id)}}" method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
     <h2>Basic information</h2>
@@ -33,9 +33,9 @@
 
 <!-- -->
 <h2>Course content</h2>
-<a href="/courses/{{course.id}}/edit/add_material" style="padding-left:1rem;" class="link-button">+ Add text
+<a href="{{url_for('course_add_material', course_id=course.id)}}" style="padding-left:1rem;" class="link-button">+ Add text
     material</a>
-<a href="/courses/{{course.id}}/edit/add_exercise" style="padding-left:1rem;" class="link-button">+ Add an exercise</a>
+<a href="{{url_for('course_add_exercise', course_id=course.id)}}" style="padding-left:1rem;" class="link-button">+ Add an exercise</a>
 <div>
 </div>
 <!-- -->
@@ -43,7 +43,7 @@
 <hr>
 
 <!-- -->
-<form method="POST" action="/courses/{{course.id}}/delete">
+<form method="POST" action="{{url_for('remove_course', course_id=course.id)}}">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
     <button class="button-3">Delete Course</button>
 </form>

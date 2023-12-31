@@ -14,8 +14,8 @@
         </hgroup>
 
         <div style="display: flex; flex-direction: row; gap: 1rem;">
-            <a href="/logout" class="button-1 link-button">Log out</a>
-            <form action="/delete" method="POST">
+            <a href="{{url_for('logout')}}" class="button-1 link-button">Log out</a>
+            <form action="{{url_for('delete')}}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
                 <button type="submit" class="button-3">Delete account</button>
             </form>

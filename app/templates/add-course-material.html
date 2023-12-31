@@ -1,7 +1,7 @@
 {% extends "course-page-layout.html" %}
 {% block course_content %}
 
-<form style="width:100%" id="material-form" action="/courses/{{course.id}}/edit/add_material" method="POST">
+<form style="width:100%" id="material-form" action="{{url_for('course_add_material', course_id=course.id)}}" method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
     <h2>Add New Course Material</h2>
     <div style="display:flex; flex-direction:column;">

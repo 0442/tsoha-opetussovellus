@@ -40,12 +40,12 @@
             </div>
 
             <div style="display: flex; flex-direction: row; gap: 1rem;">
-                <button id="register-submit" class="button-1" formaction="/register" type="submit">Register</button>
+                <button id="register-submit" class="button-1" formaction="{{url_for('register')}}" type="submit">Register</button>
             </div>
 
             <div>
                 <p>
-                    To login into an existing account instead, go to the <br><a href="/login"
+                    To login into an existing account instead, go to the <br><a href="{{url_for('login')}}"
                         style="text-decoration: underline;">login page</a>
                 </p>
             </div>

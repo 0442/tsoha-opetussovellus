@@ -7,7 +7,7 @@
 {% endif %}
 <!-- -->
 
-<form style="width:100%;" id="answer-form" action="/courses/{{course.id}}/exercises/{{exercise.id}}/submit"
+<form style="width:100%;" id="answer-form" action="{{url_for('submit_exercise', course_id=course.id, exercise_id=exercise.id)}}"
     method="POST">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
 
